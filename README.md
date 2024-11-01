@@ -18,6 +18,20 @@ JobSnap is a web-based platform designed to help students build professional pro
 ### For Employers
 - **Search and View CVs**: Search for candidates based on job role, skills, and other criteria. View CVs that match your desired candidate profile.
 
+## Requirements
+- **R1**: The application must support secure user registration and login for both students and employers
+- **R2**: Students must be able to create, edit, and delete profile information. 
+- **R3**: Students must be able to generate a CV tailored to specific job roles.
+- **R4**: Employers must be able to view generated CVs and search for candidates based on job role and skills.
 
+## User Stories
+### Student Stories:
+- "As a student, I want to create a profile so that I can store my academic and professional information."
+- "As a student, I want to generate a CV tailored to a specific job role so that it highlights my most relevant skills."
+- "As a student, I want to select from different CV templates so that I can choose a design that best represents me."
+### Employer Stories:
+- "As an employer, I want to search for students with specific skills so that I can find suitable candidates."
+- "As an employer, I want to view CVs tailored to job roles so that I can quickly assess candidates’ qualifications."
 
-
+## Backlog
+The backlog will include tasks derived from user stories and prioritized for development. Each story should be broken down into smaller tasks for implementation and ordered based on relevance and dependencies. Our progress is tracked on [Trello](https://trello.com/b/yYTxEn3y/jobsnap).
