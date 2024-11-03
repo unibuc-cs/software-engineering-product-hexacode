@@ -41,3 +41,8 @@ The backlog will include tasks derived from user stories and prioritized for dev
 ### Context Diagram
 ![IMG_5567](https://github.com/user-attachments/assets/b8f5dac9-a29c-476f-b035-5ddfa38ae671)
 
+### Container Diagram
+![IMG_5568](https://github.com/user-attachments/assets/e20fc2ed-6742-4b18-b8ea-bf6ac61f2d43)
+
+### Component Diagram
+![IMG_5569](https://github.com/user-attachments/assets/5b73954f-fa62-4588-927e-ed4036b4c872)
