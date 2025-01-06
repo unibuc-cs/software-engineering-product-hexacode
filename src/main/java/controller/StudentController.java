@@ -4,7 +4,7 @@
 package controller;
 
 import com.example.jobsnap.entity.Student;
-import com.example.jobsnap.service.StudentService;
+import service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +32,7 @@ public class StudentController {
 
     @PostMapping
     public Student createStudent(@RequestBody Student student) {
-        return studentService.saveStudent(student);
+        return (Student) studentService.saveStudent(student);
     }
 
     @PutMapping("/{id}")
@@ -42,7 +42,7 @@ public class StudentController {
             Student student = studentOptional.get();
             student.setNume(updatedStudent.getNume());
             student.setAni(updatedStudent.getAni());
-            return ResponseEntity.ok(studentService.saveStudent(student));
+            return ResponseEntity.ok((Student) studentService.saveStudent(student));
         } else {
             return ResponseEntity.notFound().build();
         }

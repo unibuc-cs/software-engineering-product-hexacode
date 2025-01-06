@@ -62,4 +62,10 @@ public class Student {
             preparedStatement.executeUpdate();
         }
     }
+
+    public void setAni(int ani) {
+    }
+
+    public void setNume(String nume) {
+    }
 }

@@ -3,7 +3,7 @@
 package controller;
 
 import com.example.jobsnap.entity.Employer;
-import com.example.jobsnap.service.EmployerService;
+import service.EmployerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

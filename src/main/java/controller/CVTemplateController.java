@@ -1,9 +1,8 @@
-
 // CONTROLLER PENTRU CVTemplate
 package controller;
 
 import com.example.jobsnap.entity.CVTemplate;
-import com.example.jobsnap.service.CVTemplateService;
+import service.CVTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,10 +37,13 @@ public class CVTemplateController {
     public ResponseEntity<Object> updateCVTemplate(@PathVariable Long id, @RequestBody CVTemplate updatedCVTemplate) {
         Optional<CVTemplate> cvTemplateOptional = cvTemplateService.getCVTemplateById(id);
         if (cvTemplateOptional.isPresent()) {
-            CVTemplate cvTemplate = cvTemplateOptional.get();
-            cvTemplate.setName(updatedCVTemplate.getName());
-            cvTemplate.setTemplateData(updatedCVTemplate.getTemplateData());
-            return ResponseEntity.ok(cvTemplateService.saveCVTemplate(cvTemplate));
+            try {
+                CVTemplate cvTemplate = (CVTemplate) cvTemplateOptional.get().clone(); // Clonare
+                cvTemplate.setTemplateData(updatedCVTemplate.getTemplateData());
+                return ResponseEntity.ok(cvTemplateService.saveCVTemplate(cvTemplate));
+            } catch (CloneNotSupportedException e) {
+                return ResponseEntity.status(500).build(); // Eroare de clonare
+            }
         } else {
             return ResponseEntity.notFound().build();
         }
