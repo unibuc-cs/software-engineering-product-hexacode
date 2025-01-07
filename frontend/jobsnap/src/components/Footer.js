@@ -1,25 +1,7 @@
+import icon from '../assets/icon.png';
+
 const navigation = {
-    solutions: [
-        { name: 'Marketing', href: '#' },
-        { name: 'Analytics', href: '#' },
-        { name: 'Insights', href: '#' },
-    ],
-    support: [
 
-        { name: 'Documentation', href: '#' },
-        { name: 'Guides', href: '#' },
-    ],
-    company: [
-        { name: 'About', href: '#' },
-        { name: 'Blog', href: '#' },
-        { name: 'Jobs', href: '#' },
-
-    ],
-    legal: [
-        { name: 'Terms of service', href: '#' },
-        { name: 'Privacy policy', href: '#' },
-        { name: 'License', href: '#' },
-    ],
     social: [
         {
             name: 'Facebook',
@@ -88,80 +70,11 @@ const navigation = {
 export default function Example() {
     return (
         <footer className="bg-gray-900">
-            <div className="mx-auto max-w-7xl px-6 py-16 sm:py-24 lg:px-8 lg:py-32">
+            <div className="mx-auto max-w-7xl px-6 py-10 sm:py-24 lg:px-8 lg:py-24">
                 <div className="mx-auto max-w-2xl text-center">
-                    <p className="mt-2 text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-                        Boost your productivity. Start using our app today.
+                    <p className="text-balance text-4xl font-semibold  text-white sm:text-4xl">
+                        Tailored CVs, Bright Futures. Start using our app today.
                     </p>
-                    <div className="mt-8 flex justify-center">
-                        <a
-                            href="#"
-                            className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
-                        >
-                            Get started
-                        </a>
-                    </div>
-                </div>
-                <div className="mt-24 border-t border-white/10 pt-12 xl:grid xl:grid-cols-3 xl:gap-8">
-                    <img
-                        alt="Company name"
-                        src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
-                        className="h-9"
-                    />
-                    <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
-                        <div className="md:grid md:grid-cols-2 md:gap-8">
-                            <div>
-                                <h3 className="text-sm/6 font-semibold text-white">Solutions</h3>
-                                <ul role="list" className="mt-6 space-y-4">
-                                    {navigation.solutions.map((item) => (
-                                        <li key={item.name}>
-                                            <a href={item.href} className="text-sm/6 text-gray-400 hover:text-white">
-                                                {item.name}
-                                            </a>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                            <div className="mt-10 md:mt-0">
-                                <h3 className="text-sm/6 font-semibold text-white">Support</h3>
-                                <ul role="list" className="mt-6 space-y-4">
-                                    {navigation.support.map((item) => (
-                                        <li key={item.name}>
-                                            <a href={item.href} className="text-sm/6 text-gray-400 hover:text-white">
-                                                {item.name}
-                                            </a>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-                        <div className="md:grid md:grid-cols-2 md:gap-8">
-                            <div>
-                                <h3 className="text-sm/6 font-semibold text-white">Company</h3>
-                                <ul role="list" className="mt-6 space-y-4">
-                                    {navigation.company.map((item) => (
-                                        <li key={item.name}>
-                                            <a href={item.href} className="text-sm/6 text-gray-400 hover:text-white">
-                                                {item.name}
-                                            </a>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                            <div className="mt-10 md:mt-0">
-                                <h3 className="text-sm/6 font-semibold text-white">Legal</h3>
-                                <ul role="list" className="mt-6 space-y-4">
-                                    {navigation.legal.map((item) => (
-                                        <li key={item.name}>
-                                            <a href={item.href} className="text-sm/6 text-gray-400 hover:text-white">
-                                                {item.name}
-                                            </a>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div className="mt-12 border-t border-white/10 pt-8 md:flex md:items-center md:justify-between">
                     <div className="flex gap-x-6 md:order-2">
