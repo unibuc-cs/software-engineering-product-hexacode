@@ -1,8 +1,8 @@
 // CONTROLLER PENTRU CVTemplate
-package controller;
+package com.example.jobsnap.controller;
 
 import com.example.jobsnap.entity.CVTemplate;
-import service.CVTemplateService;
+import com.example.jobsnap.service.CVTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

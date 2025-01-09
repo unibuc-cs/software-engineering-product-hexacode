@@ -6,7 +6,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import students_1 from '../assets/students_1.png'
 import students_2 from '../assets/students_2.png'
 import cover from '../assets/cover.jpg'
-
+import React from 'react';
 const stats = [
     { label: 'Recruiters use social media to find candidates', value: '77%' },
     { label: 'Students feel unprepared for the job market', value: '63%' },

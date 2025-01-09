@@ -1,9 +1,8 @@
-
 // CONTROLLER PENTRU EMPLOYER
-package controller;
+package com.example.jobsnap.controller;
 
 import com.example.jobsnap.entity.Employer;
-import service.EmployerService;
+import com.example.jobsnap.service.EmployerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,35 +17,42 @@ public class EmployerController {
     @Autowired
     private EmployerService employerService;
 
+    // Get all employers
     @GetMapping
     public List<Employer> getAllEmployers() {
         return employerService.getAllEmployers();
     }
 
+    // Get employer by ID
     @GetMapping("/{id}")
     public ResponseEntity<Employer> getEmployerById(@PathVariable Long id) {
         Optional<Employer> employer = employerService.getEmployerById(id);
         return employer.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    // Create a new employer
     @PostMapping
     public Employer createEmployer(@RequestBody Employer employer) {
         return employerService.saveEmployer(employer);
     }
 
+    // Update employer by ID
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateEmployer(@PathVariable Long id, @RequestBody Employer updatedEmployer) {
         Optional<Employer> employerOptional = employerService.getEmployerById(id);
         if (employerOptional.isPresent()) {
             Employer employer = employerOptional.get();
             employer.setName(updatedEmployer.getName());
-            employer.setCompany(updatedEmployer.getCompany());
+            employer.setCompanyName(updatedEmployer.getCompanyName());
+            employer.setEmail(updatedEmployer.getEmail());
+            employer.setPassword(updatedEmployer.getPassword());
             return ResponseEntity.ok(employerService.saveEmployer(employer));
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
+    // Delete employer by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEmployer(@PathVariable Long id) {
         if (employerService.getEmployerById(id).isPresent()) {
@@ -57,4 +63,3 @@ public class EmployerController {
         }
     }
 }
-
