@@ -3,58 +3,32 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import React from 'react';
+import { useAuth } from '../context/AuthContext'; // Importăm contextul de autentificare
 
 export default function LoginPage() {
+    const { login } = useAuth(); // Obținem funcția de login din context
+    const navigate = useNavigate();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('employer'); // Default to 'employer' for testing
     const [errorMessage, setErrorMessage] = useState('');
-    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:8080/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password, role }),
-            });
-
-            // Check if the response is OK (status code 200)
-            if (!response.ok) {
-                const text = await response.text();  // Get the response as text
-                console.error('Login failed:', text);  // Log the full response
-                setErrorMessage('Failed to login');
-                return;
-            }
-
-            // If the response is JSON, parse it
-            const contentType = response.headers.get('content-type');
-            if (contentType && contentType.includes('application/json')) {
-                const { token } = await response.json();
-                if (token) {
-                    // Save the token to localStorage for subsequent requests
-                    localStorage.setItem('authToken', token);
-                    navigate('/home'); // Redirect to home page after successful login
-                } else {
-                    setErrorMessage('No token received from the server.');
-                }
-            } else {
-                setErrorMessage('Server response is not in JSON format.');
-            }
-
+            // Apelăm funcția login din context
+            await login({ email, password, role });
+            navigate('/home'); // Redirecționează utilizatorul după login
         } catch (error) {
-            console.error('Login error:', error);  // Log the error for further debugging
-            setErrorMessage('An error occurred during login.');
+            console.error('Login error:', error.message); // Log the error for debugging
+            setErrorMessage(error.message || 'An error occurred during login.');
         }
     };
 
-
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
-            <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
+            <div className="bg-white mt-16 p-8 rounded-lg shadow-lg max-w-sm w-full">
                 <h2 className="text-2xl font-bold mb-6 text-center">Login to JobSnap</h2>
                 <form onSubmit={handleLogin}>
                     <div className="mb-4">
@@ -113,4 +87,6 @@ export default function LoginPage() {
             </div>
         </div>
     );
+
+
 }

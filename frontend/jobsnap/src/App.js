@@ -7,6 +7,7 @@ import About from './pages/About';
 import Features from './pages/Features';
 import LogIn from "./pages/LogIn";
 import SignUp from "./pages/SignUp";
+import CVBuilder from "./pages/CVBuilder";
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                     <Route path="/features" element={<Features />} />
                     <Route path="/login" element={<LogIn />} />
                     <Route path="/signup" element={<SignUp />} />
+                    <Route path="/start" element={<CVBuilder />} />
 
                 </Routes>
             </div>
