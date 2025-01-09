@@ -5,16 +5,18 @@ import { Dialog, DialogPanel } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 import icon from '../assets/icon.png';
+import { useAuth } from '../context/AuthContext'; // Importăm contextul de autentificare
 import React from 'react';
+
 const navigation = [
     { name: 'Home', href: '/home' },
     { name: 'About', href: '/about' },
     { name: 'Features', href: '/features' },
-   // { name: 'Log In', href: '/login' },
 ];
 
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const { user, logout } = useAuth(); // Accesăm datele utilizatorului și funcția de logout din context
 
     return (
         <header className="absolute inset-x-0 top-0 z-50">
@@ -47,9 +49,23 @@ export default function Header() {
                     ))}
                 </div>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-                    <Link to="/login" className="text-sm/6 font-semibold text-gray-900">
-                        Log in <span aria-hidden="true">&rarr;</span>
-                    </Link>
+                    {user ? (
+                        <div className="flex items-center gap-4">
+                            <span className="text-sm/6 font-semibold text-gray-900">
+                                Welcome, {user.name || 'User'}!
+                            </span>
+                            <button
+                                onClick={logout}
+                                className="text-sm/6 font-semibold text-red-600 hover:text-red-800"
+                            >
+                                Log out
+                            </button>
+                        </div>
+                    ) : (
+                        <Link to="/login" className="text-sm/6 font-semibold text-gray-900">
+                            Log in <span aria-hidden="true">&rarr;</span>
+                        </Link>
+                    )}
                 </div>
             </nav>
             <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
@@ -87,12 +103,26 @@ export default function Header() {
                                 ))}
                             </div>
                             <div className="py-6">
-                                <Link
-                                    to="/login"
-                                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
-                                >
-                                    Log in
-                                </Link>
+                                {user ? (
+                                    <div className="space-y-4">
+                                        <span className="block text-sm/6 font-semibold text-gray-900">
+                                            Welcome, {user.name || 'User'}!
+                                        </span>
+                                        <button
+                                            onClick={logout}
+                                            className="block w-full rounded-lg bg-red-600 px-3 py-2 text-center text-sm/6 font-semibold text-white hover:bg-red-700"
+                                        >
+                                            Log out
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <Link
+                                        to="/login"
+                                        className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
+                                    >
+                                        Log in
+                                    </Link>
+                                )}
                             </div>
                         </div>
                     </div>

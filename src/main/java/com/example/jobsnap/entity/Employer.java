@@ -75,7 +75,7 @@ public class Employer {
     public static void main(String[] args) {
         // Create an employer
         Employer employer = new Employer(1, "John Doe", "TechCorp", "employer@example.com", "securepassword");
-
+       // Employer employer = new Employer(2, "Johna Doe", "Microsoft", "johnado@microsoft.com", "employerpass");
         // Insert the employer into the database
         try {
             insertEmployerIntoDatabase(employer);
@@ -89,8 +89,8 @@ public class Employer {
     public static void insertEmployerIntoDatabase(Employer employer) throws SQLException {
         // Database connection configuration
         String url = "jdbc:oracle:thin:@localhost:1521:xe";
-        String user = "c##ana"; // Replace with your database user
-        String password = "password"; // Replace with your database password
+        String user = "C##letitia"; // Replace with your database user
+        String password = "parola26"; // Replace with your database password
 
         // SQL query
         String sql = "INSERT INTO employer (id, name, company_name, email, password) VALUES (?, ?, ?, ?, ?)";

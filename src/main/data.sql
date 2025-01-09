@@ -10,6 +10,9 @@ CREATE TABLE employer (
 INSERT INTO employer (id, name, company_name, email, password)
 VALUES (1, 'John Doe', 'TechCorp', 'johndoe@techcorp.com', 'employerpassword');
 
+INSERT INTO employer (id, name, company_name, email, password)
+VALUES (2, 'Johna Doe', 'Microsoft', 'johnado@microsoft.com', 'employerpass');
+
 select * from employer;
 
 commit;
