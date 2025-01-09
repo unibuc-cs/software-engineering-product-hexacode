@@ -1,4 +1,4 @@
-package service;
+package com.example.jobsnap.service;
 
 import com.example.jobsnap.entity.CVTemplate;
 import org.springframework.stereotype.Service;

@@ -1,10 +1,7 @@
-// package com.example.jobsnap.controller;
-
-// CONTROLLER PENTRU STUDENT
-package controller;
+package com.example.jobsnap.controller;
 
 import com.example.jobsnap.entity.Student;
-import service.StudentService;
+import com.example.jobsnap.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,35 +16,40 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
+    // Get all students
     @GetMapping
     public List<Student> getAllStudents() {
         return studentService.getAllStudents();
     }
 
+    // Get a student by ID
     @GetMapping("/{id}")
     public ResponseEntity<Student> getStudentById(@PathVariable Long id) {
         Optional<Student> student = studentService.getStudentById(id);
         return student.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    // Create a new student
     @PostMapping
     public Student createStudent(@RequestBody Student student) {
-        return (Student) studentService.saveStudent(student);
+        return studentService.saveStudent(student);
     }
 
+    // Update an existing student
     @PutMapping("/{id}")
     public ResponseEntity<Student> updateStudent(@PathVariable Long id, @RequestBody Student updatedStudent) {
         Optional<Student> studentOptional = studentService.getStudentById(id);
         if (studentOptional.isPresent()) {
             Student student = studentOptional.get();
-            student.setNume(updatedStudent.getNume());
-            student.setAni(updatedStudent.getAni());
-            return ResponseEntity.ok((Student) studentService.saveStudent(student));
+            student.setEmail(updatedStudent.getEmail());
+            student.setPassword(updatedStudent.getPassword());
+            return ResponseEntity.ok(studentService.saveStudent(student));
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
+    // Delete a student by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
         if (studentService.getStudentById(id).isPresent()) {

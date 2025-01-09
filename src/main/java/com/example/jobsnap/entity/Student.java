@@ -1,34 +1,62 @@
 package com.example.jobsnap.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 // Clasa Student
+@Entity
 public class Student {
-    private String nume;
-    private int ani;
+    @Id
+    private int id;
+    private String email;
+    private String password;
 
     // Constructor
-    public Student(String nume, int ani) {
-        this.nume = nume;
-        this.ani = ani;
+    public Student(int id, String email, String password) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+    }
+
+    public Student() {
+
     }
 
     // Getters
-    public String getNume() {
-        return nume;
+    public int getId() {
+        return id;
     }
 
-    public int getAni() {
-        return ani;
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    // Setters
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     // Metoda principală pentru testare
     public static void main(String[] args) {
         // Creează un student
-        Student student = new Student("Ion Popescu", 21);
+        Student student = new Student(1, "student@example.com", "securepassword");
 
         // Inserează studentul în baza de date
         try {
@@ -42,30 +70,26 @@ public class Student {
     // Metoda pentru inserarea studentului în baza de date
     public static void insertStudentIntoDatabase(Student student) throws SQLException {
         // Configurare conexiune baza de date
-        //va puneti iar datele de la baza voastra de date (din -> application.properties)
         String url = "jdbc:oracle:thin:@localhost:1521:xe";
-        String user = "";
-        String password = "";
+        String user = "c##ana"; // Introduceți utilizatorul bazei de date
+        String password = "password"; // Introduceți parola bazei de date
 
         // Query-ul SQL
-        String sql = "INSERT INTO student (nume, ani) VALUES (?, ?)";
+        String sql = "INSERT INTO student (id, email, password) VALUES (?, ?, ?)";
 
         // Conectează-te și inserează datele
         try (Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             // Setează valorile parametrilor
-            preparedStatement.setString(1, student.getNume());
-            preparedStatement.setInt(2, student.getAni());
+            preparedStatement.setInt(1, student.getId());
+            preparedStatement.setString(2, student.getEmail());
+            preparedStatement.setString(3, student.getPassword());
 
             // Execută comanda
             preparedStatement.executeUpdate();
         }
     }
 
-    public void setAni(int ani) {
-    }
 
-    public void setNume(String nume) {
-    }
 }

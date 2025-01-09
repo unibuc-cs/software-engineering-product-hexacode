@@ -1,9 +1,9 @@
 
 // CONTROLLER PENTRU JobRole
-package controller;
+package com.example.jobsnap.controller;
 
 import com.example.jobsnap.entity.JobRole;
-import service.JobRoleService;
+import com.example.jobsnap.service.JobRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
