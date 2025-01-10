@@ -13,6 +13,18 @@ VALUES (1, 'John Doe', 'TechCorp', 'johndoe@techcorp.com', 'employerpassword');
 INSERT INTO employer (id, name, company_name, email, password)
 VALUES (2, 'Johna Doe', 'Microsoft', 'johnado@microsoft.com', 'employerpass');
 
+CREATE TABLE users (
+                      id INT PRIMARY KEY,             -- User ID as primary key
+                      email VARCHAR(255) NOT NULL      -- Email as a shared field across all user types
+);
+
+
+INSERT INTO users (id, email)
+VALUES (1, 'johndoe@techcorp.com');
+
 select * from employer;
+
+INSERT INTO profile (first_name, last_name, bio, contact_info, user_id)
+VALUES ('John', 'Doe', 'Employer at TechCorp', 'johndoe@techcorp.com', 1);
 
 commit;
