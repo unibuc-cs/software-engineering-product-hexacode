@@ -51,9 +51,10 @@ export default function Header() {
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
                     {user ? (
                         <div className="flex items-center gap-4">
-                            <span className="text-sm/6 font-semibold text-gray-900">
+                            <Link to="/profile" className="text-sm/6 font-semibold text-gray-900 hover:underline">
                                 Welcome, {user.name || 'User'}!
-                            </span>
+                            </Link>
+
                             <button
                                 onClick={logout}
                                 className="text-sm/6 font-semibold text-red-600 hover:text-red-800"

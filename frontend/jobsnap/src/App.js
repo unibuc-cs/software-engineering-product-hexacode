@@ -8,6 +8,8 @@ import Features from './pages/Features';
 import LogIn from "./pages/LogIn";
 import SignUp from "./pages/SignUp";
 import CVBuilder from "./pages/CVBuilder";
+import Profile from './pages/Profile';
+
 
 function App() {
     return (
@@ -23,6 +25,7 @@ function App() {
                     <Route path="/login" element={<LogIn />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/start" element={<CVBuilder />} />
+                    <Route path="/profile" element={<Profile />} />
 
                 </Routes>
             </div>

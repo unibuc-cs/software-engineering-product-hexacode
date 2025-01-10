@@ -8,7 +8,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 @Entity
-public class Employer {
+public class Employer extends User {
     @Id
     private int id;
     private String name;

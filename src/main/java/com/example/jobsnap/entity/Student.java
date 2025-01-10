@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 // Clasa Student
 @Entity
-public class Student {
+public class Student extends User {
     @Id
     private int id;
     private String email;
