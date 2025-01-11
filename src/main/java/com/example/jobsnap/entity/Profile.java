@@ -1,5 +1,7 @@
 package com.example.jobsnap.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
@@ -20,7 +22,8 @@ public class Profile {
 
     @OneToOne
     @MapsId  // This will map Profile's id to User's id
-    @JoinColumn(name = "user_id") // Foreign key to User
+    @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties({"user"})
     private User user; // This could be either Student or Employer
 
     public Profile() {

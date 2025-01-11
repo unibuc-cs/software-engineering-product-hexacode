@@ -17,7 +17,23 @@ public class ProfileService {
     }
 
     public Profile updateProfile(int id, Profile updatedProfile) {
-        updatedProfile.setId(id);
-        return profileRepository.save(updatedProfile); // Save updated profile
+        // Fetch the existing profile
+        Profile existingProfile = profileRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Profile not found"));
+
+        // Update fields
+        existingProfile.setFirstName(updatedProfile.getFirstName());
+        existingProfile.setLastName(updatedProfile.getLastName());
+        existingProfile.setBio(updatedProfile.getBio());
+        existingProfile.setContactInfo(updatedProfile.getContactInfo());
+
+        // Associate the CV and User if provided
+        if (updatedProfile.getCv() != null) {
+            existingProfile.setCv(updatedProfile.getCv());
+        }
+
+        // Save and return the updated profile
+        return profileRepository.save(existingProfile);
     }
+
 }

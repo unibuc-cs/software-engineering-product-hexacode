@@ -33,7 +33,9 @@ const Profile = () => {
         console.log("Save button clicked"); // Debugging line
         console.log("Updated profile data:", updatedProfile); // Debugging line to check the data being sent
         try {
-            const response = await axios.put(`http://localhost:8080/profile/${userId}`, updatedProfile);
+            const { user, ...profileWithoutUser } = updatedProfile;
+            const response=await axios.put(`http://localhost:8080/profile/${userId}`, profileWithoutUser);
+
             console.log("Profile updated successfully", response.data); // Log response data
             setProfile(response.data);
             setIsEditing(false); // Exit edit mode

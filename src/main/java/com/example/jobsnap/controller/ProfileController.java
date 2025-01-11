@@ -3,6 +3,7 @@ package com.example.jobsnap.controller;
 import com.example.jobsnap.service.ProfileService;
 import com.example.jobsnap.entity.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,17 @@ public class ProfileController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Profile> updateProfile(@PathVariable int id, @RequestBody Profile updatedProfile) {
-        Profile profile = profileService.updateProfile(id, updatedProfile);
-        return ResponseEntity.ok(profile);
+        System.out.println("Update endpoint called for ID: " + id);
+        System.out.println("Request payload: " + updatedProfile);
+        try {
+            Profile profile = profileService.updateProfile(id, updatedProfile);
+            System.out.println("Updated profile: " + profile);
+            return ResponseEntity.ok(profile);
+        } catch (Exception e) {
+            System.out.println("Exception occurred while updating profile:");
+            e.printStackTrace(); // Log the full error to the server console
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
+
 }
