@@ -6,9 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Clasa AuthController gestionează autentificarea utilizatorilor.
+ * Prin adnotarea @CrossOrigin, permitem cereri de la http://localhost:3000.
+ * În funcție de nevoile tale, poți adăuga sau restrânge atributele (e.g. methods, allowedHeaders).
+ */
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(
+        origins = "http://localhost:3000",
+        methods = { RequestMethod.POST, RequestMethod.OPTIONS },
+        allowedHeaders = "*",
+        maxAge = 3600
+)
 public class AuthController {
 
     @Autowired
@@ -16,7 +26,6 @@ public class AuthController {
 
     /**
      * Endpoint pentru autentificare.
-     *
      * @param loginRequest Obiectul care conține email-ul, parola și rolul utilizatorului.
      * @return Un răspuns cu token-ul și datele utilizatorului dacă autentificarea reușește.
      */
@@ -34,7 +43,7 @@ public class AuthController {
             return ResponseEntity.ok().body(loginResponse);
 
         } catch (RuntimeException e) {
-            // Returnăm un mesaj de eroare dacă autentificarea eșuează
+            // Returnăm un mesaj de eroare dacă autentificarea eșuează (ex: user inexistent sau parolă greșită)
             return ResponseEntity.status(401).body(new ErrorResponse("Invalid credentials or role"));
         }
     }

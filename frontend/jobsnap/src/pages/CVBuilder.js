@@ -1,5 +1,7 @@
 'use client';
 import React, { useState } from 'react';
+import CVTemplate from '../components/CVTemplate';
+import html2pdf from 'html2pdf.js'; // Importăm biblioteca pentru export PDF
 
 export default function CVBuilder() {
     const [formData, setFormData] = useState({
@@ -18,31 +20,25 @@ export default function CVBuilder() {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Form data submitted:', formData);
+    const handleDownloadPDF = () => {
+        const element = document.getElementById('cv-preview'); // Selectăm div-ul pentru export
+        const options = {
+            filename: `${formData.fullName || 'My-CV'}.pdf`, // Numele fișierului descărcat
+            jsPDF: { unit: 'pt', format: 'a4' }, // Setăm formatul paginii
+        };
+
+        html2pdf().set(options).from(element).save();
     };
 
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
-            <h1 className="text-4xl mt-20 font-extrabold text-gray-900 mb-4">
-                Start Building Your CV
-            </h1>
-            <p className="text-lg text-gray-600 mb-8">
-                Fill in the details below to generate your perfect CV.
-            </p>
+            <h1 className="text-4xl font-extrabold text-gray-900 mb-8">Start Building Your CV</h1>
 
             <div className="flex flex-col lg:flex-row gap-8 w-full max-w-7xl">
                 {/* Form Section */}
-                <form
-                    onSubmit={handleSubmit}
-                    className="bg-white shadow-lg rounded-lg p-6 w-full lg:w-1/2 space-y-6"
-                >
-                    {/* Full Name */}
+                <form className="bg-white shadow-lg rounded-lg p-6 w-full lg:w-1/2 space-y-6">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Full Name
-                        </label>
+                        <label className="block text-sm font-medium text-gray-700">Full Name</label>
                         <input
                             type="text"
                             name="fullName"
@@ -50,15 +46,10 @@ export default function CVBuilder() {
                             onChange={handleChange}
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                             placeholder="John Doe"
-                            required
                         />
                     </div>
-
-                    {/* Email */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Email Address
-                        </label>
+                        <label className="block text-sm font-medium text-gray-700">Email</label>
                         <input
                             type="email"
                             name="email"
@@ -66,46 +57,32 @@ export default function CVBuilder() {
                             onChange={handleChange}
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                             placeholder="example@email.com"
-                            required
                         />
                     </div>
-
-                    {/* Phone */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Phone Number
-                        </label>
+                        <label className="block text-sm font-medium text-gray-700">Phone</label>
                         <input
                             type="tel"
                             name="phone"
                             value={formData.phone}
                             onChange={handleChange}
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            placeholder="+1 234 567 890"
-                            required
+                            placeholder="+123 456 7890"
                         />
                     </div>
-
-                    {/* Summary */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Summary/About You
-                        </label>
+                        <label className="block text-sm font-medium text-gray-700">Summary</label>
                         <textarea
                             name="summary"
                             value={formData.summary}
                             onChange={handleChange}
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            placeholder="A short introduction about yourself..."
+                            placeholder="Write a brief summary about yourself."
                             rows="3"
                         ></textarea>
                     </div>
-
-                    {/* Skills */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Skills
-                        </label>
+                        <label className="block text-sm font-medium text-gray-700">Skills</label>
                         <textarea
                             name="skills"
                             value={formData.skills}
@@ -115,42 +92,30 @@ export default function CVBuilder() {
                             rows="3"
                         ></textarea>
                     </div>
-
-                    {/* Work Experience */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Work Experience
-                        </label>
+                        <label className="block text-sm font-medium text-gray-700">Work Experience</label>
                         <textarea
                             name="experience"
                             value={formData.experience}
                             onChange={handleChange}
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            placeholder="Describe your previous job roles, achievements, and responsibilities..."
+                            placeholder="Describe your work experience here."
                             rows="4"
                         ></textarea>
                     </div>
-
-                    {/* Education */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Education
-                        </label>
+                        <label className="block text-sm font-medium text-gray-700">Education</label>
                         <textarea
                             name="education"
                             value={formData.education}
                             onChange={handleChange}
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            placeholder="e.g., Bachelor of Computer Science, XYZ University, 2020"
+                            placeholder="Add your educational background here."
                             rows="3"
                         ></textarea>
                     </div>
-
-                    {/* References */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            References (Optional)
-                        </label>
+                        <label className="block text-sm font-medium text-gray-700">References (Optional)</label>
                         <textarea
                             name="references"
                             value={formData.references}
@@ -160,33 +125,21 @@ export default function CVBuilder() {
                             rows="3"
                         ></textarea>
                     </div>
-
-                    {/* Submit Button */}
-                    <button
-                        type="submit"
-                        className="w-full bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700"
-                    >
-                        Save and Preview
-                    </button>
                 </form>
 
                 {/* Preview Section */}
-                <div className="bg-white shadow-lg rounded-lg p-6 w-full lg:w-1/2">
-                    <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-                        CV Preview
-                    </h2>
-                    <div className="space-y-4">
-                        <p><strong>Full Name:</strong> {formData.fullName}</p>
-                        <p><strong>Email:</strong> {formData.email}</p>
-                        <p><strong>Phone:</strong> {formData.phone}</p>
-                        <p><strong>Summary:</strong> {formData.summary}</p>
-                        <p><strong>Skills:</strong> {formData.skills}</p>
-                        <p><strong>Work Experience:</strong> {formData.experience}</p>
-                        <p><strong>Education:</strong> {formData.education}</p>
-                        <p><strong>References:</strong> {formData.references}</p>
-                    </div>
+                <div id="cv-preview" className="bg-white shadow-lg rounded-lg p-6 w-full lg:w-1/2">
+                    <CVTemplate formData={formData} />
                 </div>
             </div>
+
+            {/* Download PDF Button */}
+            <button
+                onClick={handleDownloadPDF}
+                className="mt-8 bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700"
+            >
+                Download CV as PDF
+            </button>
         </div>
     );
 }

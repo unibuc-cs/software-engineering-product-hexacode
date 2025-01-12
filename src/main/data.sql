@@ -22,9 +22,10 @@ CREATE TABLE users (
 INSERT INTO users (id, email)
 VALUES (1, 'johndoe@techcorp.com');
 
+
 select * from employer;
 
-INSERT INTO profile (first_name, last_name, bio, contact_info, user_id)
-VALUES ('John', 'Doe', 'Employer at TechCorp', 'johndoe@techcorp.com', 1);
+INSERT INTO profile (user_id, bio,  contact_info, first_name, last_name)
+VALUES (1,'Employer at TechCorp','johndoe@techcorp.com','John', 'Doe');
 
 commit;
