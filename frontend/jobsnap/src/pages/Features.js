@@ -1,9 +1,13 @@
 import React from 'react';
+import Features_Section from "../components/Features_Section";
+import FAQs from "../components/FAQs";
 
 function Features() {
     return (
         <div>
-            <h1>Features</h1>
+            <Features_Section></Features_Section>
+            <FAQs></FAQs>
+
 
         </div>
     );

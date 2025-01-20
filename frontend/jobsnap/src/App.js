@@ -9,6 +9,7 @@ import LogIn from "./pages/LogIn";
 import SignUp from "./pages/SignUp";
 import CVBuilder from "./pages/CVBuilder";
 import Profile from './pages/Profile';
+import Cv_jobtypes from './pages/Cv_jobtypes';
 
 
 function App() {
@@ -24,8 +25,9 @@ function App() {
                     <Route path="/features" element={<Features />} />
                     <Route path="/login" element={<LogIn />} />
                     <Route path="/signup" element={<SignUp />} />
-                    <Route path="/start" element={<CVBuilder />} />
+                    <Route path="/start" element={<Cv_jobtypes />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/create-cv/it" element={<CVBuilder/>} />
 
                 </Routes>
             </div>

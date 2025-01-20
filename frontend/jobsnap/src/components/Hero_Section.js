@@ -32,7 +32,7 @@ export default function HeroSection() {
                         >
                             Get started
                         </Link>
-                        <Link to="/learn-more" className="text-sm/6 font-semibold text-gray-900">
+                        <Link to="/features" className="text-sm/6 font-semibold text-gray-900">
                             Learn more <span aria-hidden="true">→</span>
                         </Link>
                     </div>

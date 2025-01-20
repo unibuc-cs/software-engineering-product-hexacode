@@ -39,7 +39,7 @@ public class AuthService {
             if (studentOptional.isPresent() && studentOptional.get().getPassword().equals(password)) {
                 Student student = studentOptional.get();
                 String token = createToken(student.getEmail(), "student");
-                return new LoginResponse(token, student.getId(), student.getName(), student.getEmail());
+                return new LoginResponse(token, student.getId(), "Student", student.getEmail());  // Use "Student" as a placeholder
             }
         } else if ("employer".equalsIgnoreCase(role)) {
             Optional<Employer> employerOptional = employerRepository.findByEmail(email);
@@ -52,6 +52,7 @@ public class AuthService {
 
         throw new RuntimeException("Invalid credentials or role");
     }
+
 
     /**
      * Handles login for students.
@@ -73,7 +74,7 @@ public class AuthService {
 
         System.out.println("Student login successful for email: " + email);
         String token = createToken(student.getEmail(), "student");
-        return new LoginResponse(token, student.getId(), student.getName(), student.getEmail());
+        return new LoginResponse(token, student.getId(), "", student.getEmail());  // Return empty string for name
     }
 
     /**
