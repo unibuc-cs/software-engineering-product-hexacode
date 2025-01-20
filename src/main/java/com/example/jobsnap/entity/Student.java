@@ -56,7 +56,7 @@ public class Student extends User {
     // Metoda principală pentru testare
     public static void main(String[] args) {
         // Creează un student
-        Student student = new Student(1, "student@example.com", "securepassword");
+        Student student = new Student(1, "student1@microsoft.com", "student1");
 
         // Inserează studentul în baza de date
         try {
@@ -71,8 +71,8 @@ public class Student extends User {
     public static void insertStudentIntoDatabase(Student student) throws SQLException {
         // Configurare conexiune baza de date
         String url = "jdbc:oracle:thin:@localhost:1521:xe";
-        String user = "c##ana"; // Introduceți utilizatorul bazei de date
-        String password = "password"; // Introduceți parola bazei de date
+        String user = "c##letitia"; // Introduceți utilizatorul bazei de date
+        String password = "parola26"; // Introduceți parola bazei de date
 
         // Query-ul SQL
         String sql = "INSERT INTO student (id, email, password) VALUES (?, ?, ?)";

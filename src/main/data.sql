@@ -22,10 +22,37 @@ CREATE TABLE users (
 INSERT INTO users (id, email)
 VALUES (1, 'johndoe@techcorp.com');
 
+INSERT INTO users (id, email)
+VALUES (2, 'student1@microsoft.com');
 
+INSERT INTO users (id, email)
+VALUES (3, 'johnado@microsoft.com');
+
+select * from users;
 select * from employer;
+
+SELECT * FROM employer WHERE email = 'johnado@microsoft.com';
+
+
+DELETE FROM users WHERE id = 3;
 
 INSERT INTO profile (user_id, bio,  contact_info, first_name, last_name)
 VALUES (1,'Employer at TechCorp','johndoe@techcorp.com','John', 'Doe');
+
+
+INSERT INTO profile (user_id, bio,  contact_info, first_name, last_name)
+VALUES (2,'Student','student1@microsoft.com','Marius', 'Marian');
+
+INSERT INTO profile (user_id, bio,  contact_info, first_name, last_name)
+VALUES (3,'Employer at TechCorp','johnado@microsoft.com','Johna', 'Do');
+
+select * from profile;
+INSERT INTO student (id,email, password)
+VALUES (1, 'student1@microsoft.com', 'student1');
+
+select * from student;
+
+SELECT * FROM student WHERE email = 'student1@microsoft.com';
+
 
 commit;

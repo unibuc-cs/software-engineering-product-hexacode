@@ -11,7 +11,7 @@ export default function LoginPage() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('employer'); // Default to 'employer' for testing
+    const [role, setRole] = useState('student'); // Default to 'employer' for testing
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleLogin = async (e) => {
