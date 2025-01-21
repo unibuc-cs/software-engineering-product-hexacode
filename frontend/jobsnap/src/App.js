@@ -27,7 +27,7 @@ function App() {
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/start" element={<Cv_jobtypes />} />
                     <Route path="/profile" element={<Profile />} />
-                    <Route path="/create-cv/it" element={<CVBuilder/>} />
+                    <Route path="/create-cv/:cvType" element={<CVBuilder />} />
 
                 </Routes>
             </div>

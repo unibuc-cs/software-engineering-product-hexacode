@@ -7,10 +7,9 @@ export default function CVSelectionPage() {
         { name: 'IT/Software Development', path: '/create-cv/it', description: 'Create a tech-focused CV for software development roles.' },
         { name: 'Business/Economics', path: '/create-cv/business', description: 'Tailor your CV for business and economic positions.' },
         { name: 'Marketing', path: '/create-cv/marketing', description: 'Build a CV that highlights your marketing expertise.' },
-        { name: 'Graphic Design', path: '/create-cv/graphic-design', description: 'Showcase your creativity with a design-specific CV.' },
+        { name: 'Graphic Design', path: '/create-cv/graphicdesign', description: 'Showcase your creativity with a design-specific CV.' },
         { name: 'Healthcare', path: '/create-cv/healthcare', description: 'Craft a CV for healthcare professionals and providers.' },
         { name: 'Education (Teacher)', path: '/create-cv/education', description: 'Design your CV for teaching and educational roles.' },
-        { name: 'Finance', path: '/create-cv/finance', description: 'Create a financial CV that gets noticed in the finance industry.' },
     ];
 
     return (
