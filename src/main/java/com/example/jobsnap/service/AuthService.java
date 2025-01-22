@@ -9,12 +9,16 @@ import org.springframework.stereotype.Service;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.SecretKey;
 import java.util.Optional;
 
 @Service
 public class AuthService {
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
 
     @Autowired
     private StudentRepository studentRepository;
@@ -34,70 +38,32 @@ public class AuthService {
      * @return a LoginResponse object containing a JWT token and user details
      */
     public LoginResponse login(String email, String password, String role) {
+        logger.info("Attempting login for email: {}", email);
+
         if ("student".equalsIgnoreCase(role)) {
             Optional<Student> studentOptional = studentRepository.findByEmail(email);
             if (studentOptional.isPresent() && studentOptional.get().getPassword().equals(password)) {
                 Student student = studentOptional.get();
                 String token = createToken(student.getEmail(), "student");
-                return new LoginResponse(token, student.getId(), "Student", student.getEmail());  // Use "Student" as a placeholder
+                logger.info("Login successful for student: {}", student.getEmail());
+                return new LoginResponse(token, student.getId(), "Student", student.getEmail());
+            } else {
+                logger.warn("Student login failed for email: {}", email);
             }
         } else if ("employer".equalsIgnoreCase(role)) {
             Optional<Employer> employerOptional = employerRepository.findByEmail(email);
             if (employerOptional.isPresent() && employerOptional.get().getPassword().equals(password)) {
                 Employer employer = employerOptional.get();
                 String token = createToken(employer.getEmail(), "employer");
+                logger.info("Login successful for employer: {}", employer.getEmail());
                 return new LoginResponse(token, employer.getId(), employer.getName(), employer.getEmail());
+            } else {
+                logger.warn("Employer login failed for email: {}", email);
             }
         }
 
+        logger.error("Invalid credentials or role for email: {}", email);
         throw new RuntimeException("Invalid credentials or role");
-    }
-
-
-    /**
-     * Handles login for students.
-     */
-    private LoginResponse handleStudentLogin(String email, String password) {
-        Optional<Student> studentOptional = studentRepository.findByEmail(email);
-
-        if (studentOptional.isEmpty()) {
-            System.out.println("No student found with email: " + email);
-            throw new RuntimeException("Invalid email or password");
-        }
-
-        Student student = studentOptional.get();
-
-        if (!student.getPassword().equals(password)) {
-            System.out.println("Invalid password for email: " + email);
-            throw new RuntimeException("Invalid email or password");
-        }
-
-        System.out.println("Student login successful for email: " + email);
-        String token = createToken(student.getEmail(), "student");
-        return new LoginResponse(token, student.getId(), "", student.getEmail());  // Return empty string for name
-    }
-
-    /**
-     * Handles login for employers.
-     */
-    private LoginResponse handleEmployerLogin(String email, String password) {
-        Optional<Employer> employerOptional = employerRepository.findByEmail(email);
-
-        if (employerOptional.isEmpty()) {
-            System.out.println("No employer found with email: " + email);
-            throw new RuntimeException("Invalid email or password");
-        }
-
-        Employer employer = employerOptional.get();
-
-        if (!employer.getPassword().equals(password)) {
-            System.out.println("Invalid password for email: " + email);
-            throw new RuntimeException("Invalid email or password");
-        }
-
-        System.out.println("Employer login successful for email: " + email);
-        String token = createToken(employer.getEmail(), "employer");
-        return new LoginResponse(token, employer.getId(), employer.getName(), employer.getEmail());
     }
 
     /**
@@ -108,6 +74,7 @@ public class AuthService {
      * @return a signed JWT token
      */
     private String createToken(String email, String role) {
+        logger.debug("Creating token for email: {}, role: {}", email, role);
         return Jwts.builder()
                 .setSubject(email)
                 .claim("role", role)
@@ -131,7 +98,7 @@ public class AuthService {
             this.email = email;
         }
 
-        // Getters și Setters
+        // Getters and Setters
         public String getToken() {
             return token;
         }
@@ -164,5 +131,4 @@ public class AuthService {
             this.email = email;
         }
     }
-
 }

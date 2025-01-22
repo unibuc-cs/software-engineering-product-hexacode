@@ -1,8 +1,13 @@
 package com.example.jobsnap.entity;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
+@Entity
 public class CVTemplate implements Cloneable {
     private String name;
     private String templateData;
+    @Id
+    private Long id;
 
     // Constructori, getters și setters
 
@@ -26,5 +31,13 @@ public class CVTemplate implements Cloneable {
 
     public void setTemplateData(String templateData) {
         this.templateData = templateData;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

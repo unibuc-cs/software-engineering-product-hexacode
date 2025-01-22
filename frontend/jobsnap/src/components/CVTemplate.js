@@ -1,5 +1,6 @@
 import React from "react";
 
+
 export default function CVTemplate({ formData, image, cvType }) {
     return (
         <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-2xl mx-auto">
