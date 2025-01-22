@@ -1,13 +1,17 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'; // Pentru a prelua ruta curentă
+import { useParams, useNavigate } from 'react-router-dom'; // adaugă useNavigate pentru redirecționare
 import CVTemplate from '../components/CVTemplate';
 import html2pdf from 'html2pdf.js'; // Importăm biblioteca pentru export PDF
+import axios from 'axios'; // Pentru interacțiuni cu backend-ul
+import { useAuth } from '../context/AuthContext'; // Pentru a obține user_id din context
 
 export default function CVBuilder() {
     const { cvType } = useParams();  // Preluăm tipul de CV din ruta curentă
+    const { user } = useAuth(); // Obținem user-ul din contextul de autentificare
+    const navigate = useNavigate(); // Folosim useNavigate pentru redirecționare după salvare
 
-    console.log("CV Type:", cvType);  // Verifică în consola browser-ului dacă preiei corect tipul de CV
+    // console.log("CV Type:", cvType);  // Verifică în consola browser-ului dacă preiei corect tipul de CV
 
     // Configurarea câmpurilor pe baza tipului de CV
     const cvFields = {
@@ -88,7 +92,6 @@ export default function CVBuilder() {
         ],
     };
 
-
     const [formData, setFormData] = useState({});
     const [image, setImage] = useState(null);
 
@@ -104,6 +107,15 @@ export default function CVBuilder() {
         } else {
             console.log('Invalid cvType:', cvType);  // Verifică dacă există tipul de CV
         }
+
+        // Încarcă datele salvate la profil
+        axios.get('http://localhost:8080/api/cv-templates')
+            .then(response => {
+                setFormData(response.data); // Salvează datele în starea componentelor
+            })
+            .catch(error => {
+                console.error('Error loading CV data:', error);
+            });
     }, [cvType]);
 
     const handleChange = (e) => {
@@ -121,6 +133,69 @@ export default function CVBuilder() {
             reader.readAsDataURL(file);
         }
     };
+
+    // const handleSaveCV = () => {
+    //     const cvData = { ...formData, userId: user.id }; // Adăugăm userId
+    //     console.log(cvData)
+    //     // Verifică dacă există o imagine
+    //     if (image) {
+    //         cvData.image = image; // Adăugăm imaginea
+    //     }
+    //
+    //     fetch('http://localhost:8080/api/cv-templates', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify(cvData),
+    //     })
+    //         .then(response => {
+    //             if (!response.ok) {
+    //                 throw new Error('Error saving CV');
+    //             }
+    //             return response.json();
+    //         })
+    //         .then(data => {
+    //             console.log('CV saved:', data);
+    //             navigate('/profile'); // Redirecționează utilizatorul după salvare
+    //         })
+    //         .catch(error => {
+    //             console.error('Error:', error);
+    //         });
+    // };
+
+    const handleSaveCV = async () => {
+        const cvData = {
+            fullName: formData.fullName || '',   // Adding fallback for empty values
+            email: formData.email || '',
+            phone: formData.phone || '',
+            education: formData.education || '',
+            experience: formData.experience || '',
+            skills: formData.skills || '',
+            achievements: formData.achievements || '',
+            projects: formData.projects || '',
+            userId: user.id, // Make sure user.id is correct
+        };
+
+        console.log('Form Data before sending:', cvData);
+
+        try {
+            const response = await axios.post('http://localhost:8080/api/cv', cvData, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            alert('CV a fost adaugat cu succes');
+        } catch (error) {
+            console.error("Error adding cv:", error);
+            alert('A apărut o eroare la adaugarea cvului.');
+        }
+
+    };
+
+
+
+
 
     const handleDownloadPDF = () => {
         const element = document.getElementById('cv-preview');
@@ -187,10 +262,18 @@ export default function CVBuilder() {
                 </div>
             </div>
 
+            {/* Save CV Button */}
+            <button
+                onClick={handleSaveCV}
+                className="mt-8 bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700"
+            >
+                Save CV
+            </button>
+
             {/* Download PDF Button */}
             <button
                 onClick={handleDownloadPDF}
-                className="mt-8 bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700"
+                className="mt-4 bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700"
             >
                 Download CV as PDF
             </button>

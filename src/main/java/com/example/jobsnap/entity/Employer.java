@@ -75,10 +75,16 @@ public class Employer extends User {
     public static void main(String[] args) {
         // Create an employer
         Employer employer = new Employer(1, "John Doe", "TechCorp", "employer@example.com", "securepassword");
-       // Employer employer = new Employer(2, "Johna Doe", "Microsoft", "johnado@microsoft.com", "employerpass");
+        Employer employer2 = new Employer(2, "Costel Cost ", "Microsoft", "costelxx@techcorp.com", "employerpass");
+        Employer employer3 = new Employer(11, "Vasile Vas ", "Log", "vasilevas@log.com", "employerpass");
+
+
         // Insert the employer into the database
         try {
             insertEmployerIntoDatabase(employer);
+            insertEmployerIntoDatabase(employer2);
+            insertEmployerIntoDatabase(employer3);
+
             System.out.println("Employer inserted successfully!");
         } catch (SQLException e) {
             System.out.println("Error inserting employer: " + e.getMessage());

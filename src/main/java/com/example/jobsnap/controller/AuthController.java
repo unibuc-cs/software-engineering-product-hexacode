@@ -43,6 +43,7 @@ public class AuthController {
             return ResponseEntity.ok().body(loginResponse);
 
         } catch (RuntimeException e) {
+
             // Returnăm un mesaj de eroare dacă autentificarea eșuează (ex: user inexistent sau parolă greșită)
             return ResponseEntity.status(401).body(new ErrorResponse("Invalid credentials or role"));
         }
