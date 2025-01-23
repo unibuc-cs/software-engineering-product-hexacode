@@ -46,21 +46,6 @@ export default function CVTemplate({ formData, image, cvType }) {
                         {formData.degree || "e.g., Bachelor of Marketing"}
                     </p>
 
-                    <h2 className="mt-6 text-xl font-semibold text-gray-900">Institution</h2>
-                    <p className="text-gray-700">
-                        {formData.institution || "e.g., XYZ University"}
-                    </p>
-
-                    <h2 className="mt-6 text-xl font-semibold text-gray-900">Graduation Year</h2>
-                    <p className="text-gray-700">
-                        {formData.graduationYear || "e.g., 2021"}
-                    </p>
-
-                    <h2 className="mt-6 text-xl font-semibold text-gray-900">Additional Education</h2>
-                    <p className="text-gray-700">
-                        {formData.additionalEducation || "Any other relevant educational qualifications."}
-                    </p>
-
                     <h2 className="mt-6 text-xl font-semibold text-gray-900">Awards</h2>
                     <p className="text-gray-700">
                         {formData.awards || "e.g., Dean's List, Top Graduate"}
@@ -70,10 +55,10 @@ export default function CVTemplate({ formData, image, cvType }) {
 
             {/* Work Experience */}
             {cvType !== "education" && (
-                <h2 className="mt-6 text-xl font-semibold text-gray-900">Work Experience</h2>
+                <h2 className="mt-6 text-xl font-semibold text-gray-900">Experience</h2>
             )}
             <p className="text-gray-700">
-                {formData.workExperience || "Describe your work experience here."}
+                {formData.experience || "Describe your work experience here."}
             </p>
 
             {/* Render fields based on cvType */}
