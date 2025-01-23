@@ -1,103 +1,177 @@
-/* Container for the entire profile page */
+/* Container principal al profilului */
 .profile-container {
-    max-width: 600px;
-    margin: 100px auto 20px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
 }
 
-/* Title styling */
+/* Titlu al paginii de profil */
 .profile-title {
-    text-align: center;
     font-size: 2rem;
-    color: #333;
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-top: 100px;
+}
+
+/* Detalii despre profil */
+.profile-details {
+    background-color: #f9f9f9;
+    padding: 20px;
+    width: 80%;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-details p {
+    margin-bottom: 10px;
+}
+
+.profile-details button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.profile-details button:hover {
+    opacity: 0.8;
+}
+
+.cv-section {
+    margin-top: 40px;
+    width: 80%;
+    text-align: center;
     margin-bottom: 20px;
 }
 
-/* Form for editing profile */
-.edit-form {
-    display: flex;
-    flex-direction: column;
+/* Mesajul CV-urilor */
+.cv-message {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    font-weight: bold;
 }
 
-.form-label {
-    margin: 10px 0;
-    font-size: 1rem;
-    color: #555;
+/* Lista de CV-uri folosind un grid cu 2 coloane */
+.cv-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 coloane pe toate ecranele */
+    gap: 30px; /* Spațiu între cardurile de CV */
+    margin-top: 20px;
+    padding: 0 20px;
+    justify-items: center; /* Centrează cardurile pe orizontală */
 }
 
-.input-field {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
+/* Cardurile de CV */
+.cv-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: 1px solid #ddd;
-    border-radius: 4px;
+    text-align: left; /* Aliniază textul la stânga */
+    width: auto; /* Permite cardurilor să se ajusteze în funcție de spațiu */
+    max-width: 320px; /* Limitează lățimea maximă a fiecărui card */
+    margin: 0 auto; /* Centrează cardurile pe axa orizontală */
+    margin-top: 20px;
+}
+
+
+/* Marginile între elementele din cardul CV */
+.cv-card p {
+    margin-bottom: 10px;
+}
+
+/* Butoanele din fiecare card de CV */
+.cv-actions {
+    display: flex;
+    margin-top: 20px;
+    padding-left: 10px;
+    gap: 10px;
+    margin-right: 10px;
+
+}
+
+/* Stilizare pentru butoanele din carduri */
+.cv-actions button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    gap: 20px;
+}
+
+.cv-actions button:hover {
+    opacity: 0.8;
+}
+
+/* Formularele de editare */
+.edit-form {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 20px;
+}
+
+.edit-form .form-label {
     font-size: 1rem;
+    font-weight: bold;
     color: #333;
 }
 
-.input-field:focus {
-    border-color: #4CAF50;
-    outline: none;
+.input-field {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 5px;
 }
 
-/* Profile details when not editing */
-.profile-details p {
-    font-size: 1.2rem;
-    margin: 10px 0;
-    color: #444;
-}
-
-/* Button styles */
 .button-group {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
 }
 
-.button {
+button {
     padding: 10px 20px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.save-button {
-    background-color: #4CAF50;
+    display: inline-block;
     color: white;
 }
 
-.save-button:hover {
-    background-color: #45a049;
+button:hover {
+    opacity: 0.9;
 }
 
-.cancel-button {
-    background-color: #f44336;
-    color: white;
+button:focus {
+    outline: none;
 }
 
-.cancel-button:hover {
-    background-color: #e53935;
+/* Media Queries pentru responsive design */
+@media (max-width: 1024px) {
+    .cv-list {
+        grid-template-columns: repeat(2, 1fr); /* 2 coloane pe ecranele mai mici */
+    }
 }
 
-.edit-button {
-    background-color: #2196F3;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 4px;
-}
+@media (max-width: 768px) {
+    .cv-list {
+        grid-template-columns: 1fr; /* 1 coloană pe ecranele mici */
+    }
 
-.edit-button:hover {
-    background-color: #1976D2;
-}
+    .profile-title {
+        font-size: 1.5rem; /* Ajustează dimensiunea titlului */
+    }
 
-/* Loading state */
-.loading {
-    text-align: center;
-    font-size: 1.5rem;
-    color: #666;
+    .profile-details {
+        width: 100%;
+    }
 }

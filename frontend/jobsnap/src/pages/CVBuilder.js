@@ -21,7 +21,7 @@ export default function CVBuilder() {
             { label: "Phone", name: "phone", placeholder: "+123 456 7890" },
             { label: "Summary", name: "summary", placeholder: "Write a brief summary about yourself.", type: "textarea" },
             { label: "Education", name: "education", placeholder: "Add your educational background here.", type: "textarea" },
-            { label: "Work Experience", name: "workExperience", placeholder: "Describe your work experience here.", type: "textarea" },
+            { label: "Experience", name: "experience", placeholder: "Describe your work experience here.", type: "textarea" },
             { label: "Technical Skills", name: "skills", placeholder: "e.g., JavaScript, React, Node.js" },
             { label: "Technologies", name: "technologies", placeholder: "e.g., Python, JavaScript" },
             { label: "Certifications", name: "certifications", placeholder: "e.g., AWS Certified Developer", type: "textarea" },
@@ -33,7 +33,7 @@ export default function CVBuilder() {
             { label: "Phone", name: "phone", placeholder: "+123 456 7890" },
             { label: "Summary", name: "summary", placeholder: "Write a brief summary about yourself.", type: "textarea" },
             { label: "Education", name: "education", placeholder: "Add your educational background here.", type: "textarea" },
-            { label: "Work Experience", name: "workExperience", placeholder: "Describe your work experience here.", type: "textarea" },
+            { label: "Work Experience", name: "experience", placeholder: "Describe your work experience here.", type: "textarea" },
             { label: "Business Skills", name: "skills", placeholder: "e.g., Leadership, Management, Negotiation" },
             { label: "Certifications", name: "certifications", placeholder: "e.g., MBA, PMP", type: "textarea" },
             { label: "Projects", name: "projects", placeholder: "Describe any business-related projects.", type: "textarea" },
@@ -44,7 +44,7 @@ export default function CVBuilder() {
             { label: "Phone", name: "phone", placeholder: "+123 456 7890" },
             { label: "Summary", name: "summary", placeholder: "Write a brief summary about yourself.", type: "textarea" },
             { label: "Education", name: "education", placeholder: "Add your educational background here.", type: "textarea" },
-            { label: "Work Experience", name: "workExperience", placeholder: "Describe your work experience here.", type: "textarea" },
+            { label: "Work Experience", name: "experience", placeholder: "Describe your work experience here.", type: "textarea" },
             { label: "Marketing Skills", name: "skills", placeholder: "e.g., SEO, SEM, Google Ads" },
             { label: "Marketing Tools", name: "tools", placeholder: "e.g., Google Analytics, HubSpot" },
             { label: "Campaign Experience", name: "campaignExperience", placeholder: "Describe your campaign experience here.", type: "textarea" },
@@ -58,7 +58,7 @@ export default function CVBuilder() {
             { label: "Phone", name: "phone", placeholder: "+123 456 7890" },
             { label: "Summary", name: "summary", placeholder: "Write a brief summary about yourself.", type: "textarea" },
             { label: "Education", name: "education", placeholder: "Add your healthcare-related educational background here.", type: "textarea" },
-            { label: "Work Experience", name: "workExperience", placeholder: "Describe your healthcare-related work experience here.", type: "textarea" },
+            { label: "Work Experience", name: "experience", placeholder: "Describe your healthcare-related work experience here.", type: "textarea" },
             { label: "Healthcare Skills", name: "skills", placeholder: "e.g., Patient Care, Medical Coding, Medical Terminology" },
             { label: "Healthcare Tools", name: "tools", placeholder: "e.g., Electronic Health Records (EHR), Medical Billing Software" },
             { label: "Clinical Experience", name: "clinicalExperience", placeholder: "Describe your clinical experience here.", type: "textarea" },
@@ -70,11 +70,8 @@ export default function CVBuilder() {
             { label: "Email", name: "email", placeholder: "example@email.com" },
             { label: "Phone", name: "phone", placeholder: "+123 456 7890" },
             { label: "Summary", name: "summary", placeholder: "Write a brief summary about yourself.", type: "textarea" },
-            { label: "Education", name: "education", placeholder: "Add your healthcare-related educational background here.", type: "textarea" },
+            { label: "Education", name: "education", placeholder: "Add your educational background here.", type: "textarea" },
             { label: "Degree", name: "degree", placeholder: "e.g., Bachelor of Marketing" },
-            { label: "Institution", name: "institution", placeholder: "e.g., XYZ University" },
-            { label: "Graduation Year", name: "graduationYear", placeholder: "e.g., 2021" },
-            { label: "Additional Education", name: "additionalEducation", placeholder: "e.g., Master's in Business Administration", type: "textarea" },
             { label: "Awards", name: "awards", placeholder: "e.g., Dean's List, Top Graduate" },
         ],
         graphicdesign: [
@@ -83,7 +80,7 @@ export default function CVBuilder() {
             { label: "Phone", name: "phone", placeholder: "+123 456 7890" },
             { label: "Summary", name: "summary", placeholder: "Write a brief summary about yourself.", type: "textarea" },
             { label: "Education", name: "education", placeholder: "Add your graphic design-related educational background here.", type: "textarea" },
-            { label: "Work Experience", name: "workExperience", placeholder: "Describe your graphic design-related work experience here.", type: "textarea" },
+            { label: "Work Experience", name: "experience", placeholder: "Describe your graphic design-related work experience here.", type: "textarea" },
             { label: "Design Skills", name: "skills", placeholder: "e.g., Adobe Illustrator, Photoshop, Sketch" },
             { label: "Design Tools", name: "tools", placeholder: "e.g., InDesign, Figma, After Effects" },
             { label: "Portfolio", name: "portfolio", placeholder: "Link to your design portfolio", type: "textarea" },
@@ -166,18 +163,28 @@ export default function CVBuilder() {
 
     const handleSaveCV = async () => {
         const cvData = {
-            fullName: formData.fullName || '',   // Adding fallback for empty values
-            email: formData.email || '',
-            phone: formData.phone || '',
-            education: formData.education || '',
-            experience: formData.experience || '',
-            skills: formData.skills || '',
-            achievements: formData.achievements || '',
-            projects: formData.projects || '',
-            userId: user.id, // Make sure user.id is correct
+            fullName: formData.fullName || 'N/A',  // Dacă este gol, se trimite 'N/A'
+            email: formData.email || 'N/A',
+            phone: formData.phone || 'N/A',
+            summary: formData.summary || 'N/A',
+            education: formData.education || 'N/A',  // Asigură-te că câmpurile nu sunt null
+            experience: formData.experience || 'N/A',
+            skills: formData.skills || 'N/A',
+            technologies: formData.technologies || 'N/A',
+            certifications: formData.certifications || 'N/A',
+            projects: formData.projects || 'N/A',
+            tools:formData.tools || 'N/A',
+            campaignExperience:formData.campaignExperience|| 'N/A',
+            targetAudience:formData.targetAudience|| 'N/A',
+            portfolio:formData.portfolio|| 'N/A',
+            clinicalExperience:formData.clinicalExperience|| 'N/A',
+            degree:formData.degree|| 'N/A',
+            awards:formData.awards|| 'N/A',
+            cvType:cvType,
+            userId: user.id,  // Asigură-te că userId este valid
         };
 
-        console.log('Form Data before sending:', cvData);
+        console.log("CV Data being sent:", cvData);  // Verifică ce date sunt trimise în backend
 
         try {
             const response = await axios.post('http://localhost:8080/api/cv', cvData, {
@@ -188,12 +195,9 @@ export default function CVBuilder() {
             alert('CV a fost adaugat cu succes');
         } catch (error) {
             console.error("Error adding cv:", error);
-            alert('A apărut o eroare la adaugarea cvului.');
+            alert('A apărut o eroare la adăugarea CV-ului.');
         }
-
     };
-
-
 
 
 

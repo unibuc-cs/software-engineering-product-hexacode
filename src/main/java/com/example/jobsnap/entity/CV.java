@@ -18,8 +18,29 @@ public class CV {
     private String education;
     private String experience;
     private String skills;
-    private String achievements;
     private String projects;
+
+    private String summary;
+
+    private String technologies;
+
+    private String certifications;
+
+    private String tools;
+
+    private String campaignExperience;
+
+    private String targetAudience;
+
+    private String portfolio;
+    private String clinicalExperience;
+
+    private String degree;
+
+    private String awards;
+
+    private String cvType;
+
 
     // Adding userId field
     private Long userId;
@@ -81,13 +102,6 @@ public class CV {
         this.skills = skills;
     }
 
-    public String getAchievements() {
-        return achievements;
-    }
-
-    public void setAchievements(String achievements) {
-        this.achievements = achievements;
-    }
 
     public String getProjects() {
         return projects;
@@ -106,6 +120,56 @@ public class CV {
         this.userId = userId;
     }
 
+    public String getSummary() {return summary;}
+
+    public void setSummary(String summary){this.summary= summary;}
+
+
+    public String getTechnologies() {return technologies;}
+
+    public void setTechnologies(String technologies){this.technologies= technologies;}
+
+    public String getCertifications() {return certifications;}
+
+    public void setCertifications(String certifications){this.certifications= certifications;}
+
+    public String getTools() {return tools;}
+
+    public void setTools(String tools){this.tools= tools;}
+
+    public String getcampaignExperience() {return campaignExperience;}
+
+    public void setcampaignExperience(String campaignexp){this.campaignExperience= campaignExperience;}
+
+    public String gettargetAudience() {return targetAudience;}
+
+    public void settargetAudience(String targetAudience){this.targetAudience= targetAudience;}
+
+    public String getPortfolio() {return portfolio;}
+
+    public void setPortfolio(String portfolio){this.portfolio= portfolio;}
+
+
+    public String getClinicalExperience() {return clinicalExperience;}
+
+    public void setClinicalExperience(String clinicalExperience){this.clinicalExperience= clinicalExperience;}
+
+    public String getDegree() {return degree;}
+
+    public void setDegree(String degree){this.degree= degree;}
+
+    public String getAwards() {return awards;}
+
+    public void setAwards(String awards){this.awards= awards;}
+
+    public String getCvType() {return cvType;}
+
+    public void setCvType(String cvType){this.cvType= cvType;}
+
+
+
+
+
     @Override
     public String toString() {
         return "CV{" +
@@ -113,12 +177,24 @@ public class CV {
                 ", fullName='" + fullName + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
+                ", summary='" + summary + '\'' +
                 ", education='" + education + '\'' +
                 ", experience='" + experience + '\'' +
                 ", skills='" + skills + '\'' +
-                ", achievements='" + achievements + '\'' +
+                ", technologies='" + technologies + '\'' +
+                ", certifications='" + certifications + '\'' +
                 ", projects='" + projects + '\'' +
+                ", tools='" + tools + '\'' +
+                ", campaignExperience='" + campaignExperience + '\'' +
+                ", targetAudience='" + targetAudience + '\'' +
+                ", portfolio='" + portfolio + '\'' +
+                ", clinicalExperience='" + clinicalExperience + '\'' +
+                ", degree='" + degree + '\'' +
+                ", awards='" + awards + '\'' +
+                ", cvType='" + cvType + '\'' +
                 ", userId=" + userId +
                 '}';
     }
+
+
 }
