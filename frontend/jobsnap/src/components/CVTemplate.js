@@ -190,16 +190,17 @@ export default function CVTemplate({ formData, image, cvType }) {
                             : "Add your graphic design skills here."}
                     </ul>
 
-                    <h2 className="mt-6 text-xl font-semibold text-gray-900">Design Software</h2>
+                    <h2 className="mt-6 text-xl font-semibold text-gray-900">Design Tools</h2>
                     <ul className="list-disc list-inside">
-                        {formData.software
-                            ? formData.software.split(",").map((tool, index) => (
+                        {formData.tools
+                            ? formData.tools.split(",").map((tool, index) => (
                                 <li key={index} className="text-gray-700">
                                     {tool.trim()}
                                 </li>
                             ))
-                            : "Add the design software you're proficient in (e.g., Photoshop, Illustrator)."}
+                            : ""}
                     </ul>
+
 
                     <h2 className="mt-6 text-xl font-semibold text-gray-900">Portfolio</h2>
                     <p className="text-gray-700">
