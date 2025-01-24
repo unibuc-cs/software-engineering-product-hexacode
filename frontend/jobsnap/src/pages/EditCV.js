@@ -1,18 +1,17 @@
-'use client';
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import CVTemplate from '../components/CVTemplate';
-import html2pdf from 'html2pdf.js';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 
-export default function CVBuilder() {
-    const { cvType } = useParams();  // Preluăm tipul de CV din ruta curentă
-    const { user } = useAuth(); // Obținem user-ul din contextul de autentificare
-    const navigate = useNavigate(); // Folosim useNavigate pentru redirecționare după salvare
+export default function CVEdit() {
+    const { cvId } = useParams(); // Preluăm ID-ul CV-ului din URL
+    const { user } = useAuth(); // Obținem utilizatorul din contextul de autentificare
+    const navigate = useNavigate();
 
-    // console.log("CV Type:", cvType);  // Verifică în consola browser-ului dacă preiei corect tipul de CV
-
+    const [formData, setFormData] = useState({});
+    const [image, setImage] = useState(null);
+    const [cvType, setCvType] = useState(""); // Stocăm tipul de CV
 
     const cvFields = {
         it: [
@@ -89,31 +88,32 @@ export default function CVBuilder() {
         ],
     };
 
-    const [formData, setFormData] = useState({});
-    const [image, setImage] = useState(null);
-
-    // Setăm câmpurile în funcție de tipul de CV selectat
     useEffect(() => {
-        console.log('CV Type:', cvType);
-        if (cvFields[cvType]) {
-            const fields = cvFields[cvType].reduce((acc, field) => {
-                acc[field.name] = '';
-                return acc;
-            }, {});
-            setFormData(fields);
-        } else {
-            console.log('Invalid cvType:', cvType);
-        }
-
-        // Încarcă datele salvate la profil
-        axios.get('http://localhost:8080/api/cv-templates')
+        // Încarcă datele CV-ului din backend pe baza cvId
+        axios.get(`http://localhost:8080/api/cv/${cvId}`)
             .then(response => {
-                setFormData(response.data); // Salvează datele în starea componentelor
+                setFormData(response.data); // Setează datele CV-ului
+                setCvType(response.data.cvType); // Preia tipul de CV din răspunsul backend
+                if (response.data.image) {
+                    setImage(response.data.image);
+                }
             })
             .catch(error => {
                 console.error('Error loading CV data:', error);
+                alert('A apărut o eroare la încărcarea datelor CV-ului.');
             });
-    }, [cvType]);
+    }, [cvId]); // Dependința corectă pentru încărcarea datelor doar la început
+
+    useEffect(() => {
+        if (cvType && cvFields[cvType]) {
+            // Setează doar câmpurile relevante pentru tipul de CV
+            const fields = cvFields[cvType].reduce((acc, field) => {
+                acc[field.name] = formData[field.name] || ''; // Preia valorile din formData
+                return acc;
+            }, {});
+            setFormData(fields);
+        }
+    }, [cvType]); // Actualizează doar când cvType se schimbă
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -131,97 +131,36 @@ export default function CVBuilder() {
         }
     };
 
-    // const handleSaveCV = () => {
-    //     const cvData = { ...formData, userId: user.id }; // Adăugăm userId
-    //     console.log(cvData)
-    //     // Verifică dacă există o imagine
-    //     if (image) {
-    //         cvData.image = image; // Adăugăm imaginea
-    //     }
-    //
-    //     fetch('http://localhost:8080/api/cv-templates', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify(cvData),
-    //     })
-    //         .then(response => {
-    //             if (!response.ok) {
-    //                 throw new Error('Error saving CV');
-    //             }
-    //             return response.json();
-    //         })
-    //         .then(data => {
-    //             console.log('CV saved:', data);
-    //             navigate('/profile'); // Redirecționează utilizatorul după salvare
-    //         })
-    //         .catch(error => {
-    //             console.error('Error:', error);
-    //         });
-    // };
-
     const handleSaveCV = async () => {
-        const cvData = {
-            fullName: formData.fullName || 'N/A',
-            email: formData.email || 'N/A',
-            phone: formData.phone || 'N/A',
-            summary: formData.summary || 'N/A',
-            education: formData.education || 'N/A',
-            experience: formData.experience || 'N/A',
-            skills: formData.skills || 'N/A',
-            technologies: formData.technologies || 'N/A',
-            certifications: formData.certifications || 'N/A',
-            projects: formData.projects || 'N/A',
-            tools:formData.tools || 'N/A',
-            campaignExperience:formData.campaignExperience|| 'N/A',
-            targetAudience:formData.targetAudience|| 'N/A',
-            portfolio:formData.portfolio|| 'N/A',
-            clinicalExperience:formData.clinicalExperience|| 'N/A',
-            degree:formData.degree|| 'N/A',
-            awards:formData.awards|| 'N/A',
-            cvType:cvType,
-            userId: user.id,
-        };
+        const cvData = { ...formData, userId: user.id };
 
-        console.log("CV Data being sent:", cvData);  // Verifică ce date sunt trimise în backend
+        if (image) {
+            cvData.image = image;
+        }
 
         try {
-            const response = await axios.post('http://localhost:8080/api/cv', cvData, {
+            const response = await axios.put(`http://localhost:8080/api/cv/${cvId}`, cvData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
-            alert('CV a fost adaugat cu succes');
+            alert('CV-ul a fost actualizat cu succes');
+            navigate('/profile');
         } catch (error) {
-            console.error("Error adding cv:", error);
-            alert('A apărut o eroare la adăugarea CV-ului.');
+            console.error("Error updating cv:", error);
+            alert('A apărut o eroare la actualizarea CV-ului.');
         }
-    };
-
-
-
-    const handleDownloadPDF = () => {
-        const element = document.getElementById('cv-preview');
-        const options = {
-            filename: `${formData.fullName || 'My-CV'}.pdf`,
-            jsPDF: { unit: 'pt', format: 'a4' },
-            html2canvas: { scale: 3 },
-        };
-
-        html2pdf().set(options).from(element).save();
     };
 
     return (
         <div className="min-h-screen py-20 bg-gradient-to-r from-blue-100 to-blue-300 flex flex-col items-center justify-center">
-            <h1 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">
-                Start Building Your {cvType ? cvType.charAt(0).toUpperCase() + cvType.slice(1) : 'CV'} CV
-            </h1>
+            <h1 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">Edit Your CV</h1>
 
             <div className="flex flex-col lg:flex-row gap-8 w-full max-w-7xl px-4">
                 {/* Form Section */}
                 <form className="bg-white shadow-xl rounded-lg p-8 w-full lg:w-1/2 space-y-6 border-2 border-gray-200">
                     <div className="space-y-4">
+
                         {cvFields[cvType]?.map((field) => (
                             <div key={field.name}>
                                 <label className="block text-sm font-medium text-gray-700">{field.label}</label>
@@ -230,18 +169,17 @@ export default function CVBuilder() {
                                         name={field.name}
                                         value={formData[field.name] || ''}
                                         onChange={handleChange}
-                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
                                         placeholder={field.placeholder}
-                                        rows="3"
-                                    ></textarea>
+                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
+                                    />
                                 ) : (
                                     <input
                                         type="text"
                                         name={field.name}
                                         value={formData[field.name] || ''}
                                         onChange={handleChange}
-                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
                                         placeholder={field.placeholder}
+                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
                                     />
                                 )}
                             </div>
@@ -266,20 +204,13 @@ export default function CVBuilder() {
                 </div>
             </div>
 
+
             {/* Save CV Button */}
             <button
                 onClick={handleSaveCV}
                 className="mt-8 bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700"
             >
                 Save CV
-            </button>
-
-            {/* Download PDF Button */}
-            <button
-                onClick={handleDownloadPDF}
-                className="mt-4 bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700"
-            >
-                Download CV as PDF
             </button>
         </div>
     );

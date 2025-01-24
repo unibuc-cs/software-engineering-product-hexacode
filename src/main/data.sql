@@ -140,6 +140,9 @@ ALTER TABLE CV DROP COLUMN CVTYPE;
 
 select * from CV;
 
+SELECT * FROM CV WHERE id = 39;
+
+
 
 
 

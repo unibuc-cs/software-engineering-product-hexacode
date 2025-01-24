@@ -4,20 +4,25 @@
     flex-direction: column;
     align-items: center;
     margin: 20px;
+    background-color: #f4f4f9; /* Set background color */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Titlu al paginii de profil */
 .profile-title {
-    font-size: 2rem;
-    font-weight: bold;
+    font-size: 2.5rem;
+    font-weight: 700;
     margin-bottom: 20px;
-    margin-top: 100px;
+    margin-top: 30px;
+    color: #333;
 }
 
 /* Detalii despre profil */
 .profile-details {
-    background-color: #f9f9f9;
-    padding: 20px;
+    background-color: #fff;
+    padding: 30px;
     width: 80%;
     margin-bottom: 30px;
     border-radius: 8px;
@@ -25,22 +30,29 @@
 }
 
 .profile-details p {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
 }
 
 .profile-details button {
     background-color: #4CAF50;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 24px;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 1rem;
 }
 
 .profile-details button:hover {
     opacity: 0.8;
 }
 
+.profile-details button:focus {
+    outline: none;
+}
+
+/* Secțiune pentru CV-uri */
 .cv-section {
     margin-top: 40px;
     width: 80%;
@@ -50,65 +62,14 @@
 
 /* Mesajul CV-urilor */
 .cv-message {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
+    font-size: 1.5rem;
     font-weight: bold;
-}
-
-/* Lista de CV-uri folosind un grid cu 2 coloane */
-.cv-list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 coloane pe toate ecranele */
-    gap: 30px; /* Spațiu între cardurile de CV */
-    margin-top: 20px;
-    padding: 0 20px;
-    justify-items: center; /* Centrează cardurile pe orizontală */
-}
-
-/* Cardurile de CV */
-.cv-card {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border: 1px solid #ddd;
-    text-align: left; /* Aliniază textul la stânga */
-    width: auto; /* Permite cardurilor să se ajusteze în funcție de spațiu */
-    max-width: 320px; /* Limitează lățimea maximă a fiecărui card */
-    margin: 0 auto; /* Centrează cardurile pe axa orizontală */
-    margin-top: 20px;
+    margin-bottom: 30px;
+    color: #444;
 }
 
 
-/* Marginile între elementele din cardul CV */
-.cv-card p {
-    margin-bottom: 10px;
-}
 
-/* Butoanele din fiecare card de CV */
-.cv-actions {
-    display: flex;
-    margin-top: 20px;
-    padding-left: 10px;
-    gap: 10px;
-    margin-right: 10px;
-
-}
-
-/* Stilizare pentru butoanele din carduri */
-.cv-actions button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    gap: 20px;
-}
-
-.cv-actions button:hover {
-    opacity: 0.8;
-}
 
 /* Formularele de editare */
 .edit-form {
@@ -140,11 +101,12 @@
 }
 
 button {
-    padding: 10px 20px;
+    padding: 12px 24px;
     border-radius: 5px;
     cursor: pointer;
     display: inline-block;
     color: white;
+    font-size: 1rem;
 }
 
 button:hover {
@@ -155,23 +117,76 @@ button:focus {
     outline: none;
 }
 
-/* Media Queries pentru responsive design */
-@media (max-width: 1024px) {
-    .cv-list {
-        grid-template-columns: repeat(2, 1fr); /* 2 coloane pe ecranele mai mici */
-    }
+/* Lista de CV-uri folosind un grid cu 2 coloane pe ecrane mari și 1 coloană pe ecrane mici */
+.cv-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 coloane pe ecranele mari */
+    gap: 30px; /* Spațiu între cardurile de CV */
+    margin-top: 20px;
+    padding: 0 20px;
+    justify-items: center; /* Centrează cardurile pe orizontală */
 }
 
+/* Cardurile de CV */
+.cv-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    text-align: left;
+    width: 100%; /* Cardurile vor ocupa toată lățimea disponibilă */
+    max-width: 350px; /* Limităm lățimea cardului */
+    margin: 0 auto; /* Centrează cardurile pe axa orizontală */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.cv-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Butoanele din fiecare card de CV */
+.cv-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 10px; /* Spațiu între butoane */
+}
+
+/* Stilizarea butoanelor din carduri */
+.cv-actions button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    width: 100%; /* Asigură că butoanele se întind pe întreaga lățime disponibilă */
+    max-width: 120px; /* Maximizează lățimea butoanelor */
+}
+
+/* Stilizare la hover pentru butoane */
+.cv-actions button:hover {
+    opacity: 0.8;
+}
+
+/* Media Queries pentru responsive design - 1 coloană pe ecranele mici */
 @media (max-width: 768px) {
     .cv-list {
         grid-template-columns: 1fr; /* 1 coloană pe ecranele mici */
     }
 
-    .profile-title {
-        font-size: 1.5rem; /* Ajustează dimensiunea titlului */
+    .cv-card {
+        max-width: 100%; /* Permite cardurilor să ocupe toată lățimea */
     }
+}
 
-    .profile-details {
-        width: 100%;
+/* Media Queries pentru responsive design - 2 coloane pe ecranele mari */
+@media (min-width: 1024px) {
+    .cv-list {
+        grid-template-columns: repeat(2, 1fr); /* 2 coloane pe ecranele mari */
     }
 }

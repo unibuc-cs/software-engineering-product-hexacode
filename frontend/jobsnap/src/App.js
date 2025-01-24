@@ -10,6 +10,7 @@ import SignUp from "./pages/SignUp";
 import CVBuilder from "./pages/CVBuilder";
 import Profile from './pages/Profile';
 import Cv_jobtypes from './pages/Cv_jobtypes';
+import EditCV from './pages/EditCV';
 import { AuthProvider } from "./context/AuthContext";
 
 
@@ -30,6 +31,7 @@ function App() {
                         <Route path="/start" element={<Cv_jobtypes />} />
                         <Route path="/profile" element={<Profile />} />
                         <Route path="/create-cv/:cvType" element={<CVBuilder />} />
+                        <Route path="/edit-cv/:cvId" element={<EditCV />} />
 
                     </Routes>
                  </div>
