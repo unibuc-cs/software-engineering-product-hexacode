@@ -37,6 +37,31 @@ public class AuthService {
      * @param role     the user's role ("student" or "employer")
      * @return a LoginResponse object containing a JWT token and user details
      */
+
+    public void signUp(String email, String password, String role, String name) {
+        if ("student".equalsIgnoreCase(role)) {
+            if (studentRepository.findByEmail(email).isPresent()) {
+                throw new RuntimeException("Email already registered as student");
+            }
+            Student student = new Student();
+            student.setEmail(email);
+            student.setPassword(password); // Adaugă criptare parolei în producție!
+
+            studentRepository.save(student);
+        } else if ("employer".equalsIgnoreCase(role)) {
+            if (employerRepository.findByEmail(email).isPresent()) {
+                throw new RuntimeException("Email already registered as employer");
+            }
+            Employer employer = new Employer();
+            employer.setEmail(email);
+            employer.setPassword(password); // Adaugă criptare parolei în producție!
+
+            employerRepository.save(employer);
+        } else {
+            throw new RuntimeException("Invalid role");
+        }
+    }
+
     public LoginResponse login(String email, String password, String role) {
         logger.info("Attempting login for email: {}", email);
 
