@@ -45,6 +45,9 @@ public class CV {
     // Adding userId field
     private Long userId;
 
+
+    private String imagePath;  // Acesta va stoca calea imaginii
+
     // Getters and Setters for all fields
     public Long getId() {
         return id;
@@ -167,6 +170,17 @@ public class CV {
     public void setCvType(String cvType){this.cvType= cvType;}
 
 
+    // Getters și setters pentru imagePath
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+
+
 
 
 
@@ -192,6 +206,7 @@ public class CV {
                 ", degree='" + degree + '\'' +
                 ", awards='" + awards + '\'' +
                 ", cvType='" + cvType + '\'' +
+                ", imagePath='" + imagePath + '\'' +
                 ", userId=" + userId +
                 '}';
     }

@@ -90,6 +90,7 @@ public class CVController {
                 existingCV.setTechnologies(updatedCV.getTechnologies());
                 existingCV.setCertifications(updatedCV.getCertifications());
                 existingCV.setProjects(updatedCV.getProjects());
+
                 break;
 
             case "business":
@@ -102,6 +103,7 @@ public class CVController {
                 existingCV.setSkills(updatedCV.getSkills());
                 existingCV.setCertifications(updatedCV.getCertifications());
                 existingCV.setProjects(updatedCV.getProjects());
+
                 break;
 
             case "marketing":
@@ -117,6 +119,7 @@ public class CVController {
                 existingCV.settargetAudience(updatedCV.gettargetAudience());
                 existingCV.setCertifications(updatedCV.getCertifications());
                 existingCV.setProjects(updatedCV.getProjects());
+
                 break;
 
             case "healthcare":
@@ -131,6 +134,7 @@ public class CVController {
                 existingCV.setClinicalExperience(updatedCV.getClinicalExperience());
                 existingCV.setCertifications(updatedCV.getCertifications());
                 existingCV.setProjects(updatedCV.getProjects());
+
                 break;
 
             case "education":
@@ -141,6 +145,7 @@ public class CVController {
                 existingCV.setEducation(updatedCV.getEducation());
                 existingCV.setDegree(updatedCV.getDegree());
                 existingCV.setAwards(updatedCV.getAwards());
+
                 break;
 
             case "graphicdesign":
@@ -155,10 +160,17 @@ public class CVController {
                 existingCV.setPortfolio(updatedCV.getPortfolio());
                 existingCV.setCertifications(updatedCV.getCertifications());
                 existingCV.setProjects(updatedCV.getProjects());
+
                 break;
 
             default:
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // Tipul de CV nu este valid
+        }
+
+        // Actualizează imagePath dacă există
+        if (updatedCV.getImagePath() != null) {
+            System.out.println("Updating imagePath: " + updatedCV.getImagePath());
+            existingCV.setImagePath(updatedCV.getImagePath()); // Salvează noul imagePath
         }
 
         CV savedCV = cvService.saveCV(existingCV);

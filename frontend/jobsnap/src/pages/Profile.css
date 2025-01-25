@@ -52,6 +52,14 @@
     outline: none;
 }
 
+.cv-preview {
+    overflow-wrap: break-word; /* Permite întreruperea cuvintelor pe linia următoare */
+    word-wrap: break-word; /* Asigură-te că se întrerupe pe cuvinte mari */
+    word-break: break-word; /* Întrerupe cuvintele prea lungi */
+    max-width: 100%; /* Asigură-te că containerul se ajustează la lățimea disponibilă */
+}
+
+
 /* Secțiune pentru CV-uri */
 .cv-section {
     margin-top: 40px;
@@ -62,12 +70,11 @@
 
 /* Mesajul CV-urilor */
 .cv-message {
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: bold;
     margin-bottom: 30px;
     color: #444;
 }
-
 
 
 
@@ -130,13 +137,13 @@ button:focus {
 /* Cardurile de CV */
 .cv-card {
     background-color: #fff;
-    padding: 20px;
+    padding: 10px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: 1px solid #ddd;
     text-align: left;
     width: 100%; /* Cardurile vor ocupa toată lățimea disponibilă */
-    max-width: 350px; /* Limităm lățimea cardului */
+    max-width: 400px; /* Limităm lățimea cardului */
     margin: 0 auto; /* Centrează cardurile pe axa orizontală */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     margin-bottom: 20px;
