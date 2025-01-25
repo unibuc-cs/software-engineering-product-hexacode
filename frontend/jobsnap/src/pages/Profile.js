@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import './Profile.css';
 import { useNavigate } from "react-router-dom";
 import html2pdf from 'html2pdf.js';
+import CVTemplate from '../components/CVTemplate'; // Importă CVTemplate
 
 const Profile = () => {
     const { user } = useAuth(); // Obține utilizatorul din contextul de autentificare
@@ -193,81 +194,7 @@ const Profile = () => {
 
 
                                     <div id={`cv-preview-${cv.id}`} className="cv-preview">
-                                        {/* Display common fields */}
-                                        <p><strong>Full Name:</strong> {cv.fullName || 'N/A'}</p>
-                                        <p><strong>Email:</strong> {cv.email || 'N/A'}</p>
-                                        <p><strong>Phone:</strong> {cv.phone || 'N/A'}</p>
-
-                                        {/* Display specific fields based on the CV type */}
-                                        {cv.cvType === 'it' && (
-                                            <>
-                                                <p><strong>Summary:</strong> {cv.summary || 'N/A'}</p>
-                                                <p><strong>Education:</strong> {cv.education || 'N/A'}</p>
-                                                <p><strong>Experience:</strong> {cv.experience || 'N/A'}</p>
-                                                <p><strong>Technical Skills:</strong> {cv.skills || 'N/A'}</p>
-                                                <p><strong>Technologies:</strong> {cv.technologies || 'N/A'}</p>
-                                                <p><strong>Certifications:</strong> {cv.certifications || 'N/A'}</p>
-                                                <p><strong>Projects:</strong> {cv.projects || 'N/A'}</p>
-                                            </>
-                                        )}
-
-                                        {cv.cvType === 'business' && (
-                                            <>
-                                                <p><strong>Summary:</strong> {cv.summary || 'N/A'}</p>
-                                                <p><strong>Work Experience:</strong> {cv.experience || 'N/A'}</p>
-                                                <p><strong>Business Skills:</strong> {cv.skills || 'N/A'}</p>
-                                                <p><strong>Certifications:</strong> {cv.certifications || 'N/A'}</p>
-                                                <p><strong>Projects:</strong> {cv.projects || 'N/A'}</p>
-                                            </>
-                                        )}
-
-                                        {cv.cvType === 'marketing' && (
-                                            <>
-                                                <p><strong>Summary:</strong> {cv.summary || 'N/A'}</p>
-                                                <p><strong>Work Experience:</strong> {cv.experience || 'N/A'}</p>
-                                                <p><strong>Marketing Skills:</strong> {cv.skills || 'N/A'}</p>
-                                                <p><strong>Marketing Tools:</strong> {cv.tools || 'N/A'}</p>
-                                                <p><strong>Campaign
-                                                    Experience:</strong> {cv.campaignExperience || 'N/A'}</p>
-                                                <p><strong>Target Audience:</strong> {cv.targetAudience || 'N/A'}</p>
-                                                <p><strong>Certifications:</strong> {cv.certifications || 'N/A'}</p>
-                                                <p><strong>Projects:</strong> {cv.projects || 'N/A'}</p>
-                                            </>
-                                        )}
-
-                                        {cv.cvType === 'healthcare' && (
-                                            <>
-                                                <p><strong>Summary:</strong> {cv.summary || 'N/A'}</p>
-                                                <p><strong>Work Experience:</strong> {cv.experience || 'N/A'}</p>
-                                                <p><strong>Healthcare Skills:</strong> {cv.skills || 'N/A'}</p>
-                                                <p><strong>Healthcare Tools:</strong> {cv.tools || 'N/A'}</p>
-                                                <p><strong>Clinical
-                                                    Experience:</strong> {cv.clinicalExperience || 'N/A'}</p>
-                                                <p><strong>Certifications:</strong> {cv.certifications || 'N/A'}</p>
-                                                <p><strong>Medical Projects:</strong> {cv.projects || 'N/A'}</p>
-                                            </>
-                                        )}
-
-                                        {cv.cvType === 'education' && (
-                                            <>
-                                                <p><strong>Summary:</strong> {cv.summary || 'N/A'}</p>
-                                                <p><strong>Education:</strong> {cv.education || 'N/A'}</p>
-                                                <p><strong>Degree:</strong> {cv.degree || 'N/A'}</p>
-                                                <p><strong>Awards:</strong> {cv.awards || 'N/A'}</p>
-                                            </>
-                                        )}
-
-                                        {cv.cvType === 'graphicdesign' && (
-                                            <>
-                                                <p><strong>Summary:</strong> {cv.summary || 'N/A'}</p>
-                                                <p><strong>Work Experience:</strong> {cv.experience || 'N/A'}</p>
-                                                <p><strong>Design Skills:</strong> {cv.skills || 'N/A'}</p>
-                                                <p><strong>Design Tools:</strong> {cv.tools || 'N/A'}</p>
-                                                <p><strong>Portfolio:</strong> {cv.portfolio || 'N/A'}</p>
-                                                <p><strong>Certifications:</strong> {cv.certifications || 'N/A'}</p>
-                                                <p><strong>Projects:</strong> {cv.projects || 'N/A'}</p>
-                                            </>
-                                        )}
+                                        <CVTemplate formData={cv} image={cv.imagePath} cvType={cv.cvType}/>
                                     </div>
 
 

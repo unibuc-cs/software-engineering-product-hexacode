@@ -94,8 +94,8 @@ export default function CVEdit() {
             .then(response => {
                 setFormData(response.data); // Setează datele CV-ului
                 setCvType(response.data.cvType); // Preia tipul de CV din răspunsul backend
-                if (response.data.image) {
-                    setImage(response.data.image);
+                if (response.data.imagePath) {
+                    setImage(response.data.imagePath);
                 }
             })
             .catch(error => {
@@ -135,7 +135,7 @@ export default function CVEdit() {
         const cvData = { ...formData, userId: user.id };
 
         if (image) {
-            cvData.image = image;
+            cvData.imagePath = image;
         }
 
         try {
@@ -145,6 +145,7 @@ export default function CVEdit() {
                 }
             });
             alert('CV-ul a fost actualizat cu succes');
+            setImage(response.data.imagePath); // Actualizează imaginea cu calea din răspuns
             navigate('/profile');
         } catch (error) {
             console.error("Error updating cv:", error);
@@ -185,6 +186,14 @@ export default function CVEdit() {
                             </div>
                         ))}
 
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Current Photo</label>
+                            {image &&
+                                <img src={image} alt="CV Photo" className="mt-2 w-32 h-32 object-cover rounded-full"/>}
+                        </div>
+
+
                         {/* Image Upload */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Upload Your Photo</label>
@@ -195,6 +204,8 @@ export default function CVEdit() {
                                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
                             />
                         </div>
+
+
                     </div>
                 </form>
 

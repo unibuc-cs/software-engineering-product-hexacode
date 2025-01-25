@@ -3,20 +3,20 @@ import React from "react";
 
 export default function CVTemplate({ formData, image, cvType }) {
     return (
-        <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-2xl mx-auto">
+        <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-3xl mx-auto border border-gray-200">
             {/* Image Display */}
             {image && (
                 <div className="flex justify-center mb-6">
                     <img
                         src={image}
                         alt="Profile"
-                        className="w-32 h-32 rounded-full object-cover"
+                        className="w-32 h-32 rounded-full object-cover border-4 border-indigo-500 shadow-md"
                     />
                 </div>
             )}
 
             {/* Full Name */}
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="text-4xl font-bold text-gray-800 tracking-wide mb-2">
                 {formData.fullName || "Your Full Name"}
             </h1>
 
@@ -26,216 +26,151 @@ export default function CVTemplate({ formData, image, cvType }) {
             </p>
 
             {/* Summary */}
-            <h2 className="mt-6 text-xl font-semibold text-gray-900">Profile</h2>
-            <p className="text-gray-700">
-                {formData.summary}
+            <section className="mt-8">
+                <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-indigo-500 pb-2">Profile</h2>
+                <p className="text-gray-700 mt-2">{formData.summary || "Write a brief summary about yourself."}</p>
+            </section>
 
-            </p>
-
-            <h2 className="mt-6 text-xl font-semibold text-gray-900">Education</h2>
-            <p className="text-gray-700">
-                {formData.education || "Add your education details here."}
-            </p>
-            
             {/* Education */}
-            {cvType === "education" && (
-                <>
+            <section className="mt-8">
+                <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-indigo-500 pb-2">Education</h2>
+                <p className="text-gray-700 mt-2">{formData.education || "Add your education details here."}</p>
 
-                    <h2 className="mt-6 text-xl font-semibold text-gray-900">Degree</h2>
-                    <p className="text-gray-700">
-                        {formData.degree || "e.g., Bachelor of Marketing"}
-                    </p>
+                {cvType === "education" && (
+                    <>
+                        <h3 className="text-2xl font-semibold text-gray-800 border-b-2 border-indigo-500 pb-2">Degree</h3>
+                        <p className="text-gray-700">{formData.degree || "e.g., Bachelor of Marketing"}</p>
 
-                    <h2 className="mt-6 text-xl font-semibold text-gray-900">Awards</h2>
-                    <p className="text-gray-700">
-                        {formData.awards || "e.g., Dean's List, Top Graduate"}
-                    </p>
-                </>
-            )}
+                        <h3 className="text-2xl font-semibold text-gray-800 border-b-2 border-indigo-500 pb-2">Awards</h3>
+                        <p className="text-gray-700">{formData.awards || "e.g., Dean's List, Top Graduate"}</p>
+                    </>
+                )}
+            </section>
 
-            {/* Work Experience */}
+            {/* Experience */}
             {cvType !== "education" && (
-                <h2 className="mt-6 text-xl font-semibold text-gray-900">Experience</h2>
+                <section className="mt-8">
+                    <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-indigo-500 pb-2">Experience</h2>
+                    <p className="text-gray-700 mt-2">{formData.experience || "Describe your work experience here."}</p>
+                </section>
             )}
-            <p className="text-gray-700">
-                {formData.experience || "Describe your work experience here."}
-            </p>
 
-            {/* Render fields based on cvType */}
+            {/* Specific fields based on CV type */}
             {cvType === 'it' && (
-                <>
-                    {/* IT Specific Fields */}
-                    <h2 className="mt-6 text-xl font-semibold text-gray-900">Technical Skills</h2>
+                <section className="mt-8">
+                    <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-indigo-500 pb-2">Technical Skills</h2>
                     <ul className="list-disc list-inside">
-                        {formData.skills
-                            ? formData.skills.split(",").map((skill, index) => (
-                                <li key={index} className="text-gray-700">
-                                    {skill.trim()}
-                                </li>
-                            ))
-                            : "Add your technical skills here."}
+                        {formData.skills ? formData.skills.split(",").map((skill, index) => (
+                            <li key={index} className="text-gray-700">{skill.trim()}</li>
+                        )) : "Add your technical skills here."}
                     </ul>
 
-                    <h2 className="mt-6 text-xl font-semibold text-gray-900">Technologies</h2>
+                    <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-indigo-500 pb-2">Technologies</h2>
                     <ul className="list-disc list-inside">
-                        {formData.technologies
-                            ? formData.technologies.split(",").map((tech, index) => (
-                                <li key={index} className="text-gray-700">
-                                    {tech.trim()}
-                                </li>
-                            ))
-                            : "Add the technologies you're experienced with."}
+                        {formData.technologies ? formData.technologies.split(",").map((tech, index) => (
+                            <li key={index} className="text-gray-700">{tech.trim()}</li>
+                        )) : "Add the technologies you're experienced with."}
                     </ul>
-                </>
+                </section>
             )}
 
             {cvType === 'business' && (
-                <>
-
-                    {/* Business Specific Fields */}
-                    <h2 className="mt-6 text-xl font-semibold text-gray-900">Business Skills</h2>
+                <section className="mt-8">
+                    <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-indigo-500 pb-2">Business Skills</h2>
                     <ul className="list-disc list-inside">
-                        {formData.skills
-                            ? formData.skills.split(",").map((skill, index) => (
-                                <li key={index} className="text-gray-700">
-                                    {skill.trim()}
-                                </li>
-                            ))
-                            : "Add your business skills here."}
+                        {formData.skills ? formData.skills.split(",").map((skill, index) => (
+                            <li key={index} className="text-gray-700">{skill.trim()}</li>
+                        )) : "Add your business skills here."}
                     </ul>
-                </>
+                </section>
             )}
 
             {cvType === 'marketing' && (
-                <>
-                    {/* Marketing Specific Fields */}
-                    <h2 className="mt-6 text-xl font-semibold text-gray-900">Marketing Skills</h2>
+                <section className="mt-8">
+                    <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-indigo-500 pb-2">Marketing Skills</h2>
                     <ul className="list-disc list-inside">
-                        {formData.skills
-                            ? formData.skills.split(",").map((skill, index) => (
-                                <li key={index} className="text-gray-700">
-                                    {skill.trim()}
-                                </li>
-                            ))
-                            : "Add your marketing skills here."}
+                        {formData.skills ? formData.skills.split(",").map((skill, index) => (
+                            <li key={index} className="text-gray-700">{skill.trim()}</li>
+                        )) : "Add your marketing skills here."}
                     </ul>
 
-                    <h2 className="mt-6 text-xl font-semibold text-gray-900">Marketing Tools</h2>
+                    <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-indigo-500 pb-2">Marketing Tools</h2>
                     <ul className="list-disc list-inside">
-                        {formData.tools
-                            ? formData.tools.split(",").map((tool, index) => (
-                                <li key={index} className="text-gray-700">
-                                    {tool.trim()}
-                                </li>
-                            ))
-                            : "Add the marketing tools you're proficient in."}
+                        {formData.tools ? formData.tools.split(",").map((tool, index) => (
+                            <li key={index} className="text-gray-700">{tool.trim()}</li>
+                        )) : "Add the marketing tools you're proficient in."}
                     </ul>
 
-                    <h2 className="mt-6 text-xl font-semibold text-gray-900">Campaign Experience</h2>
-                    <p className="text-gray-700">
-                        {formData.campaignExperience || "Add your campaign experience here."}
-                    </p>
+                    <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-indigo-500 pb-2">Campaign Experience</h2>
+                    <p className="text-gray-700">{formData.campaignExperience || "Add your campaign experience here."}</p>
 
-                    <h2 className="mt-6 text-xl font-semibold text-gray-900">Target Audience</h2>
-                    <p className="text-gray-700">
-                        {formData.targetAudience || "Add the target audience for your campaigns."}
-                    </p>
-                </>
+                    <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-indigo-500 pb-2">Target Audience</h2>
+                    <p className="text-gray-700">{formData.targetAudience || "Add the target audience for your campaigns."}</p>
+                </section>
             )}
 
             {cvType === 'healthcare' && (
-                <>
-                    {/* Healthcare Specific Fields */}
-                    <h2 className="mt-6 text-xl font-semibold text-gray-900">Healthcare Skills</h2>
+                <section className="mt-8">
+                    <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-indigo-500 pb-2">Healthcare Skills</h2>
                     <ul className="list-disc list-inside">
-                        {formData.skills
-                            ? formData.skills.split(",").map((skill, index) => (
-                                <li key={index} className="text-gray-700">
-                                    {skill.trim()}
-                                </li>
-                            ))
-                            : "Add your healthcare skills here."}
+                        {formData.skills ? formData.skills.split(",").map((skill, index) => (
+                            <li key={index} className="text-gray-700">{skill.trim()}</li>
+                        )) : "Add your healthcare skills here."}
                     </ul>
 
-                    <h2 className="mt-6 text-xl font-semibold text-gray-900">Healthcare Tools</h2>
+                    <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-indigo-500 pb-2">Healthcare Tools</h2>
                     <ul className="list-disc list-inside">
-                        {formData.tools
-                            ? formData.tools.split(",").map((tool, index) => (
-                                <li key={index} className="text-gray-700">
-                                    {tool.trim()}
-                                </li>
-                            ))
-                            : "Add healthcare tools you're proficient in."}
+                        {formData.tools ? formData.tools.split(",").map((tool, index) => (
+                            <li key={index} className="text-gray-700">{tool.trim()}</li>
+                        )) : "Add healthcare tools you're proficient in."}
                     </ul>
 
-                    <h2 className="mt-6 text-xl font-semibold text-gray-900">Clinical Experience</h2>
-                    <p className="text-gray-700">
-                        {formData.clinicalExperience || "Describe your clinical experience here."}
-                    </p>
-                </>
+                    <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-indigo-500 pb-2">Clinical Experience</h2>
+                    <p className="text-gray-700">{formData.clinicalExperience || "Describe your clinical experience here."}</p>
+                </section>
             )}
 
-            {/* Render fields based on cvType */}
             {cvType === 'graphicdesign' && (
-                <>
-                    {/* Graphic Designer Specific Fields */}
-                    <h2 className="mt-6 text-xl font-semibold text-gray-900">Graphic Design Skills</h2>
+                <section className="mt-8">
+                    <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-indigo-500 pb-2">Graphic Design Skills</h2>
                     <ul className="list-disc list-inside">
-                        {formData.skills
-                            ? formData.skills.split(",").map((skill, index) => (
-                                <li key={index} className="text-gray-700">
-                                    {skill.trim()}
-                                </li>
-                            ))
-                            : "Add your graphic design skills here."}
+                        {formData.skills ? formData.skills.split(",").map((skill, index) => (
+                            <li key={index} className="text-gray-700">{skill.trim()}</li>
+                        )) : "Add your graphic design skills here."}
                     </ul>
 
-                    <h2 className="mt-6 text-xl font-semibold text-gray-900">Design Tools</h2>
+                    <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-indigo-500 pb-2">Design Tools</h2>
                     <ul className="list-disc list-inside">
-                        {formData.tools
-                            ? formData.tools.split(",").map((tool, index) => (
-                                <li key={index} className="text-gray-700">
-                                    {tool.trim()}
-                                </li>
-                            ))
-                            : ""}
+                        {formData.tools ? formData.tools.split(",").map((tool, index) => (
+                            <li key={index} className="text-gray-700">{tool.trim()}</li>
+                        )) : "Add design tools you're familiar with."}
                     </ul>
 
-
-                    <h2 className="mt-6 text-xl font-semibold text-gray-900">Portfolio</h2>
-                    <p className="text-gray-700">
-                        {formData.portfolio || "Provide a link to your design portfolio."}
-                    </p>
-
-
-                </>
+                    <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-indigo-500 pb-2">Portfolio</h2>
+                    <p className="text-gray-700">{formData.portfolio || "Provide a link to your design portfolio."}</p>
+                </section>
             )}
 
             {/* Certifications */}
             {formData.certifications && (
-                <>
-                    <h2 className="mt-6 text-xl font-semibold text-gray-900">Certifications</h2>
+                <section className="mt-8">
+                    <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-indigo-500 pb-2">Certifications</h2>
                     <ul className="list-disc list-inside">
-                        {formData.certifications
-                            ? formData.certifications.split(",").map((cert, index) => (
-                                <li key={index} className="text-gray-700">
-                                    {cert.trim()}
-                                </li>
-                            ))
-                            : "Add your certifications here."}
+                        {formData.certifications.split(",").map((cert, index) => (
+                            <li key={index} className="text-gray-700">{cert.trim()}</li>
+                        ))}
                     </ul>
-                </>
+                </section>
             )}
 
             {/* Projects */}
             {formData.projects && (
-                <>
-                    <h2 className="mt-6 text-xl font-semibold text-gray-900">Projects</h2>
-                    <p className="text-gray-700">
-                        {formData.projects}
-                    </p>
-                </>
+                <section className="mt-8">
+                    <h2 className="text-2xl font-semibold text-gray-800 border-b-2 border-indigo-500 pb-2">Projects</h2>
+                    <p className="text-gray-700">{formData.projects}</p>
+                </section>
             )}
+
         </div>
     );
 }

@@ -173,18 +173,23 @@ export default function CVBuilder() {
             technologies: formData.technologies || 'N/A',
             certifications: formData.certifications || 'N/A',
             projects: formData.projects || 'N/A',
-            tools:formData.tools || 'N/A',
-            campaignExperience:formData.campaignExperience|| 'N/A',
-            targetAudience:formData.targetAudience|| 'N/A',
-            portfolio:formData.portfolio|| 'N/A',
-            clinicalExperience:formData.clinicalExperience|| 'N/A',
-            degree:formData.degree|| 'N/A',
-            awards:formData.awards|| 'N/A',
-            cvType:cvType,
+            tools: formData.tools || 'N/A',
+            campaignExperience: formData.campaignExperience || 'N/A',
+            targetAudience: formData.targetAudience || 'N/A',
+            portfolio: formData.portfolio || 'N/A',
+            clinicalExperience: formData.clinicalExperience || 'N/A',
+            degree: formData.degree || 'N/A',
+            awards: formData.awards || 'N/A',
+            cvType: cvType,
             userId: user.id,
         };
 
-        console.log("CV Data being sent:", cvData);  // Verifică ce date sunt trimise în backend
+        // Adăugăm imaginea, dacă există
+        if (image) {
+            cvData.imagePath = image;  // Salvează imagePath ca data URL
+        }
+
+        console.log("CV Data being sent:", cvData);
 
         try {
             const response = await axios.post('http://localhost:8080/api/cv', cvData, {
@@ -198,6 +203,7 @@ export default function CVBuilder() {
             alert('A apărut o eroare la adăugarea CV-ului.');
         }
     };
+
 
 
 
@@ -274,13 +280,7 @@ export default function CVBuilder() {
                 Save CV
             </button>
 
-            {/* Download PDF Button */}
-            <button
-                onClick={handleDownloadPDF}
-                className="mt-4 bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700"
-            >
-                Download CV as PDF
-            </button>
+
         </div>
     );
 }
