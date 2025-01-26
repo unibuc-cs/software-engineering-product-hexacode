@@ -2,6 +2,8 @@ package com.example.jobsnap.controller;
 
 import com.example.jobsnap.entity.Student;
 import com.example.jobsnap.service.StudentService;
+import com.example.jobsnap.repository.StudentRepository;
+import com.example.jobsnap.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,17 +18,26 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
+    @Autowired
+    private StudentRepository studentRepository;  // Repository pentru Student
+    @Autowired
+    private UserRepository userRepository;  // Repository pentru User, pentru a verifica ID-ul utilizatorului
+
     // Get all students
     @GetMapping
     public List<Student> getAllStudents() {
         return studentService.getAllStudents();
     }
 
-    // Get a student by ID
+    // Get student profile by ID
     @GetMapping("/{id}")
-    public ResponseEntity<Student> getStudentById(@PathVariable Long id) {
-        Optional<Student> student = studentService.getStudentById(id);
-        return student.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Student> getStudentProfile(@PathVariable Long id) {
+        Optional<Student> student = studentRepository.findById(id);
+        if (student.isPresent()) {
+            return ResponseEntity.ok(student.get());  // Returnează profilul studentului
+        } else {
+            return ResponseEntity.notFound().build();  // Returnează 404 dacă studentul nu este găsit
+        }
     }
 
     // Create a new student
@@ -35,21 +46,27 @@ public class StudentController {
         return studentService.saveStudent(student);
     }
 
-    // Update an existing student
-    @PutMapping("/{id}")
-    public ResponseEntity<Student> updateStudent(@PathVariable Long id, @RequestBody Student updatedStudent) {
-        Optional<Student> studentOptional = studentService.getStudentById(id);
+    // Update student profile
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Student> updateStudentProfile(@PathVariable Long id, @RequestBody Student updatedStudent) {
+        Optional<Student> studentOptional = studentRepository.findById(id);
         if (studentOptional.isPresent()) {
             Student student = studentOptional.get();
-            student.setEmail(updatedStudent.getEmail());
-            student.setPassword(updatedStudent.getPassword());
-            return ResponseEntity.ok(studentService.saveStudent(student));
+            // Actualizează informațiile studentului
+            student.setFirstName(updatedStudent.getFirstName());
+            student.setLastName(updatedStudent.getLastName());
+            student.setUniversityName(updatedStudent.getUniversityName());
+            student.setUniversityEmail(updatedStudent.getUniversityEmail());
+            student.setPhone(updatedStudent.getPhone());
+            student.setBio(updatedStudent.getBio());
+
+            return ResponseEntity.ok(studentRepository.save(student));  // Salvează și returnează studentul actualizat
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build();  // Returnează 404 dacă nu găsește studentul
         }
     }
 
-    // Delete a student by ID
+    // Delete student by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
         if (studentService.getStudentById(id).isPresent()) {

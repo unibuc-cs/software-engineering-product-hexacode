@@ -4,14 +4,15 @@ import { useAuth } from "../context/AuthContext";
 import './Profile.css';
 import { useNavigate } from "react-router-dom";
 import html2pdf from 'html2pdf.js';
-import CVTemplate from '../components/CVTemplate'; // Importă CVTemplate
+import CVTemplate from '../components/CVTemplate';
 
 const Profile = () => {
-    const { user } = useAuth(); // Obține utilizatorul din contextul de autentificare
+    const { user } = useAuth();
+    console.log("User:", user);
     const [profile, setProfile] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [updatedProfile, setUpdatedProfile] = useState({});
-    const [cvList, setCvList] = useState([]); // Lista CV-urilor utilizatorului
+    const [cvList, setCvList] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -20,20 +21,31 @@ const Profile = () => {
         }
 
 
+        console.log("User from context:", user);
+
         const fetchProfile = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/profile/${user.id}`);
+                console.log("User role:", user.role);  // Verifică ce rol are utilizatorul
+                // Verificăm rolul utilizatorului pentru a alege endpoint-ul corect
+                const endpoint = user.role === 'student'
+                    ? `http://localhost:8080/api/students/${user.id}`
+                    : `http://localhost:8080/api/employers/${user.id}`;
+
+                const response = await fetch(endpoint);
                 if (!response.ok) {
                     throw new Error('Error fetching profile');
                 }
                 const data = await response.json();
                 setProfile(data);
                 setUpdatedProfile(data);
+                console.log("Updated profile:", updatedProfile);
+
             } catch (error) {
                 console.error("Error fetching profile:", error);
                 alert('Nu s-a putut încărca profilul. Vă rugăm să încercați din nou.');
             }
         };
+
 
 
         const fetchCVs = async () => {
@@ -43,11 +55,11 @@ const Profile = () => {
                     throw new Error('Error fetching CVs');
                 }
                 const data = await response.json();
-                console.log("Fetched CVs:", data); // Verifică ce date primești
-                setCvList(data); // Set CV list
+                console.log("Fetched CVs:", data);
+                setCvList(data);
             } catch (error) {
                 console.error("Error fetching CVs:", error);
-                alert('Nu s-au putut încărca CV-urile. Vă rugăm să încercați din nou.');
+
             }
         };
 
@@ -55,15 +67,41 @@ const Profile = () => {
         fetchCVs();
     }, [user]);
 
+
+
+    const handleUploadRedirect = () => {
+        navigate('/upload-cv-student');
+    };
+
+
+    const handleUploadRedirect2 = () => {
+        navigate('/upload-cv-page'); // Redirecționează la pagina de upload pentru studenți
+    };
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setUpdatedProfile({ ...updatedProfile, [name]: value });
     };
 
     const handleUpdateProfile = async () => {
+
+        if (!user || !user.role) {
+            alert('User data is missing or session has expired.');
+            return;
+        }
+
         try {
-            const { user, ...profileWithoutUser } = updatedProfile;
-            const response = await axios.put(`http://localhost:8080/profile/${user.id}`, profileWithoutUser);
+
+            const { user: userFromProfile, ...profileWithoutUser } = updatedProfile;
+
+            // Verifică rolul pentru a alege endpoint-ul corect
+            const endpoint = user.role === 'student'
+                ? `http://localhost:8080/api/students/update/${user.id}`
+                : `http://localhost:8080/api/employers/update/${user.id}`;
+
+
+            const response = await axios.put(endpoint, profileWithoutUser);
+
 
             setProfile(response.data);
             setIsEditing(false);
@@ -74,13 +112,15 @@ const Profile = () => {
         }
     };
 
+
+
     const handleEditCV = (cvId) => {
-        // Navighează către pagina de editare a CV-ului
+
         navigate(`/edit-cv/${cvId}`);
     };
 
     const handleDownloadPDF = (cvId) => {
-        // Identifică elementul corespunzător pentru CV-ul selectat
+
         const element = document.getElementById(`cv-preview-${cvId}`);
         const options = {
             filename: `${cvId}-CV.pdf`,
@@ -88,7 +128,7 @@ const Profile = () => {
             html2canvas: { scale: 3 },
         };
 
-        // Crează și descarcă PDF-ul
+
         html2pdf().set(options).from(element).save();
     };
 
@@ -97,12 +137,12 @@ const Profile = () => {
         if (!confirmDelete) return;
 
         try {
-            // Trimite cererea DELETE către server
+
             const response = await axios.delete(`http://localhost:8080/api/cv/${cvId}`);
 
             if (response.status === 200 || response.status === 204) {
-                // Actualizează lista de CV-uri din frontend
-                setCvList(cvList.filter(cv => cv.id !== cvId)); // Îndepărtează CV-ul șters din lista de CV-uri
+
+                setCvList(cvList.filter(cv => cv.id !== cvId));
                 alert('CV-ul a fost șters cu succes');
             } else {
                 throw new Error('Failed to delete CV');
@@ -155,18 +195,79 @@ const Profile = () => {
                             onChange={handleInputChange}
                         />
                     </label>
-                    <label className="form-label">
-                        Contact Info:
-                        <input
-                            className="input-field"
-                            type="text"
-                            name="contactInfo"
-                            value={updatedProfile.contactInfo}
-                            onChange={handleInputChange}
-                        />
-                    </label>
+
+                    {/* Render different fields based on the user role */}
+                    {user.role === 'student' && (
+                        <>
+                            <label className="form-label">
+                                University Name:
+                                <input
+                                    className="input-field"
+                                    type="text"
+                                    name="universityName"
+                                    value={updatedProfile.universityName}
+                                    onChange={handleInputChange}
+                                />
+                            </label>
+                            <label className="form-label">
+                                University Email:
+                                <input
+                                    className="input-field"
+                                    type="text"
+                                    name="universityEmail"
+                                    value={updatedProfile.universityEmail}
+                                    onChange={handleInputChange}
+                                />
+                            </label>
+                            <label className="form-label">
+                                Phone:
+                                <input
+                                    className="input-field"
+                                    type="text"
+                                    name="phone"
+                                    value={updatedProfile.phone}
+                                    onChange={handleInputChange}
+                                />
+                            </label>
+                        </>
+                    )}
+                    {user.role === 'employer' && (
+                        <>
+                            <label className="form-label">
+                                Company Name:
+                                <input
+                                    className="input-field"
+                                    type="text"
+                                    name="companyName"
+                                    value={updatedProfile.companyName}
+                                    onChange={handleInputChange}
+                                />
+                            </label>
+                            <label className="form-label">
+                                Company Email:
+                                <input
+                                    className="input-field"
+                                    type="text"
+                                    name="companyEmail"
+                                    value={updatedProfile.companyEmail}
+                                    onChange={handleInputChange}
+                                />
+                            </label>
+                            <label className="form-label">
+                                Company Phone:
+                                <input
+                                    className="input-field"
+                                    type="text"
+                                    name="companyPhone"
+                                    value={updatedProfile.companyPhone}
+                                    onChange={handleInputChange}
+                                />
+                            </label>
+                        </>
+                    )}
+
                     <div className="button-group">
-                        <button className="button save-button" onClick={handleUpdateProfile}>Save</button>
+                        <button className="button save-button " onClick={handleUpdateProfile}>Save</button>
                         <button className="button cancel-button" onClick={() => setIsEditing(false)}>Cancel</button>
                     </div>
                 </div>
@@ -175,41 +276,73 @@ const Profile = () => {
                     <p><strong>First Name:</strong> {profile.firstName}</p>
                     <p><strong>Last Name:</strong> {profile.lastName}</p>
                     <p><strong>Bio:</strong> {profile.bio}</p>
-                    <p><strong>Contact Info:</strong> {profile.contactInfo}</p>
+
+                    {/* Render different fields based on the user role */}
+                    {user.role === 'student' && (
+                        <>
+                            <p><strong>University Name:</strong> {profile.universityName}</p>
+                            <p><strong>University Email:</strong> {profile.universityEmail}</p>
+                            <p><strong>Phone:</strong> {profile.phone}</p>
+                        </>
+                    )}
+                    {user.role === 'employer' && (
+                        <>
+                            <p><strong>Company Name:</strong> {profile.companyName}</p>
+                            <p><strong>Company Email:</strong> {profile.companyEmail}</p>
+                            <p><strong>Company Phone:</strong> {profile.companyPhone}</p>
+                        </>
+                    )}
+
                     <button className="button edit-button" onClick={() => setIsEditing(true)}>Edit Profile</button>
                 </div>
             )}
 
-            {/* CV section */}
-            <div className="cv-section">
-                <p className="cv-message">Aici poți vizualiza și gestiona CV-urile create.</p> {/* Centrat și evidențiat */}
-
-                <div className="cv-list">
-                    {cvList.length === 0 ? (
-                        <p>No CVs found. Create one to start.</p>
-                    ) : (
-                        <ul>
-                            {cvList.map((cv) => (
-                                <li key={cv.id} className="cv-card">
 
 
-                                    <div id={`cv-preview-${cv.id}`} className="cv-preview">
-                                        <CVTemplate formData={cv} image={cv.imagePath} cvType={cv.cvType}/>
-                                    </div>
+            {/* Only display CV section for students */}
+            {user.role === 'student' && (
+                <div className="cv-section">
+                    <p className="cv-message">Aici poți vizualiza și gestiona CV-urile create.</p>
+                    <button onClick={handleUploadRedirect} className="button upload-page">
+                        Upload Page
+                    </button>
 
-
-                                    <div className="cv-actions">
-                                        <button onClick={() => handleDownloadPDF(cv.id)}>Download</button>
-                                        <button onClick={() => handleEditCV(cv.id)}>Edit</button>
-                                        <button onClick={() => handleDeleteCV(cv.id)}>Delete</button>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
+                    <div className="cv-list">
+                        {cvList.length === 0 ? (
+                            <p>No CVs found. Create one to start.</p>
+                        ) : (
+                            <ul>
+                                {cvList.map((cv) => (
+                                    <li key={cv.id} className="cv-card">
+                                        <div id={`cv-preview-${cv.id}`} className="cv-preview">
+                                            <CVTemplate formData={cv} image={cv.imagePath} cvType={cv.cvType}/>
+                                        </div>
+                                        <div className="cv-actions">
+                                            <button onClick={() => handleDownloadPDF(cv.id)}>Download</button>
+                                            <button onClick={() => handleEditCV(cv.id)}>Edit</button>
+                                            <button onClick={() => handleDeleteCV(cv.id)}>Delete</button>
+                                            <button onClick={handleUploadRedirect} className="button upload-cv-button">
+                                                Upload CV
+                                            </button>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
                 </div>
-            </div>
+            )}
 
+            {/* Only display CV section for students */}
+            {user.role === 'employer' && (
+                <div className="cv-section">
+                    <button className="button upload-cv-button" onClick={handleUploadRedirect2}>
+                        View All CVs
+                    </button>
+
+                    {/* Display student's CVs */}
+                </div>
+            )}
         </div>
     );
 };

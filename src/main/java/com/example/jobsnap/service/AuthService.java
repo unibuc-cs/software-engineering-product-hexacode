@@ -2,8 +2,11 @@ package com.example.jobsnap.service;
 
 import com.example.jobsnap.entity.Student;
 import com.example.jobsnap.entity.Employer;
+import com.example.jobsnap.entity.User;
 import com.example.jobsnap.repository.StudentRepository;
 import com.example.jobsnap.repository.EmployerRepository;
+import com.example.jobsnap.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import io.jsonwebtoken.Jwts;
@@ -24,85 +27,98 @@ public class AuthService {
     private StudentRepository studentRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private EmployerRepository employerRepository;
 
     // Secret key for JWT signing (should be stored securely in production)
     private final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     /**
-     * Handles login for both students and employers.
+     * Handles sign-up for both students and employers.
      *
-     * @param email    the user's email
-     * @param password the user's password
-     * @param role     the user's role ("student" or "employer")
-     * @return a LoginResponse object containing a JWT token and user details
+     * @param email             the user's email
+     * @param password          the user's password
+     * @param role              the user's role ("student" or "employer")
+     * @param universityName    the student's university name (if role is student)
+     * @param universityEmail   the student's university email (if role is student)
+     * @param phone             the student's phone number (if role is student)
+     * @param companyName       the employer's company name (if role is employer)
+     * @param companyEmail      the employer's company email (if role is employer)
+     * @param companyPhone      the employer's company phone (if role is employer)
      */
-
-    public void signUp(String email, String password, String role, String name) {
+    @Transactional
+    public void signUp(String email, String password, String role, String firstName, String lastName,
+                       String universityName, String universityEmail, String phone,
+                       String companyName, String companyEmail, String companyPhone, String bio) {
         if ("student".equalsIgnoreCase(role)) {
-            if (studentRepository.findByEmail(email).isPresent()) {
-                throw new RuntimeException("Email already registered as student");
-            }
-            Student student = new Student();
-            student.setEmail(email);
-            student.setPassword(password); // Adaugă criptare parolei în producție!
-
-            studentRepository.save(student);
+            // Create and save a new Student entity
+            Student student = new Student(email, password, universityName, universityEmail, phone, firstName, lastName, bio);
+            studentRepository.save(student);  // Save in the 'student' table
         } else if ("employer".equalsIgnoreCase(role)) {
-            if (employerRepository.findByEmail(email).isPresent()) {
-                throw new RuntimeException("Email already registered as employer");
-            }
-            Employer employer = new Employer();
-            employer.setEmail(email);
-            employer.setPassword(password); // Adaugă criptare parolei în producție!
-
-            employerRepository.save(employer);
+            // Create and save a new Employer entity
+            Employer employer = new Employer(email, password, companyName, companyEmail, companyPhone, firstName, lastName, bio);
+            employerRepository.save(employer);  // Save in the 'employer' table
         } else {
             throw new RuntimeException("Invalid role");
         }
     }
 
-    public LoginResponse login(String email, String password, String role) {
+    /**
+     * Handles login for both students and employers.
+     *
+     * @param email    the user's email
+     * @param password the user's password
+
+     * @return a LoginResponse object containing a JWT token and user details
+     */
+    public LoginResponse login(String email, String password) {
         logger.info("Attempting login for email: {}", email);
 
-        if ("student".equalsIgnoreCase(role)) {
-            Optional<Student> studentOptional = studentRepository.findByEmail(email);
-            if (studentOptional.isPresent() && studentOptional.get().getPassword().equals(password)) {
-                Student student = studentOptional.get();
-                String token = createToken(student.getEmail(), "student");
-                logger.info("Login successful for student: {}", student.getEmail());
-                return new LoginResponse(token, student.getId(), "Student", student.getEmail());
-            } else {
-                logger.warn("Student login failed for email: {}", email);
-            }
-        } else if ("employer".equalsIgnoreCase(role)) {
-            Optional<Employer> employerOptional = employerRepository.findByEmail(email);
-            if (employerOptional.isPresent() && employerOptional.get().getPassword().equals(password)) {
-                Employer employer = employerOptional.get();
-                String token = createToken(employer.getEmail(), "employer");
-                logger.info("Login successful for employer: {}", employer.getEmail());
-                return new LoginResponse(token, employer.getId(), employer.getName(), employer.getEmail());
-            } else {
-                logger.warn("Employer login failed for email: {}", email);
-            }
-        }
+        Optional<User> userOptional = userRepository.findByEmail(email);
 
-        logger.error("Invalid credentials or role for email: {}", email);
-        throw new RuntimeException("Invalid credentials or role");
+        if (userOptional.isPresent() && userOptional.get().getPassword().equals(password)) {
+            User user = userOptional.get();
+            String token = createToken(user.getEmail());
+
+            // Verifică rolul utilizatorului
+            Optional<Student> studentOptional = studentRepository.findById(user.getId());
+            if (studentOptional.isPresent()) {
+                logger.info("Login successful for student: {}", user.getEmail());
+                logger.info("Login response: {}", user.getId());
+                logger.info("Login response: {}", token);
+                return new LoginResponse(token, user.getId(), user.getEmail(), "student");
+            }
+
+            Optional<Employer> employerOptional = employerRepository.findById(user.getId());
+            if (employerOptional.isPresent()) {
+                logger.info("Login successful for employer: {}", user.getEmail());
+                return new LoginResponse(token, user.getId(), user.getEmail(), "employer");
+            }
+
+            logger.error("No matching role found for email: {}", email);
+            throw new RuntimeException("No matching role found for email");
+        } else {
+            logger.warn("Login failed for email: {}", email);
+            throw new RuntimeException("Invalid credentials");
+        }
     }
+
+
+
+
 
     /**
      * Creates a JWT token.
      *
      * @param email the user's email
-     * @param role  the user's role
      * @return a signed JWT token
      */
-    private String createToken(String email, String role) {
-        logger.debug("Creating token for email: {}, role: {}", email, role);
+    private String createToken(String email) {
+        logger.debug("Creating token for email: {}, role: {}", email);
         return Jwts.builder()
                 .setSubject(email)
-                .claim("role", role)
                 .signWith(secretKey)
                 .compact();
     }
@@ -112,15 +128,16 @@ public class AuthService {
      */
     public class LoginResponse {
         private String token;
-        private int id;
-        private String name;
+        private long id;
         private String email;
+        private String role;
 
-        public LoginResponse(String token, int id, String name, String email) {
+        // Constructor
+        public LoginResponse(String token, long id, String email, String role) {
             this.token = token;
             this.id = id;
-            this.name = name;
             this.email = email;
+            this.role = role;
         }
 
         // Getters and Setters
@@ -132,20 +149,12 @@ public class AuthService {
             this.token = token;
         }
 
-        public int getId() {
+        public long getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(long id) {
             this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
         }
 
         public String getEmail() {
@@ -155,5 +164,16 @@ public class AuthService {
         public void setEmail(String email) {
             this.email = email;
         }
+
+        // Getter for role
+        public String getRole() {
+            return role;
+        }
+
+        // Setter for role
+        public void setRole(String role) {
+            this.role = role;
+        }
     }
+
 }

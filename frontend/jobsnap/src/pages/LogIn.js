@@ -11,20 +11,37 @@ export default function LoginPage() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('student'); // Default to 'employer' for testing
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            // Apelăm funcția login din context
-            await login({ email, password, role });
-            navigate('/home'); // Redirecționează utilizatorul după login
+            const response = await fetch("http://localhost:8080/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await response.json();
+
+            if (response.ok) {
+                // Save the user data, including the role, to localStorage
+                console.log('DATA:');
+                console.log(JSON.stringify(data));
+                localStorage.setItem('user', JSON.stringify(data));
+
+                // Redirect to profile page or dashboard
+                window.location.href="/profile";
+            } else {
+                alert("Login failed");
+            }
         } catch (error) {
-            console.error('Login error:', error.message); // Log the error for debugging
-            setErrorMessage(error.message || 'An error occurred during login.');
+            console.error("Error during login:", error);
+            alert("An error occurred. Please try again.");
         }
     };
+
+
+
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -57,20 +74,6 @@ export default function LoginPage() {
                             required
                         />
                     </div>
-                    <div className="mb-4">
-                        <label className="block text-sm font-semibold mb-2" htmlFor="role">
-                            Role
-                        </label>
-                        <select
-                            id="role"
-                            value={role}
-                            onChange={(e) => setRole(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded"
-                        >
-                            <option value="student">Student</option>
-                            <option value="employer">Employer</option>
-                        </select>
-                    </div>
                     {errorMessage && (
                         <div className="text-red-500 text-sm mb-4">{errorMessage}</div>
                     )}
@@ -87,6 +90,4 @@ export default function LoginPage() {
             </div>
         </div>
     );
-
-
 }

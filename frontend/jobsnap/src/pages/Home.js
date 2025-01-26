@@ -4,8 +4,10 @@ import Footer from "../components/Footer";
 import HeroSection from "../components/Hero_Section";
 import Benefits_Section from "../components/Benefits_Section";
 import How_It_Works_Section from "../components/How_It_Works_Section";
-
+import { useAuth } from "../context/AuthContext";
 function Home() {
+    const { user } = useAuth()
+    console.log("User:", user);
     return (
         <div>
 

@@ -1,98 +1,59 @@
 package com.example.jobsnap.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
-// Clasa Student
+/**
+ * Student Entity that inherits from User entity and adds student-specific fields.
+ */
 @Entity
+@Table(name = "student")
+@PrimaryKeyJoinColumn(name = "id")  // Inheriting the 'id' field from the User class
 public class Student extends User {
-    @Id
-    private int id;
-    private String email;
-    private String password;
+
+    private String universityName;
+    private String universityEmail;
+    private String phone;
+    private String firstName;
+    private String lastName;
+    private String bio;
 
     // Constructor
-    public Student(int id, String email, String password) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
+    public Student(String email, String password, String universityName, String universityEmail, String phone, String firstName, String lastName, String bio) {
+        super(email, password);  // Calls the constructor of the User class
+        this.universityEmail = universityEmail;
+        this.universityName = universityName;
+        this.phone = phone;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.bio = bio;
     }
 
+    // Default constructor
     public Student() {
-
+        super();
     }
 
-    // Getters
-    public int getId() {
-        return id;
-    }
+    // Getters and Setters
+    public String getUniversityName() { return universityName; }
+    public void setUniversityName(String universityName) { this.universityName = universityName; }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getUniversityEmail() { return universityEmail; }
+    public void setUniversityEmail(String universityEmail) { this.universityEmail = universityEmail; }
 
-    public String getPassword() {
-        return password;
-    }
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
 
-    // Setters
-    public void setId(int id) {
-        this.id = id;
-    }
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public String getBio() { return bio; }
+    public void setBio(String bio) { this.bio = bio; }
 
-    // Metoda principală pentru testare
-    public static void main(String[] args) {
-        // Creează un student
-        Student student = new Student(1, "student1@microsoft.com", "student1");
-
-        // Inserează studentul în baza de date
-        try {
-            insertStudentIntoDatabase(student);
-            System.out.println("Student inserat cu succes!");
-        } catch (SQLException e) {
-            System.out.println("Eroare la inserare: " + e.getMessage());
-        }
-    }
-
-    // Metoda pentru inserarea studentului în baza de date
-    public static void insertStudentIntoDatabase(Student student) throws SQLException {
-        // Configurare conexiune baza de date
-        String url = "jdbc:oracle:thin:@localhost:1521:xe";
-        String user = "c##letitia"; // Introduceți utilizatorul bazei de date
-        String password = "parola26"; // Introduceți parola bazei de date
-
-        // Query-ul SQL
-        String sql = "INSERT INTO student (id, email, password) VALUES (?, ?, ?)";
-
-        // Conectează-te și inserează datele
-        try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-
-            // Setează valorile parametrilor
-            preparedStatement.setInt(1, student.getId());
-            preparedStatement.setString(2, student.getEmail());
-            preparedStatement.setString(3, student.getPassword());
-
-            // Execută comanda
-            preparedStatement.executeUpdate();
-        }
-    }
-
-
-    public String getName() {
-        return null;
+    @Override
+    public String toString() {
+        return "Student [email=" + getEmail() + ", universityName=" + universityName + ", universityEmail=" + universityEmail + "]";
     }
 }

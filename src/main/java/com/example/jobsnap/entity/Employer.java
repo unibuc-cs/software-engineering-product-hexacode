@@ -1,122 +1,58 @@
 package com.example.jobsnap.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+/**
+ * Employer Entity that inherits from User entity and adds employer-specific fields.
+ */
 @Entity
+@Table(name = "employer")
+@PrimaryKeyJoinColumn(name = "id")  // Inheriting the 'id' field from the User class
 public class Employer extends User {
-    @Id
-    private int id;
-    private String name;
+
     private String companyName;
-    private String email;
-    private String password;
-
+    private String companyEmail;
+    private String companyPhone;
+    private String firstName;
+    private String lastName;
+    private String bio;
     // Constructor
-    public Employer(int id, String name, String companyName, String email, String password) {
-        this.id = id;
-        this.name = name;
+    public Employer(String email, String password, String companyName, String companyEmail, String companyPhone, String firstName, String lastName, String bio) {
+        super(email, password);  // Calls the constructor of the User class
+        this.companyEmail = companyEmail;
         this.companyName = companyName;
-        this.email = email;
-        this.password = password;
+        this.companyPhone = companyPhone;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.bio = bio;
     }
 
+    // Default constructor
     public Employer() {
-
+        super();
     }
 
-    // Getters
+    // Getters and Setters
+    public String getCompanyName() { return companyName; }
+    public void setCompanyName(String companyName) { this.companyName = companyName; }
 
-    public String getName() {
-        return name;
+    public String getCompanyEmail() { return companyEmail; }
+    public void setCompanyEmail(String companyEmail) { this.companyEmail = companyEmail; }
+
+    public String getCompanyPhone() { return companyPhone; }
+    public void setCompanyPhone(String companyPhone) { this.companyPhone = companyPhone; }
+
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
+    public String getBio() { return bio; }
+    public void setBio(String bio) { this.bio = bio; }
+
+    @Override
+    public String toString() {
+        return "Employer [email=" + getEmail() + ", companyName=" + companyName + ", companyPhone=" + companyPhone + "]";
     }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    // Setters
-    public void setId(int id) {
-        this.id = id;
-    }
-    public int getId() {
-        return id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    // Main method for testing
-    public static void main(String[] args) {
-        // Create an employer
-        Employer employer = new Employer(1, "John Doe", "TechCorp", "employer@example.com", "securepassword");
-        Employer employer2 = new Employer(2, "Costel Cost ", "Microsoft", "costelxx@techcorp.com", "employerpass");
-        Employer employer3 = new Employer(11, "Vasile Vas ", "Log", "vasilevas@log.com", "employerpass");
-
-
-        // Insert the employer into the database
-        try {
-            insertEmployerIntoDatabase(employer);
-            insertEmployerIntoDatabase(employer2);
-            insertEmployerIntoDatabase(employer3);
-
-            System.out.println("Employer inserted successfully!");
-        } catch (SQLException e) {
-            System.out.println("Error inserting employer: " + e.getMessage());
-        }
-    }
-
-    // Method to insert employer into the database
-    public static void insertEmployerIntoDatabase(Employer employer) throws SQLException {
-        // Database connection configuration
-        String url = "jdbc:oracle:thin:@localhost:1521:xe";
-        String user = "C##letitia"; // Replace with your database user
-        String password = "parola26"; // Replace with your database password
-
-        // SQL query
-        String sql = "INSERT INTO employer (id, name, company_name, email, password) VALUES (?, ?, ?, ?, ?)";
-
-        // Connect and insert data
-        try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-
-            // Set parameter values
-            preparedStatement.setInt(1, employer.getId());
-            preparedStatement.setString(2, employer.getName());
-            preparedStatement.setString(3, employer.getCompanyName());
-            preparedStatement.setString(4, employer.getEmail());
-            preparedStatement.setString(5, employer.getPassword());
-
-            // Execute the command
-            preparedStatement.executeUpdate();
-        }
-    }
-
-
-
 }

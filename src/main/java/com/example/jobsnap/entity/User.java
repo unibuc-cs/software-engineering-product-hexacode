@@ -1,32 +1,42 @@
 package com.example.jobsnap.entity;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import jakarta.persistence.*;
-//@JsonTypeInfo(
-//        use = JsonTypeInfo.Id.NAME,
-//        include = JsonTypeInfo.As.EXTERNAL_PROPERTY,
-//        property = "userType" // This property will help Jackson determine the concrete class
-//)
-//@JsonSubTypes({
-//        @JsonSubTypes.Type(value = Student.class, name = "student"),
-//        @JsonSubTypes.Type(value = Employer.class, name = "employer")
-//})
+
+/**
+ * User Entity - Base class for both Employer and Student entities.
+ */
 @Entity
 @Table(name = "users")
-@Inheritance(strategy = InheritanceType.JOINED) // Can use SINGLE_TABLE or TABLE_PER_CLASS
-public abstract class User {
+@Inheritance(strategy = InheritanceType.JOINED) // Using JOINED inheritance strategy
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String email;
+    private String password;
 
-    // Other shared fields
+    @Version
+    private int version; // Optimistic locking field
 
-    // Getters and setters
-    public int getId() { return id; }
+    public User() {}
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    // Getters and Setters
+    public long getId() { return id; }
     public void setId(int id) { this.id = id; }
+
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public int getVersion() { return version; }
+    public void setVersion(int version) { this.version = version; }
 }

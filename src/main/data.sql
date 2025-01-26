@@ -118,6 +118,7 @@ ALTER TABLE CV ADD id NUMBER GENERATED ALWAYS AS IDENTITY (START WITH 1);
 
 SELECT * FROM CV WHERE user_id = 21;
 
+
 ALTER TABLE CV DROP COLUMN ACHIEVEMENTS;
 
 commit;
@@ -161,5 +162,245 @@ ALTER TABLE CV ADD CONSTRAINT pk_cv PRIMARY KEY (id);
 
 ALTER TABLE PROFILE ADD cv_id NUMBER;
 ALTER TABLE PROFILE ADD CONSTRAINT fk_profi_cv FOREIGN KEY (cv_id) REFERENCES CV(id);
+
+SELECT * FROM user_tab_columns WHERE table_name = 'USER';
+
+SELECT email FROM users;
+
+select * from employer;
+
+ALTER TABLE employer DROP COLUMN NAME;
+
+ALTER TABLE employer DROP COLUMN COMPANY_NAME;
+
+ALTER TABLE employer DROP COLUMN PASSWORD;
+
+ALTER TABLE STUDENT DROP COLUMN PASSWORD;
+
+ALTER TABLE users
+    ADD CONSTRAINT email_unique UNIQUE (email);
+
+SELECT constraint_name
+FROM user_constraints
+WHERE table_name = 'USERS';
+
+DELETE FROM users
+WHERE rowid NOT IN (
+    SELECT MIN(rowid)
+    FROM users
+    GROUP BY email
+);
+
+DELETE FROM student WHERE email IN (SELECT email FROM users WHERE email = 'student1@microsoft.com');
+DELETE FROM student WHERE id IN (SELECT id FROM users WHERE id = 19);
+DELETE FROM employer WHERE email IN (SELECT email FROM users WHERE email = 'costelxx@techcorp.com');
+DELETE FROM users WHERE email = 'student1@microsoft.com';
+DELETE FROM users WHERE email IN (SELECT email FROM users WHERE email = 'student1@microsoft.com');
+
+DELETE FROM profile WHERE user_id = 21;
+
+DELETE FROM users WHERE email IN (SELECT email FROM users WHERE email = 'student1@microsoft.com');
+
+SELECT constraint_name, table_name
+FROM user_constraints
+WHERE r_constraint_name IN (
+    SELECT constraint_name FROM user_constraints WHERE table_name = 'USERS'
+);
+
+SELECT table_name, constraint_name
+FROM user_cons_columns
+WHERE table_name != 'USERS'
+  AND column_name = 'EMAIL';
+
+
+
+ALTER TABLE student DROP CONSTRAINT FK3W7XMT19I6A0CR7KP8C80EK40;
+ALTER TABLE employer DROP CONSTRAINT FK8BBWI5DN2PGDUBXFICFAGGUG;
+
+ALTER TABLE profile DROP CONSTRAINT FKS14JVSF9TQRCNLY0AFSV0NGWV;
+
+ALTER TABLE employer DROP CONSTRAINT SYS_C008454;
+ALTER TABLE employer DROP CONSTRAINT SYS_C008457;
+
+SELECT table_name, constraint_name
+FROM user_constraints
+WHERE r_constraint_name IN (
+    SELECT constraint_name
+    FROM user_constraints
+    WHERE table_name = 'USERS'
+);
+
+SELECT email, COUNT(*)
+FROM users
+GROUP BY email
+HAVING COUNT(*) > 1;
+
+ALTER TABLE users
+    ADD CONSTRAINT email_unique UNIQUE (email);
+
+
+SELECT constraint_name, table_name
+FROM user_constraints
+WHERE table_name = 'USERS' AND constraint_type = 'U';
+
+SELECT email FROM users;
+
+ALTER TABLE student
+    ADD CONSTRAINT student_email_unique UNIQUE (email);
+
+
+SELECT constraint_name, table_name
+FROM user_constraints
+WHERE table_name IN ('EMPLOYER', 'STUDENT')
+  AND constraint_type = 'R';
+
+ALTER TABLE employer
+    ADD CONSTRAINT fk_employer_user
+        FOREIGN KEY (id)  -- Columna din employer care face referință la users
+            REFERENCES users(id)   -- Columna id din users
+                ON DELETE CASCADE;  -- Opțional, șterge employer-ul dacă utilizatorul din users este șters
+
+
+ALTER TABLE student
+    ADD CONSTRAINT fk_student_user
+        FOREIGN KEY (id)  -- Columna din student care face referință la users
+            REFERENCES users(id)   -- Columna id din users
+                ON DELETE CASCADE;  -- Opțional, șterge studentul dacă utilizatorul din users este șters
+
+SELECT *
+FROM profile
+WHERE user_id NOT IN (SELECT id FROM users);
+
+
+SELECT *
+FROM profile
+WHERE user_id NOT IN (SELECT id FROM users);
+
+DELETE FROM profile
+WHERE user_id NOT IN (SELECT id FROM users);
+
+DELETE FROM profile
+WHERE user_id IN (SELECT user_id FROM profile WHERE CONTACT_INFO = 'student1@microsoft.com');
+
+
+DELETE FROM users
+WHERE id IN (SELECT user_id FROM profile WHERE user_id NOT IN (SELECT id FROM users));
+
+DELETE FROM profile
+WHERE user_id NOT IN (SELECT id FROM users);
+
+SELECT constraint_name
+FROM all_cons_columns
+WHERE table_name = 'PROFILE'
+  AND column_name = 'USER_ID';
+
+ALTER TABLE profile
+DROP CONSTRAINT SYS_C008468;
+
+ALTER TABLE profile
+    DROP CONSTRAINT SYS_C008469;
+
+SELECT constraint_name, table_name
+FROM all_cons_columns
+WHERE table_name = 'PROFILE';
+
+ALTER TABLE PROFILE DROP CONSTRAINT SYS_C008469;
+
+ALTER TABLE PROFILE DROP CONSTRAINT UKJLPSM4I7ITJ569QKFRUI0GAXP;
+
+SELECT constraint_name, table_name
+FROM all_cons_columns
+WHERE table_name = 'users';
+
+SELECT * FROM CV WHERE user_id IN (SELECT user_id FROM profile);
+
+
+ALTER TABLE profile DROP CONSTRAINT SYS_C008469;
+
+SELECT table_name, constraint_name
+FROM all_cons_columns
+WHERE table_name = 'PROFILE';
+
+SELECT *
+FROM CV
+WHERE user_id IN (SELECT user_id FROM profile);
+
+DELETE FROM CV
+WHERE user_id IN (SELECT user_id FROM profile WHERE contact_info = 'student1@microsoft.com');
+
+SELECT a.table_name, a.constraint_name, c.owner,
+       -- You can add more columns if needed to inspect foreign key relationships
+       c.table_name, c.constraint_name
+FROM all_cons_columns a
+         JOIN all_constraints c
+              ON a.constraint_name = c.constraint_name
+WHERE c.constraint_type = 'R'
+  AND a.table_name = 'PROFILE';
+
+
+
+
+DELETE FROM profile WHERE contact_info = 'student1@microsoft.com';
+
+ALTER TABLE profile
+    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id)
+        REFERENCES users(id);
+
+CREATE SEQUENCE user_seq START WITH 1 INCREMENT BY 1;
+
+DELETE FROM profile WHERE user_id = 21;
+DELETE FROM cv WHERE user_id = 21;
+
+ALTER TABLE EMPLOYER DROP COLUMN EMAIL;
+
+ALTER TABLE "EMPLOYER" ADD "COMPANYNAME" VARCHAR2(255);
+ALTER TABLE "EMPLOYER" ADD "COMPANYEMAIL" VARCHAR2(255);
+ALTER TABLE "EMPLOYER" ADD "COMPANYPHONE" VARCHAR2(255);
+ALTER TABLE "EMPLOYER" ADD "LASTNAME" VARCHAR2(255);
+ALTER TABLE "EMPLOYER" ADD "FIRSTNAME" VARCHAR2(255);
+
+ALTER TABLE STUDENT DROP COLUMN UNIVERSITYNAME;
+ALTER TABLE STUDENT DROP COLUMN UNIVERSITYEMAIL;
+ALTER TABLE STUDENT DROP COLUMN FIRSTNAME;
+ALTER TABLE STUDENT DROP COLUMN LASTNAME;
+
+ALTER TABLE "STUDENT" ADD "UNIVERSITYNAME" VARCHAR2(255);
+ALTER TABLE "STUDENT" ADD "UNIVERSITYEMAIL" VARCHAR2(255);
+ALTER TABLE "STUDENT" ADD "PHONE" VARCHAR2(255);
+ALTER TABLE "STUDENT" ADD "LASTNAME" VARCHAR2(255);
+ALTER TABLE "STUDENT" ADD "FIRSTNAME" VARCHAR2(255);
+
+ALTER TABLE "EMPLOYER" DROP COLUMN "COMPANYNAME" ;
+ALTER TABLE "EMPLOYER" DROP COLUMN "COMPANYEMAIL";
+ALTER TABLE "EMPLOYER" DROP COLUMN "COMPANYPHONE";
+ALTER TABLE "EMPLOYER" DROP COLUMN "LASTNAME";
+ALTER TABLE "EMPLOYER" DROP COLUMN "FIRSTNAME";
+
+select * from STUDENT;
+
+ALTER TABLE users ADD version INT DEFAULT 0;
+
+ALTER TABLE "EMPLOYER" ADD "BIO" VARCHAR2(255);
+ALTER TABLE "STUDENT" ADD "BIO" VARCHAR2(255);
+
+SELECT * FROM users WHERE id = 33;
+
+
+ALTER TABLE cv
+    ADD CONSTRAINT fk_user_id
+        FOREIGN KEY (USER_ID) REFERENCES users(ID);
+
+SELECT constraint_name, constraint_type
+FROM user_constraints
+WHERE table_name = 'CV';
+
+ALTER TABLE cv
+    DROP CONSTRAINT FK_USER_ID;
+
+
+
+
+
+
 
 commit;

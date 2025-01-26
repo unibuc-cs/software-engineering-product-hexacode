@@ -14,13 +14,10 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = async (credentials) => {
-        console.log('Login credentials:', credentials);
         try {
             const response = await fetch('http://localhost:8080/auth/login', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(credentials),
             });
 
@@ -30,14 +27,17 @@ export const AuthProvider = ({ children }) => {
             }
 
             const data = await response.json();
-            console.log('Server response:', data); // Log the server response
-            setUser(data); // Save user data in state
-            localStorage.setItem("user", JSON.stringify(data)); // Salveaza utilizatorul in localStorage
+            console.log('Server response:', data); // Verifică ce răspuns primești
+            setUser(data); // Salvează utilizatorul în starea contextului
+            localStorage.setItem("user", JSON.stringify(data)); // Salvează utilizatorul în localStorage
         } catch (error) {
             console.error('Login error:', error.message);
             throw error;
         }
     };
+
+
+
 
     const logout = () => {
         setUser(null); // Reset user state

@@ -42,4 +42,8 @@ public class CVService {
     }
 
 
+    // Metoda care returnează toate CV-urile
+    public List<CV> getAllCVs() {
+        return cvRepository.findAll(); // Apelează repository-ul pentru a obține toate CV-urile
+    }
 }

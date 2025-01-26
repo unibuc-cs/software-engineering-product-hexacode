@@ -11,6 +11,9 @@ import CVBuilder from "./pages/CVBuilder";
 import Profile from './pages/Profile';
 import Cv_jobtypes from './pages/Cv_jobtypes';
 import EditCV from './pages/EditCV';
+import UploadPageStudent from './pages/UploadPageStudent';
+import UploadPageEmployer from './pages/UploadPageEmployer';
+import CVDetailPage from './pages/CVDetailPage';
 import { AuthProvider } from "./context/AuthContext";
 
 
@@ -32,6 +35,10 @@ function App() {
                         <Route path="/profile" element={<Profile />} />
                         <Route path="/create-cv/:cvType" element={<CVBuilder />} />
                         <Route path="/edit-cv/:cvId" element={<EditCV />} />
+                        <Route path="/upload-cv-student" element={<UploadPageStudent />} />
+                        <Route path="/upload-cv-page" element={<UploadPageEmployer />} />
+                        <Route path="/cv-detail/${cvId}`" element={<CVDetailPage />} />
+
 
                     </Routes>
                  </div>

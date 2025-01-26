@@ -26,16 +26,11 @@ public class ProfileController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Profile> updateProfile(@PathVariable int id, @RequestBody Profile updatedProfile) {
-        System.out.println("Update endpoint called for ID: " + id);
-        System.out.println("Request payload: " + updatedProfile);
         try {
             Profile profile = profileService.updateProfile(id, updatedProfile);
-            System.out.println("Updated profile: " + profile);
-            return ResponseEntity.ok(profile);
+            return ResponseEntity.ok(profile);  // Return updated profile
         } catch (Exception e) {
-            System.out.println("Exception occurred while updating profile:");
-            e.printStackTrace(); // Log the full error to the server console
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);  // Handle errors
         }
     }
 

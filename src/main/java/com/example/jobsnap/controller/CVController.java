@@ -50,6 +50,22 @@ public class CVController {
     }
 
 
+    @GetMapping("/allcvs")
+    public ResponseEntity<List<CV>> getAllCVs() {
+        try {
+            List<CV> allCVs = cvService.getAllCVs(); // Apelează serviciul pentru a obține toate CV-urile
+            if (allCVs.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null); // Dacă nu sunt CV-uri
+            }
+            return ResponseEntity.ok(allCVs); // Returnează lista de CV-uri
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // Dacă apare o eroare
+        }
+    }
+
+
+
+
 
     // Endpoint pentru a descărca CV-ul ca fișier (PDF sau alt format)
     @GetMapping("/download/{cvId}")

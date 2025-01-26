@@ -105,6 +105,7 @@
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
+
 }
 
 button {
@@ -122,6 +123,33 @@ button:hover {
 
 button:focus {
     outline: none;
+}
+
+.upload-page button{
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border-color: #45a049;
+
+
+}
+
+/* Save button */
+.save-button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border-color: #45a049;
+}
+
+.save-button:hover {
+    background-color: #45a049; /* Darker green when hovered */
+}
+
+/* Cancel button */
+.cancel-button {
+    background-color: #f44336; /* Red */
+    color: white;
+    border-color: #f44136;
+
 }
 
 /* Lista de CV-uri folosind un grid cu 2 coloane pe ecrane mari și 1 coloană pe ecrane mici */

@@ -1,8 +1,9 @@
-// CONTROLLER PENTRU EMPLOYER
 package com.example.jobsnap.controller;
 
 import com.example.jobsnap.entity.Employer;
 import com.example.jobsnap.service.EmployerService;
+import com.example.jobsnap.repository.EmployerRepository;
+import com.example.jobsnap.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,38 +18,53 @@ public class EmployerController {
     @Autowired
     private EmployerService employerService;
 
+    @Autowired
+    private EmployerRepository employerRepository;  // Repository pentru Employer
+    @Autowired
+    private UserRepository userRepository;  // Repository pentru User, pentru a verifica ID-ul utilizatorului
+
     // Get all employers
     @GetMapping
     public List<Employer> getAllEmployers() {
         return employerService.getAllEmployers();
     }
 
-    // Get employer by ID
+    // Get employer profile by ID
     @GetMapping("/{id}")
-    public ResponseEntity<Employer> getEmployerById(@PathVariable Long id) {
-        Optional<Employer> employer = employerService.getEmployerById(id);
-        return employer.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Employer> getEmployerProfile(@PathVariable Long id) {
+        Optional<Employer> employer = employerRepository.findById(id);
+        if (employer.isPresent()) {
+            return ResponseEntity.ok(employer.get());  // Returnează profilul angajatorului
+        } else {
+            return ResponseEntity.notFound().build();  // Returnează 404 dacă angajatorul nu este găsit
+        }
     }
 
     // Create a new employer
     @PostMapping
     public Employer createEmployer(@RequestBody Employer employer) {
+        System.out.println("Email primit în backend: " + employer.getEmail());  // Verifică dacă email-ul este corect primit
+        if (employer.getEmail() == null || employer.getEmail().isEmpty()) {
+            throw new RuntimeException("Email is required");
+        }
         return employerService.saveEmployer(employer);
     }
 
-    // Update employer by ID
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> updateEmployer(@PathVariable Long id, @RequestBody Employer updatedEmployer) {
-        Optional<Employer> employerOptional = employerService.getEmployerById(id);
+    // Update employer profile by ID
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Employer> updateEmployerProfile(@PathVariable Long id, @RequestBody Employer updatedEmployer) {
+        Optional<Employer> employerOptional = employerRepository.findById(id);
         if (employerOptional.isPresent()) {
             Employer employer = employerOptional.get();
-            employer.setName(updatedEmployer.getName());
+            employer.setFirstName(updatedEmployer.getFirstName());
+            employer.setLastName(updatedEmployer.getLastName());
             employer.setCompanyName(updatedEmployer.getCompanyName());
-            employer.setEmail(updatedEmployer.getEmail());
-            employer.setPassword(updatedEmployer.getPassword());
-            return ResponseEntity.ok(employerService.saveEmployer(employer));
+            employer.setCompanyEmail(updatedEmployer.getCompanyEmail());
+            employer.setCompanyPhone(updatedEmployer.getCompanyPhone());
+            employer.setBio(updatedEmployer.getBio());
+            return ResponseEntity.ok(employerRepository.save(employer));
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build();  // Returnează 404 dacă nu găsește angajatorul
         }
     }
 

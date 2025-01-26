@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * Clasa AuthController gestionează autentificarea utilizatorilor.
- * Prin adnotarea @CrossOrigin, permitem cereri de la http://localhost:3000.
- * În funcție de nevoile tale, poți adăuga sau restrânge atributele (e.g. methods, allowedHeaders).
  */
 @RestController
 @RequestMapping("/auth")
@@ -27,27 +25,26 @@ public class AuthController {
     /**
      * Endpoint pentru autentificare.
      * @param loginRequest Obiectul care conține email-ul, parola și rolul utilizatorului.
-     * @return Un răspuns cu token-ul și datele utilizatorului dacă autentificarea reușește.
+     * @return Un răspuns cu token-ul și datele utilizatorului dacă autentificarea eșuează.
      */
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest) {
         try {
-            // Apelăm metoda login din AuthService, care returnează un LoginResponse
+            // Apelăm metoda login din AuthService
             LoginResponse loginResponse = authService.login(
                     loginRequest.getEmail(),
-                    loginRequest.getPassword(),
-                    loginRequest.getRole()
+                    loginRequest.getPassword()
             );
 
             // Returnăm răspunsul complet cu token-ul și datele utilizatorului
             return ResponseEntity.ok().body(loginResponse);
 
         } catch (RuntimeException e) {
-
-            // Returnăm un mesaj de eroare dacă autentificarea eșuează (ex: user inexistent sau parolă greșită)
-            return ResponseEntity.status(401).body(new ErrorResponse("Invalid credentials or role"));
+            // Returnăm un mesaj de eroare dacă autentificarea eșuează
+            return ResponseEntity.status(401).body(new ErrorResponse("Invalid credentials"));
         }
     }
+
 
     // DTO pentru cererea de login
     public static class LoginRequest {
@@ -66,45 +63,84 @@ public class AuthController {
         public void setRole(String role) { this.role = role; }
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<Object> signUp(@RequestBody SignUpRequest signUpRequest) {
-        try {
-            authService.signUp(signUpRequest.getEmail(), signUpRequest.getPassword(), signUpRequest.getRole(), signUpRequest.getName());
-            return ResponseEntity.ok().body("User registered successfully!");
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(400).body(new ErrorResponse(e.getMessage()));
+        @PostMapping("/signup")
+        public String signUp(@RequestBody SignUpRequest signUpRequest) {
+            authService.signUp(
+                    signUpRequest.getEmail(),
+                    signUpRequest.getPassword(),
+                    signUpRequest.getRole(),
+                    signUpRequest.getFirstName(),
+                    signUpRequest.getLastName(),
+                    signUpRequest.getUniversityName(),
+                    signUpRequest.getUniversityEmail(),
+                    signUpRequest.getPhone(),
+                    signUpRequest.getCompanyName(),
+                    signUpRequest.getCompanyEmail(),
+                    signUpRequest.getCompanyPhone(),
+                    signUpRequest.getBio()
+            );
+            return "User registered successfully!";
+        }
+
+        // DTO for sign-up request
+        public static class SignUpRequest {
+            private String email;
+            private String password;
+            private String role;
+            private String firstName;
+            private String lastName;
+            private String universityName;
+            private String universityEmail;
+            private String phone;
+            private String companyName;
+            private String companyEmail;
+            private String companyPhone;
+            private String bio;
+
+            // Getters and setters for all fields
+            public String getEmail() { return email; }
+            public void setEmail(String email) { this.email = email; }
+
+            public String getPassword() { return password; }
+            public void setPassword(String password) { this.password = password; }
+
+            public String getRole() { return role; }
+            public void setRole(String role) { this.role = role; }
+
+            public String getFirstName() { return firstName; }
+            public void setFirstName(String firstName) { this.firstName = firstName; }
+
+            public String getLastName() { return lastName; }
+            public void setLastName(String lastName) { this.lastName = lastName; }
+
+            // Student-specific getters and setters
+            public String getUniversityName() { return universityName; }
+            public void setUniversityName(String universityName) { this.universityName = universityName; }
+
+            public String getUniversityEmail() { return universityEmail; }
+            public void setUniversityEmail(String universityEmail) { this.universityEmail = universityEmail; }
+
+            public String getPhone() { return phone; }
+            public void setPhone(String phone) { this.phone = phone; }
+
+            // Employer-specific getters and setters
+            public String getCompanyName() { return companyName; }
+            public void setCompanyName(String companyName) { this.companyName = companyName; }
+
+            public String getCompanyEmail() { return companyEmail; }
+            public void setCompanyEmail(String companyEmail) { this.companyEmail = companyEmail; }
+
+            public String getCompanyPhone() { return companyPhone; }
+            public void setCompanyPhone(String companyPhone) { this.companyPhone = companyPhone; }
+
+            public String getBio() {
+                return bio;
+            }
+
+            public void setBio(String bio) { this.bio = bio; }
+
         }
     }
 
-    // DTO pentru cererea de Sign Up
-    public static class SignUpRequest {
-        private String email;
-        private String password;
-        private String role; // "student" sau "employer"
-        private String name;
-
-        // Getters și Setters
-        public String getEmail() { return email; }
-        public void setEmail(String email) { this.email = email; }
-        public String getPassword() { return password; }
-        public void setPassword(String password) { this.password = password; }
-        public String getRole() { return role; }
-        public void setRole(String role) { this.role = role; }
-        public String getName() { return name; }
-        public void setName(String name) { this.name = name; }
-    }
 
 
-    // DTO pentru mesajele de eroare
-    public static class ErrorResponse {
-        private String message;
-
-        public ErrorResponse(String message) {
-            this.message = message;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-    }
-}
