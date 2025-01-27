@@ -46,3 +46,136 @@ The backlog will include tasks derived from user stories and prioritized for dev
 
 ### Component Diagram
 ![IMG_5569](https://github.com/user-attachments/assets/5b73954f-fa62-4588-927e-ed4036b4c872)
+
+
+# CI/CD Workflow and Work Environments
+
+We used GitHub to maintain an organized workflow, which helped us detect and resolve bugs and conflicts early. Each team member worked on their own branch. After completing their tasks, they created merge requests to integrate changes into the main branch. This structured approach ensured smooth collaboration and maintained code quality.
+
+___
+
+## Manual Testing
+
+All backend and frontend tests were conducted manually. These tests included:
+
+### Backend:
+- Testing business logic through specific scenarios using predefined input data.
+- Validating interactions with the Oracle database.
+
+### Frontend:
+- Verifying the user interface to ensure functionality is correct and intuitive.
+- Testing the integration between frontend and backend for key workflows (e.g., signup, login, profile management).
+
+---
+
+## Automated Testing
+
+In addition to manual testing, we implemented automated tests for the backend using the `Mock` framework. These tests were designed to ensure the reliability and accuracy of the core business logic, focusing on three key areas:
+
+### CV Management
+- **Purpose:** Validate operations related to CV creation, retrieval, and deletion.
+- **Tests include:**
+  - Saving CVs and verifying repository interactions.
+  - Fetching CVs by user ID and ensuring the correct list is returned.
+  - Handling error scenarios such as deleting or retrieving non-existent CVs.
+
+### Profile Management
+- **Purpose:** Test profile operations like retrieving and updating user profile details.
+- **Tests include:**
+  - Retrieving profiles by ID and verifying that the correct details are returned.
+  - Handling cases where a profile does not exist.
+  - Updating profile details and ensuring the changes are correctly saved in the database.
+  - Validating error handling when attempting to update a non-existent profile.
+
+### Authentication (Login and Signup)
+- **Purpose:** Ensure the authentication system functions correctly, allowing users to sign up and log in securely.
+- **Tests include:**
+  - Verifying user registration, ensuring that valid user details are saved in the database.
+  - Testing login functionality with valid credentials to ensure successful authentication.
+  - Handling incorrect credentials gracefully by returning appropriate error messages.
+  - Ensuring the security of sensitive operations, such as password hashing and validation.
+
+These automated tests were designed to increase the overall quality of the application by identifying potential issues early and ensuring the robustness of critical functionality.
+
+## Automated Testing
+
+In addition to manual testing, we integrated automated tests using the `Mock` framework for several key services. These tests focused on improving reliability, ensuring the correctness of critical functionalities, and handling edge cases effectively.
+
+### **CV Service Tests**
+Automated tests were added for the `CVService` to:
+- Validate saving and retrieving CVs, ensuring proper interactions with the `CVRepository`.
+- Handle error scenarios, such as attempting to delete or find a CV that does not exist.
+- Verify the functionality of fetching CVs by user ID and retrieving all CVs in the system.
+
+### **Profile Service Tests**
+Automated tests were implemented for the `ProfileService` to:
+- Ensure profiles can be retrieved by ID.
+- Validate profile updates, including changes to names and other attributes.
+- Handle scenarios where the profile being updated does not exist.
+
+### **Authentication Tests**
+Authentication-related tests were added to verify the robustness of signup and login functionalities:
+- **Signup Tests:**
+  - Validate successful account creation for both students and employers.
+  - Ensure invalid roles are correctly rejected with an appropriate error message.
+- **Login Tests:**
+  - Confirm successful logins for both student and employer roles.
+  - Ensure invalid credentials are rejected, preventing unauthorized access.
+- **Token Generation:**
+  - Validate the creation of secure JWT tokens containing the correct claims (e.g., email).
+
+These tests simulate various user scenarios, including both successful operations and failures, ensuring the authentication process is reliable and secure.
+
+---
+
+## Application Execution
+
+### Backend:
+- Implemented in Java using the Spring Boot framework.
+- Configured to connect to a local Oracle Database instance via a configuration file (`application.properties`).
+
+### Frontend:
+- Implemented in React.
+- Run locally using the command:
+  ```bash
+  npm start
+
+
+# Work Environments
+
+## DEV (Development)
+- **Purpose:** Initial development and testing of functionalities.
+- **Setup:**
+  - Backend and frontend run locally.
+  - Oracle database configured locally with mock data.
+- **Characteristics:**
+  - Debugging enabled for rapid issue identification.
+  - Detailed logging in the backend for tracking workflows.
+
+## STAGING (Final Testing)
+- **Purpose:** Simulating a production-like environment.
+- **Setup:**
+  - Backend and frontend continue to run locally, with testing using data closer to real-world scenarios.
+  - Oracle database populated with semi-real data.
+- **Characteristics:**
+  - Complete manual testing to verify main functionalities and integration.
+
+## PRODUCTION
+- **Purpose:** Running the application for end-users (locally).
+- **Setup:**
+  - Application run locally by the team; not hosted on a public server.
+  - Oracle database contains real data required for application functionality.
+- **Characteristics:**
+  - Minor optimizations for performance.
+  - Final manual testing before running the application.
+
+---
+
+## Environment Configurations Summary
+
+| **Environment** | **Purpose**           | **Database**        | **Backend**             | **Frontend**          | **Testing**                |
+|------------------|-----------------------|---------------------|-------------------------|-----------------------|----------------------------|
+| **Dev**          | Initial development   | Oracle local (mock) | Local (debug enabled)   | Local                | Manual & automated testing |
+| **Staging**      | Production simulation | Oracle semi-real    | Local                   | Local                | Complete manual testing    |
+| **Production**   | Final user environment| Oracle real         | Local                   | Local                | Complete manual testing    |
+
