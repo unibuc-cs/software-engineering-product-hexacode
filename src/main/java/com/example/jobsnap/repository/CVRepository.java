@@ -9,4 +9,7 @@ public interface CVRepository extends JpaRepository<CV, Long> {
 
     // Custom query to find CVs by userId
     List<CV> findByUserId(Long userId);
+    List<CV> findByCvTypeIgnoreCase(String cvType);
+
+
 }

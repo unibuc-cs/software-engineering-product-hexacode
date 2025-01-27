@@ -37,7 +37,7 @@ function App() {
                         <Route path="/edit-cv/:cvId" element={<EditCV />} />
                         <Route path="/upload-cv-student" element={<UploadPageStudent />} />
                         <Route path="/upload-cv-page" element={<UploadPageEmployer />} />
-                        <Route path="/cv-detail/${cvId}`" element={<CVDetailPage />} />
+                        <Route path="/cv-detail/:cvId" element={<CVDetailPage />} />
 
 
                     </Routes>

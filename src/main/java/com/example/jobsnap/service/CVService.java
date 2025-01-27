@@ -5,7 +5,10 @@ import com.example.jobsnap.repository.CVRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CVService {
@@ -46,4 +49,10 @@ public class CVService {
     public List<CV> getAllCVs() {
         return cvRepository.findAll(); // Apelează repository-ul pentru a obține toate CV-urile
     }
+
+    public List<CV> getCVsByType(String cvType) {
+        return cvRepository.findByCvTypeIgnoreCase(cvType); // Make sure the repository supports this query
+    }
+
+
 }

@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/cv")
@@ -50,18 +52,18 @@ public class CVController {
     }
 
 
-    @GetMapping("/allcvs")
-    public ResponseEntity<List<CV>> getAllCVs() {
-        try {
-            List<CV> allCVs = cvService.getAllCVs(); // Apelează serviciul pentru a obține toate CV-urile
-            if (allCVs.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null); // Dacă nu sunt CV-uri
-            }
-            return ResponseEntity.ok(allCVs); // Returnează lista de CV-uri
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // Dacă apare o eroare
-        }
-    }
+//    @GetMapping("/allcvs")
+//    public ResponseEntity<List<CV>> getAllCVs() {
+//        try {
+//            List<CV> allCVs = cvService.getAllCVs(); // Apelează serviciul pentru a obține toate CV-urile
+//            if (allCVs.isEmpty()) {
+//                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null); // Dacă nu sunt CV-uri
+//            }
+//            return ResponseEntity.ok(allCVs); // Returnează lista de CV-uri
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // Dacă apare o eroare
+//        }
+//    }
 
 
 
@@ -192,6 +194,32 @@ public class CVController {
         CV savedCV = cvService.saveCV(existingCV);
         return ResponseEntity.ok(savedCV);
     }
+
+    @GetMapping("/allcvs")
+    public ResponseEntity<List<CV>> getAllCVs(@RequestParam(value = "cvType", required = false) String cvType) {
+        try {
+            System.out.println("CvType: " + cvType);
+            List<CV> allCVs;
+
+            // If cvType is provided, filter by cvType
+            if (cvType != null && !cvType.isEmpty()) {
+                allCVs = cvService.getCVsByType(cvType);
+                System.out.println("CvType: " + cvType);
+            } else {
+                allCVs = cvService.getAllCVs();
+            }
+
+            if (allCVs.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null); // If no CVs found
+            }
+            return ResponseEntity.ok(allCVs); // Return the list of CVs
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // Handle error
+        }
+    }
+
+
+
 
 
 }
