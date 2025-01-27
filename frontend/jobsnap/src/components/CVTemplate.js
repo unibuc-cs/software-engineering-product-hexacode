@@ -70,7 +70,7 @@ export default function CVTemplate({ formData, image, cvType }) {
                         </>
                     )}
 
-                    {cvType === "marketing" && (formData.skills || formData.tools || formData.certifications) && (
+                    {cvType === "marketing" && (formData.skills || formData.tools) && (
                         <>
                             {formData.skills && (
                                 <>
@@ -92,20 +92,10 @@ export default function CVTemplate({ formData, image, cvType }) {
                                     </ul>
                                 </>
                             )}
-                            {formData.certifications && (
-                                <>
-                                    <h3 className="text-xl font-semibold text-gray-800 mt-8">Certifications</h3>
-                                    <ul className="text-gray-700 mt-2">
-                                        {formData.certifications.split(",").map((cert, index) => (
-                                            <li key={index} className="mt-1">• {cert.trim()}</li>
-                                        ))}
-                                    </ul>
-                                </>
-                            )}
                         </>
                     )}
 
-                    {cvType === "graphicdesign" && (formData.skills || formData.tools || formData.portfolio || formData.certifications) && (
+                    {cvType === "graphicdesign" && (formData.skills || formData.tools) && (
                         <>
                             {formData.skills && (
                                 <>
@@ -127,18 +117,27 @@ export default function CVTemplate({ formData, image, cvType }) {
                                     </ul>
                                 </>
                             )}
-                            {formData.portfolio && (
+                        </>
+                    )}
+
+                    {cvType === "healthcare" && (formData.skills || formData.tools) && (
+                        <>
+                            {formData.skills && (
                                 <>
-                                    <h3 className="text-xl font-semibold text-gray-800 mt-8">Portfolio</h3>
-                                    <p className="text-gray-700 mt-2">{formData.portfolio}</p>
+                                    <h3 className="text-xl font-semibold text-gray-800">Healthcare Skills</h3>
+                                    <ul className="text-gray-700 mt-2">
+                                        {formData.skills.split(",").map((skill, index) => (
+                                            <li key={index} className="mt-1">• {skill.trim()}</li>
+                                        ))}
+                                    </ul>
                                 </>
                             )}
-                            {formData.certifications && (
+                            {formData.tools && (
                                 <>
-                                    <h3 className="text-xl font-semibold text-gray-800 mt-8">Certifications</h3>
+                                    <h3 className="text-xl font-semibold text-gray-800 mt-8">Healthcare Tools</h3>
                                     <ul className="text-gray-700 mt-2">
-                                        {formData.certifications.split(",").map((cert, index) => (
-                                            <li key={index} className="mt-1">• {cert.trim()}</li>
+                                        {formData.tools.split(",").map((tool, index) => (
+                                            <li key={index} className="mt-1">• {tool.trim()}</li>
                                         ))}
                                     </ul>
                                 </>
@@ -162,47 +161,6 @@ export default function CVTemplate({ formData, image, cvType }) {
                             )}
                         </>
                     )}
-
-                    {cvType === "healthcare" && (formData.skills || formData.tools || formData.clinicalExperience || formData.certifications) && (
-                        <>
-                            {formData.skills && (
-                                <>
-                                    <h3 className="text-xl font-semibold text-gray-800">Healthcare Skills</h3>
-                                    <ul className="text-gray-700 mt-2">
-                                        {formData.skills.split(",").map((skill, index) => (
-                                            <li key={index} className="mt-1">• {skill.trim()}</li>
-                                        ))}
-                                    </ul>
-                                </>
-                            )}
-                            {formData.tools && (
-                                <>
-                                    <h3 className="text-xl font-semibold text-gray-800 mt-8">Healthcare Tools</h3>
-                                    <ul className="text-gray-700 mt-2">
-                                        {formData.tools.split(",").map((tool, index) => (
-                                            <li key={index} className="mt-1">• {tool.trim()}</li>
-                                        ))}
-                                    </ul>
-                                </>
-                            )}
-                            {formData.clinicalExperience && (
-                                <>
-                                    <h3 className="text-xl font-semibold text-gray-800 mt-8">Clinical Experience</h3>
-                                    <p className="text-gray-700 mt-2">{formData.clinicalExperience}</p>
-                                </>
-                            )}
-                            {formData.certifications && (
-                                <>
-                                    <h3 className="text-xl font-semibold text-gray-800 mt-8">Certifications</h3>
-                                    <ul className="text-gray-700 mt-2">
-                                        {formData.certifications.split(",").map((cert, index) => (
-                                            <li key={index} className="mt-1">• {cert.trim()}</li>
-                                        ))}
-                                    </ul>
-                                </>
-                            )}
-                        </>
-                    )}
                 </div>
 
                 {/* Vertical Separator */}
@@ -214,6 +172,86 @@ export default function CVTemplate({ formData, image, cvType }) {
                 <div className="col-span-3">
                     <h2 className="text-2xl font-semibold text-gray-800">Profile</h2>
                     <p className="text-gray-700 mt-2">{formData.summary || "Write a brief summary about yourself."}</p>
+
+                    {cvType === "it" && formData.certifications && (
+                        <div className="mt-8">
+                            <h2 className="text-2xl font-semibold text-gray-800">Certifications</h2>
+                            <ul className="text-gray-700 mt-2">
+                                {formData.certifications.split(",").map((cert, index) => (
+                                    <li key={index} className="mt-1">• {cert.trim()}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
+                    {cvType === "marketing" && (formData.campaignExperience || formData.targetAudience || formData.certifications) && (
+                        <>
+                            {formData.campaignExperience && (
+                                <div className="mt-8">
+                                    <h2 className="text-2xl font-semibold text-gray-800">Campaign Experience</h2>
+                                    <p className="text-gray-700 mt-2">{formData.campaignExperience}</p>
+                                </div>
+                            )}
+                            {formData.targetAudience && (
+                                <div className="mt-8">
+                                    <h2 className="text-2xl font-semibold text-gray-800">Target Audience</h2>
+                                    <p className="text-gray-700 mt-2">{formData.targetAudience}</p>
+                                </div>
+                            )}
+                            {formData.certifications && (
+                                <div className="mt-8">
+                                    <h2 className="text-2xl font-semibold text-gray-800">Certifications</h2>
+                                    <ul className="text-gray-700 mt-2">
+                                        {formData.certifications.split(",").map((cert, index) => (
+                                            <li key={index} className="mt-1">• {cert.trim()}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+                        </>
+                    )}
+
+                    {cvType === "graphicdesign" && (formData.portfolio || formData.certifications) && (
+                        <>
+                            {formData.portfolio && (
+                                <div className="mt-8">
+                                    <h2 className="text-2xl font-semibold text-gray-800">Portfolio</h2>
+                                    <p className="text-gray-700 mt-2">{formData.portfolio}</p>
+                                </div>
+                            )}
+                            {formData.certifications && (
+                                <div className="mt-8">
+                                    <h2 className="text-2xl font-semibold text-gray-800">Certifications</h2>
+                                    <ul className="text-gray-700 mt-2">
+                                        {formData.certifications.split(",").map((cert, index) => (
+                                            <li key={index} className="mt-1">• {cert.trim()}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+                        </>
+                    )}
+
+                    {cvType === "healthcare" && (formData.clinicalExperience || formData.certifications) && (
+                        <>
+                            {formData.clinicalExperience && (
+                                <div className="mt-8">
+                                    <h2 className="text-2xl font-semibold text-gray-800">Clinical Experience</h2>
+                                    <p className="text-gray-700 mt-2">{formData.clinicalExperience}</p>
+                                </div>
+                            )}
+                            {formData.certifications && (
+                                <div className="mt-8">
+                                    <h2 className="text-2xl font-semibold text-gray-800">Certifications</h2>
+                                    <ul className="text-gray-700 mt-2">
+                                        {formData.certifications.split(",").map((cert, index) => (
+                                            <li key={index} className="mt-1">• {cert.trim()}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+                        </>
+                    )}
 
                     {formData.education && (
                         <div className="mt-8">
