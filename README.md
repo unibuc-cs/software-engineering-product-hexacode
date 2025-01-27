@@ -176,6 +176,6 @@ These tests simulate various user scenarios, including both successful operation
 | **Environment** | **Purpose**           | **Database**        | **Backend**             | **Frontend**          | **Testing**                |
 |------------------|-----------------------|---------------------|-------------------------|-----------------------|----------------------------|
 | **Dev**          | Initial development   | Oracle local (mock) | Local (debug enabled)   | Local                | Manual & automated testing |
-| **Staging**      | Production simulation | Oracle semi-real    | Local                   | Local                | Complete manual testing    |
-| **Production**   | Final user environment| Oracle real         | Local                   | Local                | Complete manual testing    |
+| **Staging**      | Production simulation | Oracle semi-real    | Local                   | Local                | Manual & automated testing    |
+| **Production**   | Final user environment| Oracle real         | Local                   | Local                | Manual & automated testing    |
 
