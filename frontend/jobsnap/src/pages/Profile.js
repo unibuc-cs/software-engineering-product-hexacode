@@ -335,14 +335,16 @@ const Profile = () => {
 
             {/* Only display CV section for students */}
             {user.role === 'employer' && (
-                <div className="cv-section">
-                    <button className="button upload-cv-button" onClick={handleUploadRedirect2}>
+                <div className="cv-section text-center mt-6">
+                    <button
+                        className="bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:bg-blue-800 transition-all duration-300 transform hover:scale-105 focus:ring-2 focus:ring-blue-300"
+                        onClick={handleUploadRedirect2}
+                    >
                         View All CVs
                     </button>
-
-                    {/* Display student's CVs */}
                 </div>
             )}
+
         </div>
     );
 };
