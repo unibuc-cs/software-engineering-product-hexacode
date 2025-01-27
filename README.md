@@ -45,8 +45,7 @@ The backlog will include tasks derived from user stories and prioritized for dev
 ![IMG_5568](https://github.com/user-attachments/assets/e20fc2ed-6742-4b18-b8ea-bf6ac61f2d43)
 
 ### Component Diagram
-![Screenshot 2025-01-27 215832](https://github.com/user-attachments/assets/0835ff52-8240-4b5a-b3fd-66649519822b)
-
+![Screenshot 2025-01-27 220953](https://github.com/user-attachments/assets/f56c7d89-c33a-4f53-bd45-7d09f6eea5b6)
 
 # CI/CD Workflow and Work Environments
 
