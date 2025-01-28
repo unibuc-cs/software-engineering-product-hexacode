@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import CVTemplate from "../components/CVTemplate";
+import axios from "axios";
 
 const UploadCVStudent = () => {
     const { user } = useAuth();
@@ -9,28 +10,29 @@ const UploadCVStudent = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 6; // Number of CVs per page
 
+    // Fetch CVs only when the user is authenticated
     useEffect(() => {
-        if (!user) {
-            return;
-        }
+        if (!user) return;
 
-        const fetchCVs = async () => {
+        const fetchUploadedCVs = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/cv/user/${user.id}`);
+                const response = await fetch(`http://localhost:8080/api/cv/uploaded/${user.id}`);
                 if (!response.ok) {
-                    throw new Error("Error fetching CVs");
+                    throw new Error("Error fetching uploaded CVs");
                 }
                 const data = await response.json();
-                setCvList(data);
+                setCvList(data);  // Actualizezi lista de CV-uri uploadate
             } catch (error) {
-                console.error("Error fetching CVs:", error);
-                alert("Nu s-au putut încărca CV-urile.");
+                console.error("Error fetching uploaded CVs:", error);
+                alert("Nu s-au putut încărca CV-urile uploadate.");
             }
         };
 
-        fetchCVs();
-    }, [user]);
+        fetchUploadedCVs();
+    }, [user]);  // Asigură-te că lista se reîncarcă dacă utilizatorul se schimbă
 
+
+    // Handle viewing a CV (Modal)
     const handleViewCV = (cv) => {
         setSelectedCV(cv);
     };
@@ -54,6 +56,26 @@ const UploadCVStudent = () => {
     const handlePreviousPage = () => {
         if (currentPage > 1) {
             setCurrentPage(currentPage - 1);
+        }
+    };
+
+    // Handle uploading the CV
+    const handleUploadCV = async (cvId) => {
+        const cvToUpload = cvList.find(cv => cv.id === cvId);
+        if (!cvToUpload) {
+            alert("CV-ul nu a fost găsit.");
+            return;
+        }
+
+        try {
+            const response = await axios.post('http://localhost:8080/api/cv/upload', cvToUpload);
+            if (response.status === 200) {
+                alert('CV-ul a fost încărcat cu succes!');
+                // Actualizează lista de CV-uri din pagina de upload
+            }
+        } catch (error) {
+            console.error("Error uploading CV:", error);
+            alert('A apărut o eroare la încărcarea CV-ului.');
         }
     };
 
@@ -115,6 +137,7 @@ const UploadCVStudent = () => {
                                 >
                                     View CV
                                 </button>
+
                             </div>
                         </div>
                     ))

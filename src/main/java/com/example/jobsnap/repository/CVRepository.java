@@ -12,4 +12,5 @@ public interface CVRepository extends JpaRepository<CV, Long> {
     List<CV> findByCvTypeIgnoreCase(String cvType);
 
 
+    List<CV> findByUserIdAndIsUploadedTrue(Long userId);
 }

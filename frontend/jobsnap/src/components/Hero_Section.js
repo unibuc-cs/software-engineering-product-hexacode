@@ -1,8 +1,11 @@
 'use client'
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom'; // Importăm Link pentru navigare
+import { AuthContext } from '../context/AuthContext'; // Importă contextul care conține informațiile despre utilizator
 
 export default function HeroSection() {
+    const { user } = useContext(AuthContext); // Obținem utilizatorul din context
+
     return (
         <div className="relative isolate px-6 pt-14 lg:px-8">
             <div
@@ -26,12 +29,15 @@ export default function HeroSection() {
                         JobSnap helps you create customized resumes, impress employers, and start your career with confidence.
                     </p>
                     <div className="mt-10 flex items-center justify-center gap-x-6">
-                        <Link
-                            to="/start" // Navighează către pagina "/start"
-                            className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        >
-                            Get started
-                        </Link>
+                        {/* Afișează butonul doar dacă rolul utilizatorului este "student" */}
+                        {user && user.role === 'student' && (
+                            <Link
+                                to="/start" // Navighează către pagina "/start"
+                                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            >
+                                Get started
+                            </Link>
+                        )}
                         <Link to="/features" className="text-sm/6 font-semibold text-gray-900">
                             Learn more <span aria-hidden="true">→</span>
                         </Link>
