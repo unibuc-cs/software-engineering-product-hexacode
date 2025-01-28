@@ -336,7 +336,7 @@ const Profile = () => {
             {/* Only display CV section for students */}
             {user.role === 'student' && (
                 <div className="cv-section">
-                    <p className="cv-message">Aici poți vizualiza și gestiona CV-urile create.</p>
+                    <p className="cv-message">Here you can view and manage your CVs.</p>
                     <button
                         className="bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:bg-blue-800 transition-all duration-300 transform hover:scale-105 focus:ring-2 focus:ring-blue-300"
                         onClick={handleUploadRedirect3}

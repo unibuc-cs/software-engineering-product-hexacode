@@ -37,8 +37,8 @@ public class CVGenerationSystemTest {
         WebElement loginButton = driver.findElement(By.cssSelector("button.bg-indigo-600"));
 
 
-        emailField.sendKeys("alex@gmail.com");
-        passwordField.sendKeys("parola");
+        emailField.sendKeys("test@test.com");
+        passwordField.sendKeys("test");
         loginButton.click();
 
         // Navighează la pagina de generare a CV-ului după autentificare
@@ -63,11 +63,11 @@ public class CVGenerationSystemTest {
 //        assertEquals("CV-ul a fost generat cu succes!", successMessage.getText());
     }
 
-    @AfterEach
-    public void tearDown() {
-        // Închide browserul
-        if (driver != null) {
-            driver.quit();
-        }
-    }
+//    @AfterEach
+//    public void tearDown() {
+//        // Închide browserul
+//        if (driver != null) {
+//            driver.quit();
+//        }
+//    }
 }
