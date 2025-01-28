@@ -5,7 +5,9 @@ import CVTemplate from "../components/CVTemplate";
 const UploadCVStudent = () => {
     const { user } = useAuth();
     const [cvList, setCvList] = useState([]);
-    const [selectedCV, setSelectedCV] = useState(null); // Stare pentru CV-ul selectat
+    const [selectedCV, setSelectedCV] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 6; // Number of CVs per page
 
     useEffect(() => {
         if (!user) {
@@ -16,13 +18,13 @@ const UploadCVStudent = () => {
             try {
                 const response = await fetch(`http://localhost:8080/api/cv/user/${user.id}`);
                 if (!response.ok) {
-                    throw new Error('Error fetching CVs');
+                    throw new Error("Error fetching CVs");
                 }
                 const data = await response.json();
                 setCvList(data);
             } catch (error) {
                 console.error("Error fetching CVs:", error);
-                alert('Nu s-au putut încărca CV-urile.');
+                alert("Nu s-au putut încărca CV-urile.");
             }
         };
 
@@ -30,24 +32,45 @@ const UploadCVStudent = () => {
     }, [user]);
 
     const handleViewCV = (cv) => {
-        setSelectedCV(cv); // Setează CV-ul selectat pentru vizualizare completă
+        setSelectedCV(cv);
     };
 
     const handleCloseCV = () => {
-        setSelectedCV(null); // Închide vizualizarea completă a CV-ului
+        setSelectedCV(null);
+    };
+
+    // Pagination Logic
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentCVs = cvList.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(cvList.length / itemsPerPage);
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const handlePreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
     };
 
     return (
-        <div className="upload-cv-container mt-28 min-h-screen bg-gray-100 py-12">
-            <h1 className="text-4xl font-semibold text-center text-blue-700 mb-10 tracking-wide shadow-lg p-2 border-b-4 border-blue-500">
+        <div className="upload-cv-container mt-28 min-h-screen bg-gray-50 py-12">
+            <h1 className="text-4xl font-bold text-center text-blue-700 mb-12 tracking-wide shadow-lg p-4 border-b-4 border-blue-600 rounded-lg bg-white">
                 Uploaded CVs
             </h1>
 
-            {/* Modal pentru vizualizarea completă a CV-ului */}
+            {/* Modal for full CV preview */}
             {selectedCV && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white p-4 rounded-lg w-11/12 max-w-4xl overflow-y-auto" style={{ height: '90vh' }}>
-                        <button onClick={handleCloseCV} className="absolute top-4 right-4 bg-red-500 text-white p-2 rounded-full">
+                    <div className="bg-white p-6 rounded-lg w-11/12 max-w-5xl shadow-2xl relative overflow-y-auto" style={{ height: "90vh" }}>
+                        <button
+                            onClick={handleCloseCV}
+                            className="absolute top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-red-600"
+                        >
                             Close
                         </button>
                         <div className="cv-preview-container overflow-y-auto max-h-[80vh]">
@@ -57,38 +80,38 @@ const UploadCVStudent = () => {
                 </div>
             )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
-                {cvList.length === 0 ? (
-                    <p className="text-center col-span-full">No CVs uploaded yet.</p>
+            {/* CV cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6">
+                {currentCVs.length === 0 ? (
+                    <p className="text-center col-span-full text-lg font-semibold text-gray-700 bg-gray-100 p-4 rounded-lg shadow-md">
+                        No CVs uploaded yet.
+                    </p>
                 ) : (
-                    cvList.map((cv) => (
-                        <div key={cv.id} className="cv-card p-4 border rounded-lg shadow-md hover:shadow-lg transition-all">
-                            {/* CV Preview Component */}
+                    currentCVs.map((cv) => (
+                        <div key={cv.id} className="cv-card p-6 border rounded-lg shadow-md bg-white hover:shadow-xl transition-all">
                             <div className="cv-preview">
-                                <div className="font-semibold text-lg">{cv.fullName}</div>
-                                <div className="text-gray-600">{cv.email}</div>
-                                <div className="text-gray-500">{cv.phone}</div>
+                                <h2 className="font-semibold text-xl text-blue-700 mb-2">{cv.fullName}</h2>
+                                <p className="text-gray-600">{cv.email}</p>
+                                <p className="text-gray-500">{cv.phone}</p>
 
-                                {/* Displaying CV details */}
                                 <div className="mt-4">
-                                    <div className="text-sm font-medium">Education:</div>
-                                    <div className="text-gray-700">{cv.education}</div>
+                                    <div className="text-sm font-medium text-gray-700">Education:</div>
+                                    <p className="text-gray-800">{cv.education}</p>
                                 </div>
                                 <div className="mt-4">
-                                    <div className="text-sm font-medium">Experience:</div>
-                                    <div className="text-gray-700">{cv.experience}</div>
+                                    <div className="text-sm font-medium text-gray-700">Experience:</div>
+                                    <p className="text-gray-800">{cv.experience}</p>
                                 </div>
                                 <div className="mt-4">
-                                    <div className="text-sm font-medium">Skills:</div>
-                                    <div className="text-gray-700">{cv.skills}</div>
+                                    <div className="text-sm font-medium text-gray-700">Skills:</div>
+                                    <p className="text-gray-800">{cv.skills}</p>
                                 </div>
                             </div>
 
-                            {/* Buttons */}
-                            <div className="cv-actions mt-4">
+                            <div className="cv-actions mt-6">
                                 <button
                                     onClick={() => handleViewCV(cv)}
-                                    className="bg-blue-700 text-white p-2 rounded-md w-full mb-2"
+                                    className="bg-blue-700 text-white py-2 px-4 rounded-lg w-full shadow-md hover:bg-blue-800 transition-all"
                                 >
                                     View CV
                                 </button>
@@ -97,6 +120,33 @@ const UploadCVStudent = () => {
                     ))
                 )}
             </div>
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+                <div className="pagination-controls flex justify-center items-center mt-8 space-x-4">
+                    <button
+                        onClick={handlePreviousPage}
+                        disabled={currentPage === 1}
+                        className={`px-4 py-2 rounded-lg shadow-md text-white ${
+                            currentPage === 1 ? "bg-gray-400 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800"
+                        }`}
+                    >
+                        Previous
+                    </button>
+                    <span className="text-gray-700 font-medium">
+                        Page {currentPage} of {totalPages}
+                    </span>
+                    <button
+                        onClick={handleNextPage}
+                        disabled={currentPage === totalPages}
+                        className={`px-4 py-2 rounded-lg shadow-md text-white ${
+                            currentPage === totalPages ? "bg-gray-400 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800"
+                        }`}
+                    >
+                        Next
+                    </button>
+                </div>
+            )}
         </div>
     );
 };

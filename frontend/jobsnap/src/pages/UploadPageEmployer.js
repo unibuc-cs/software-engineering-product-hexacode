@@ -55,6 +55,22 @@ const UploadCVStudent = () => {
         navigate(`/cv-detail/${cvId}`);
     };
 
+    const totalPages = Math.ceil(cvList.length / cvsPerPage);
+
+// Handle previous page
+    const handlePrevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+// Handle next page
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
     return (
         <div className="cv-view-container mt-20 px-4">
             <h1 className="text-4xl font-semibold text-center text-blue-700 mb-10">All Student CVs</h1>
@@ -113,21 +129,35 @@ const UploadCVStudent = () => {
             </div>
 
             {/* Pagination */}
-            <div className="mt-8 mb-8 flex justify-center items-center space-x-2">
-                {Array.from({ length: Math.ceil(cvList.length / cvsPerPage) }, (_, index) => (
-                    <button
-                        key={index}
-                        className={`px-4 py-2 rounded-md ${
-                            currentPage === index + 1
-                                ? 'bg-blue-700 text-white'
-                                : 'bg-gray-200 text-gray-700'
-                        }`}
-                        onClick={() => paginate(index + 1)}
-                    >
-                        {index + 1}
-                    </button>
-                ))}
+            <div className="mt-8 mb-8 flex justify-center items-center space-x-4">
+                {/* Previous Button */}
+                <button
+                    className={`px-4 py-2 rounded-md ${
+                        currentPage === 1 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-blue-700 text-white'
+                    }`}
+                    onClick={handlePrevPage}
+                    disabled={currentPage === 1}
+                >
+                    Previous
+                </button>
+
+                {/* Page Numbers */}
+                <span className="text-lg font-semibold">
+        Page {currentPage} of {totalPages}
+    </span>
+
+                {/* Next Button */}
+                <button
+                    className={`px-4 py-2 rounded-md ${
+                        currentPage === totalPages ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-blue-700 text-white'
+                    }`}
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages}
+                >
+                    Next
+                </button>
             </div>
+
         </div>
     );
 };
