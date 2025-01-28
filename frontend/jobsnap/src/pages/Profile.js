@@ -5,6 +5,9 @@ import './Profile.css';
 import { useNavigate } from "react-router-dom";
 import html2pdf from 'html2pdf.js';
 import CVTemplate from '../components/CVTemplate';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
 
 const Profile = () => {
     const { user } = useAuth();
@@ -14,6 +17,11 @@ const Profile = () => {
     const [updatedProfile, setUpdatedProfile] = useState({});
     const [cvList, setCvList] = useState([]);
     const navigate = useNavigate();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [cvToDelete, setCvToDelete] = useState(null); // Stochează CV-ul care urmează să fie șters
+
+    const notifySuccess = () => toast.success("CV a fost șters cu succes!");
+    const notifyError = () => toast.error("A apărut o eroare la ștergerea CV-ului.");
 
     useEffect(() => {
         if (!user) {
@@ -69,14 +77,32 @@ const Profile = () => {
 
 
 
-    const handleUploadRedirect = () => {
-        navigate('/upload-cv-student');
-    };
+    const handleUploadCV = async (cvId) => {
+        const cvToUpload = cvList.find(cv => cv.id === cvId);
+        if (!cvToUpload) {
+            alert("CV-ul nu a fost găsit.");
+            return;
+        }
 
+        try {
+            const response = await axios.post('http://localhost:8080/api/cv/upload', cvToUpload);
+            if (response.status === 200) {
+                alert('CV-ul a fost încărcat cu succes!');
+            }
+        } catch (error) {
+            console.error("Error uploading CV:", error);
+            alert('A apărut o eroare la încărcarea CV-ului.');
+        }
+    };
 
     const handleUploadRedirect2 = () => {
         navigate('/upload-cv-page'); // Redirecționează la pagina de upload pentru studenți
     };
+
+    const handleUploadRedirect3 = () => {
+        navigate('/upload-cv-student'); // Redirecționează la pagina de upload pentru studenți
+    };
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -132,25 +158,33 @@ const Profile = () => {
         html2pdf().set(options).from(element).save();
     };
 
-    const handleDeleteCV = async (cvId) => {
-        const confirmDelete = window.confirm("Ești sigur că vrei să ștergi acest CV?");
-        if (!confirmDelete) return;
 
+    const handleDeleteCV = (cvId) => {
+        setCvToDelete(cvId); // Salvează CV-ul care urmează să fie șters
+        setIsModalOpen(true); // Deschide modalul
+    };
+
+    const confirmDelete = async () => {
         try {
-
-            const response = await axios.delete(`http://localhost:8080/api/cv/${cvId}`);
-
+            const response = await axios.delete(`http://localhost:8080/api/cv/${cvToDelete}`);
             if (response.status === 200 || response.status === 204) {
-
-                setCvList(cvList.filter(cv => cv.id !== cvId));
-                alert('CV-ul a fost șters cu succes');
+                setCvList(cvList.filter(cv => cv.id !== cvToDelete));  // Actualizează lista de CV-uri
+                notifySuccess();
             } else {
                 throw new Error('Failed to delete CV');
             }
         } catch (error) {
             console.error("Error deleting CV:", error);
-            alert('A apărut o eroare la ștergerea CV-ului.');
+            notifyError();
+        } finally {
+            setIsModalOpen(false); // Închide modalul
+            setCvToDelete(null); // Resetează starea cvToDelete
         }
+    };
+
+    const cancelDelete = () => {
+        setIsModalOpen(false); // Închide modalul fără a face nimic
+        setCvToDelete(null); // Resetează starea cvToDelete
     };
 
     if (!user) {
@@ -303,35 +337,69 @@ const Profile = () => {
             {user.role === 'student' && (
                 <div className="cv-section">
                     <p className="cv-message">Aici poți vizualiza și gestiona CV-urile create.</p>
-                    <button onClick={handleUploadRedirect} className="button upload-page">
-                        Upload Page
+                    <button
+                        className="bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:bg-blue-800 transition-all duration-300 transform hover:scale-105 focus:ring-2 focus:ring-blue-300"
+                        onClick={handleUploadRedirect3}
+                    >
+                        View All CVs
                     </button>
 
-                    <div className="cv-list">
+                    <div className="cv-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6">
                         {cvList.length === 0 ? (
-                            <p>No CVs found. Create one to start.</p>
+                            <p className="text-center col-span-full text-lg font-semibold text-gray-700 bg-gray-100 p-4 rounded-lg shadow-md">
+                                No CVs found. Create one to start.
+                            </p>
                         ) : (
-                            <ul>
-                                {cvList.map((cv) => (
-                                    <li key={cv.id} className="cv-card">
-                                        <div id={`cv-preview-${cv.id}`} className="cv-preview">
-                                            <CVTemplate formData={cv} image={cv.imagePath} cvType={cv.cvType}/>
-                                        </div>
-                                        <div className="cv-actions">
-                                            <button onClick={() => handleDownloadPDF(cv.id)}>Download</button>
-                                            <button onClick={() => handleEditCV(cv.id)}>Edit</button>
-                                            <button onClick={() => handleDeleteCV(cv.id)}>Delete</button>
-                                            <button onClick={handleUploadRedirect} className="button upload-cv-button">
-                                                Upload CV
-                                            </button>
-                                        </div>
-                                    </li>
-                                ))}
-                            </ul>
+                            cvList.map((cv) => (
+                                <div key={cv.id}
+                                     className="cv-card p-6 border rounded-lg shadow-md bg-white hover:shadow-xl transition-all">
+                                    <div id={`cv-preview-${cv.id}`} className="cv-preview">
+                                        <CVTemplate formData={cv} image={cv.imagePath} cvType={cv.cvType}/>
+                                    </div>
+
+
+                                    <div className="cv-actions mt-6">
+                                        <button
+                                            onClick={() => handleDownloadPDF(cv.id)}
+                                            className="bg-blue-700 text-white py-2 px-4 rounded-lg w-full shadow-md hover:bg-blue-800 transition-all"
+                                        >
+                                            Download
+                                        </button>
+                                        <button
+                                            onClick={() => handleEditCV(cv.id)}
+                                            className="bg-green-700 text-white py-2 px-4 rounded-lg w-full shadow-md hover:bg-green-800 transition-all mt-2"
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            onClick={() => handleDeleteCV(cv.id)}
+                                            className="bg-red-700 text-white py-2 px-4 rounded-lg w-full shadow-md hover:bg-red-800 transition-all mt-2"
+                                        >
+                                            Delete
+                                        </button>
+
+                                        {/* Modalul de confirmare */}
+                                        <ConfirmDeleteModal
+                                            isOpen={isModalOpen}
+                                            onClose={cancelDelete}
+                                            onConfirm={confirmDelete}
+                                        />
+                                        <button
+                                            onClick={() => handleUploadCV(cv.id)}
+                                            className="bg-indigo-700 text-white py-2 px-4 rounded-lg w-full shadow-md hover:bg-indigo-800 transition-all mt-2"
+                                        >
+                                            Upload CV
+                                        </button>
+                                    </div>
+                                </div>
+                            ))
                         )}
                     </div>
+
+
                 </div>
             )}
+            <ToastContainer />
 
             {/* Only display CV section for students */}
             {user.role === 'employer' && (

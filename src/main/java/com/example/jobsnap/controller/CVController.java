@@ -66,6 +66,32 @@ public class CVController {
 //    }
 
 
+    // Endpoint pentru a obține CV-urile uploadate de un utilizator
+    @GetMapping("/uploaded/{userId}")
+    public ResponseEntity<List<CV>> getUploadedCVsByUserId(@PathVariable Long userId) {
+        List<CV> uploadedCVs = cvService.getUploadedCVsByUserId(userId); // Folosește un serviciu pentru a obține doar CV-urile uploadate
+        if (uploadedCVs.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(uploadedCVs);
+    }
+
+
+    @PostMapping("/upload")
+    public ResponseEntity<CV> uploadCV(@RequestBody CV cv) {
+        // Setează CV-ul ca uploadat cu 1 (true)
+        cv.setUploaded(1);  // Aici setăm valoarea 1 pentru a indica că este uploadat
+
+        // Salvează CV-ul actualizat în baza de date
+        CV updatedCV = cvService.saveCV(cv);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(updatedCV);
+    }
+
+
+
+
+
 
 
 

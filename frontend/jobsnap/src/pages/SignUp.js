@@ -1,13 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import React from 'react';
 
 export default function SignUpPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('student');
+    const navigate = useNavigate();
 
     const [bio, setBio] = useState('');
 
@@ -59,7 +60,7 @@ export default function SignUpPage() {
                 alert(error.message || "Failed to sign up");
             } else {
                 alert("Sign up successful!");
-                // Redirect the user to the login page
+                navigate('/');
             }
         } catch (error) {
             console.error("Error during sign up:", error);

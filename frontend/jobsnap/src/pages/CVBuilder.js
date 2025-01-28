@@ -5,12 +5,17 @@ import CVTemplate from '../components/CVTemplate';
 import html2pdf from 'html2pdf.js';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Importă stilurile pentru toast
+
 
 export default function CVBuilder() {
     const { cvType } = useParams();  // Preluăm tipul de CV din ruta curentă
     const { user } = useAuth(); // Obținem user-ul din contextul de autentificare
     const navigate = useNavigate(); // Folosim useNavigate pentru redirecționare după salvare
 
+    const notifySuccess = () => toast.success("CV a fost adăugat cu succes!");
+    const notifyError = () => toast.error("A apărut o eroare la adăugarea CV-ului.");
     // console.log("CV Type:", cvType);  // Verifică în consola browser-ului dacă preiei corect tipul de CV
 
 
@@ -189,7 +194,10 @@ export default function CVBuilder() {
             cvData.imagePath = image;  // Salvează imagePath ca data URL
         }
 
+
         console.log("CV Data being sent:", cvData);
+
+
 
         try {
             const response = await axios.post('http://localhost:8080/api/cv', cvData, {
@@ -197,10 +205,19 @@ export default function CVBuilder() {
                     'Content-Type': 'application/json'
                 }
             });
-            alert('CV a fost adaugat cu succes');
+
+
+            notifySuccess();
+
+
+            // Redirecționează utilizatorul după 2 secunde
+            setTimeout(() => {
+                navigate('/start');  // Redirecționează la pagina de start
+            }, 3000);  // 2000ms = 2 secunde
         } catch (error) {
             console.error("Error adding cv:", error);
-            alert('A apărut o eroare la adăugarea CV-ului.');
+            // Afișează notificare de eroare
+            notifyError();
         }
     };
 
@@ -222,6 +239,7 @@ export default function CVBuilder() {
         <div className="min-h-screen py-20 bg-gradient-to-r from-blue-100 to-blue-300 flex flex-col items-center justify-center">
             <h1 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">
                 Start Building Your {cvType ? cvType.charAt(0).toUpperCase() + cvType.slice(1) : 'CV'} CV
+                <ToastContainer />
             </h1>
 
             <div className="flex flex-col lg:flex-row gap-8 w-full max-w-7xl px-4">

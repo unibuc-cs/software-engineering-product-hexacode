@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Dialog, DialogPanel } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import icon from '../assets/icon.png';
 import { useAuth } from '../context/AuthContext'; // Importăm contextul de autentificare
 import React from 'react';
@@ -17,7 +17,11 @@ const navigation = [
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const { user, logout } = useAuth(); // Accesăm datele utilizatorului și funcția de logout din context
-
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        logout(); // Call the logout function
+        navigate('/home'); // Redirect to the home page after logging out
+    };
     return (
         <header className="absolute inset-x-0 top-0 z-50">
             <nav aria-label="Global" className="flex items-center justify-between p-6 lg:px-8">
@@ -56,7 +60,7 @@ export default function Header() {
                             </Link>
 
                             <button
-                                onClick={logout}
+                                onClick={handleLogout}
                                 className="text-sm/6 font-semibold text-red-600 hover:text-red-800"
                             >
                                 Log out
