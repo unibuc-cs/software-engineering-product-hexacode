@@ -198,6 +198,7 @@ export default function CVBuilder() {
                 }
             });
             alert('CV a fost adaugat cu succes');
+            navigate('/start');
         } catch (error) {
             console.error("Error adding cv:", error);
             alert('A apărut o eroare la adăugarea CV-ului.');
