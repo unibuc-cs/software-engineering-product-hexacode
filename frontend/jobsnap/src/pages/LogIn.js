@@ -30,7 +30,7 @@ export default function LoginPage() {
                 localStorage.setItem('user', JSON.stringify(data));
 
                 // Redirect to profile page or dashboard
-                window.location.href="/profile";
+                window.location.href="/";
             } else {
                 alert("Login failed");
             }
