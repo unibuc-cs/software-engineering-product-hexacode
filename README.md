@@ -69,6 +69,19 @@ The backlog will include tasks derived from user stories and prioritized for dev
 # CI/CD Workflow and Work Environments
 
 We used GitHub to maintain an organized workflow, which helped us detect and resolve bugs and conflicts early. Each team member worked on their own branch. After completing their tasks, they created merge requests to integrate changes into the main branch. This structured approach ensured smooth collaboration and maintained code quality.
+## Manual Testing
+
+All backend and frontend tests were conducted manually. These tests included:
+
+### Backend:
+- Testing business logic through specific scenarios using predefined input data.
+- Validating interactions with the Oracle database.
+
+### Frontend:
+- Verifying the user interface to ensure functionality is correct and intuitive.
+- Testing the integration between frontend and backend for key workflows (e.g., signup, login, profile management).
+
+---
 
 ## Application Execution
 
@@ -124,16 +137,3 @@ We used GitHub to maintain an organized workflow, which helped us detect and res
 ---
 
 
-## Manual Testing
-
-All backend and frontend tests were conducted manually. These tests included:
-
-### Backend:
-- Testing business logic through specific scenarios using predefined input data.
-- Validating interactions with the Oracle database.
-
-### Frontend:
-- Verifying the user interface to ensure functionality is correct and intuitive.
-- Testing the integration between frontend and backend for key workflows (e.g., signup, login, profile management).
-
----
