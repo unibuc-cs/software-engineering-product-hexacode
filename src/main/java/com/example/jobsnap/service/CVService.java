@@ -55,4 +55,7 @@ public class CVService {
     }
 
 
+    public List<CV> getUploadedCVsByUserId(Long userId) {
+        return cvRepository.findByUserIdAndIsUploadedTrue(userId);  // Căutăm CV-urile care sunt uploadate
+    }
 }

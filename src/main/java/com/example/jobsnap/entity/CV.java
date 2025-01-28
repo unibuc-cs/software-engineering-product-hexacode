@@ -45,6 +45,7 @@ public class CV {
     // Adding userId field
     private Long userId;
 
+    private int isUploaded;
 
     private String imagePath;  // Acesta va stoca calea imaginii
 
@@ -178,6 +179,15 @@ public class CV {
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
+
+    public int isUploaded() {
+        return isUploaded;
+    }
+
+    public void setUploaded(int uploaded) {
+        isUploaded = uploaded;
+    }
+
 
 
 

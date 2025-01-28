@@ -1,17 +1,19 @@
 package com.example.jobsnap.service;
 
-import com.example.jobsnap.entity.Student;
 import com.example.jobsnap.entity.Employer;
+import com.example.jobsnap.entity.Student;
 import com.example.jobsnap.entity.User;
-import com.example.jobsnap.repository.StudentRepository;
 import com.example.jobsnap.repository.EmployerRepository;
+import com.example.jobsnap.repository.StudentRepository;
 import com.example.jobsnap.repository.UserRepository;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +34,9 @@ public class AuthService {
     @Autowired
     private EmployerRepository employerRepository;
 
+    // Cream un PasswordEncoder (de exemplu, BCrypt)
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     // Secret key for JWT signing (should be stored securely in production)
     private final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
@@ -41,24 +46,30 @@ public class AuthService {
      * @param email             the user's email
      * @param password          the user's password
      * @param role              the user's role ("student" or "employer")
+     * @param firstName         the user's first name
+     * @param lastName          the user's last name
      * @param universityName    the student's university name (if role is student)
      * @param universityEmail   the student's university email (if role is student)
      * @param phone             the student's phone number (if role is student)
      * @param companyName       the employer's company name (if role is employer)
      * @param companyEmail      the employer's company email (if role is employer)
      * @param companyPhone      the employer's company phone (if role is employer)
+     * @param bio               the user's bio
      */
     @Transactional
     public void signUp(String email, String password, String role, String firstName, String lastName,
                        String universityName, String universityEmail, String phone,
                        String companyName, String companyEmail, String companyPhone, String bio) {
+        // Hash-uim parola folosind BCrypt
+        String hashedPassword = passwordEncoder.encode(password);
+
         if ("student".equalsIgnoreCase(role)) {
-            // Create and save a new Student entity
-            Student student = new Student(email, password, universityName, universityEmail, phone, firstName, lastName, bio);
+            // Create and save a new Student entity with hashed password
+            Student student = new Student(email, hashedPassword, universityName, universityEmail, phone, firstName, lastName, bio);
             studentRepository.save(student);  // Save in the 'student' table
         } else if ("employer".equalsIgnoreCase(role)) {
-            // Create and save a new Employer entity
-            Employer employer = new Employer(email, password, companyName, companyEmail, companyPhone, firstName, lastName, bio);
+            // Create and save a new Employer entity with hashed password
+            Employer employer = new Employer(email, hashedPassword, companyName, companyEmail, companyPhone, firstName, lastName, bio);
             employerRepository.save(employer);  // Save in the 'employer' table
         } else {
             throw new RuntimeException("Invalid role");
@@ -70,7 +81,6 @@ public class AuthService {
      *
      * @param email    the user's email
      * @param password the user's password
-
      * @return a LoginResponse object containing a JWT token and user details
      */
     public LoginResponse login(String email, String password) {
@@ -78,16 +88,14 @@ public class AuthService {
 
         Optional<User> userOptional = userRepository.findByEmail(email);
 
-        if (userOptional.isPresent() && userOptional.get().getPassword().equals(password)) {
+        if (userOptional.isPresent() && passwordEncoder.matches(password, userOptional.get().getPassword())) {
             User user = userOptional.get();
             String token = createToken(user.getEmail());
 
-            // Verifică rolul utilizatorului
+            // Verificăm rolul utilizatorului
             Optional<Student> studentOptional = studentRepository.findById(user.getId());
             if (studentOptional.isPresent()) {
                 logger.info("Login successful for student: {}", user.getEmail());
-                logger.info("Login response: {}", user.getId());
-                logger.info("Login response: {}", token);
                 return new LoginResponse(token, user.getId(), user.getEmail(), "student");
             }
 
@@ -105,10 +113,6 @@ public class AuthService {
         }
     }
 
-
-
-
-
     /**
      * Creates a JWT token.
      *
@@ -116,7 +120,7 @@ public class AuthService {
      * @return a signed JWT token
      */
     private String createToken(String email) {
-        logger.debug("Creating token for email: {}, role: {}", email);
+        logger.debug("Creating token for email: {}", email);
         return Jwts.builder()
                 .setSubject(email)
                 .signWith(secretKey)
@@ -165,15 +169,12 @@ public class AuthService {
             this.email = email;
         }
 
-        // Getter for role
         public String getRole() {
             return role;
         }
 
-        // Setter for role
         public void setRole(String role) {
             this.role = role;
         }
     }
-
 }
