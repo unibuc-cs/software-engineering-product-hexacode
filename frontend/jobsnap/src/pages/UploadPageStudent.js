@@ -79,6 +79,11 @@ const UploadCVStudent = () => {
         }
     };
 
+    // Handle deleting a CV from the page (but keeping it in the profile)
+    const handleDeleteCV = (cvId) => {
+        setCvList(cvList.filter(cv => cv.id !== cvId)); // Remove the CV from the list displayed on the page
+    };
+
     return (
         <div className="upload-cv-container mt-28 min-h-screen bg-gray-50 py-12">
             <h1 className="text-4xl font-bold text-center text-blue-700 mb-12 tracking-wide shadow-lg p-4 border-b-4 border-blue-600 rounded-lg bg-white">
@@ -137,7 +142,12 @@ const UploadCVStudent = () => {
                                 >
                                     View CV
                                 </button>
-
+                                <button
+                                    onClick={() => handleDeleteCV(cv.id)} // Call delete function
+                                    className="bg-red-700 text-white py-2 px-4 rounded-lg w-full shadow-md hover:bg-red-800 transition-all"
+                                >
+                                    Delete CV
+                                </button>
                             </div>
                         </div>
                     ))
@@ -150,9 +160,7 @@ const UploadCVStudent = () => {
                     <button
                         onClick={handlePreviousPage}
                         disabled={currentPage === 1}
-                        className={`px-4 py-2 rounded-lg shadow-md text-white ${
-                            currentPage === 1 ? "bg-gray-400 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800"
-                        }`}
+                        className={`px-4 py-2 rounded-lg shadow-md text-white ${currentPage === 1 ? "bg-gray-400 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800"}`}
                     >
                         Previous
                     </button>
@@ -162,9 +170,7 @@ const UploadCVStudent = () => {
                     <button
                         onClick={handleNextPage}
                         disabled={currentPage === totalPages}
-                        className={`px-4 py-2 rounded-lg shadow-md text-white ${
-                            currentPage === totalPages ? "bg-gray-400 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800"
-                        }`}
+                        className={`px-4 py-2 rounded-lg shadow-md text-white ${currentPage === totalPages ? "bg-gray-400 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800"}`}
                     >
                         Next
                     </button>

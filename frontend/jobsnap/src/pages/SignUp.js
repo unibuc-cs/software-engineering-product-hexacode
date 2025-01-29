@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import React from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function SignUpPage() {
     const [email, setEmail] = useState('');
@@ -12,14 +14,22 @@ export default function SignUpPage() {
 
     const [bio, setBio] = useState('');
 
-    // Student-specific fields
+    const notifySuccess1 = () => toast.success("Sign up successful!");
+    const notifyError1 = () => toast.error("An error occurred. Please try again.");
+
+    const notifyEmail = () => toast.error("The email is already in use.");
+    const notifyPhoneStudent = () => toast.error("The phone number is already used by a student.");
+
+    const notifyPhoneEmployer = () => toast.error("The phone number is already used by an employer.");
+
+
     const [universityName, setUniversityName] = useState('');
     const [universityEmail, setUniversityEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [studentFirstName, setStudentFirstName] = useState('');
     const [studentLastName, setStudentLastName] = useState('');
 
-    // Employer-specific fields
+
     const [companyName, setCompanyName] = useState('');
     const [companyEmail, setCompanyEmail] = useState('');
     const [companyPhone, setCompanyPhone] = useState('');
@@ -28,18 +38,41 @@ export default function SignUpPage() {
 
     const handleSignUp = async (e) => {
         e.preventDefault();
+
         try {
+
+            const emailResponse = await fetch(`http://localhost:8080/api/check-email?email=${email}`);
+            const emailData = await emailResponse.json();
+            if (emailData.exists) {
+                notifyEmail();
+                return;
+            }
+
+
+            const phoneResponse = await fetch(`http://localhost:8080/api/check-phone?phone=${role === 'student' ? phone : companyPhone}`);
+            const phoneData = await phoneResponse.json();
+
+
+            if (phoneData.exists === "Student") {
+                notifyPhoneStudent();
+                return;
+            } else if (phoneData.exists === "Employer") {
+                notifyPhoneEmployer();
+                return;
+            } else if (phoneData.exists === "No") {
+
+            }
+
+
             const body = {
                 email,
                 password,
                 role,
-                // Include student-specific fields if role is student
                 universityName: role === 'student' ? universityName : undefined,
                 universityEmail: role === 'student' ? universityEmail : undefined,
                 phone: role === 'student' ? phone : undefined,
                 firstName: role === 'student' ? studentFirstName : role === 'employer' ? employerFirstName : undefined,
                 lastName: role === 'student' ? studentLastName : role === 'employer' ? employerLastName : undefined,
-                // Include employer-specific fields if role is employer
                 companyName: role === 'employer' ? companyName : undefined,
                 companyEmail: role === 'employer' ? companyEmail : undefined,
                 companyPhone: role === 'employer' ? companyPhone : undefined,
@@ -48,25 +81,31 @@ export default function SignUpPage() {
 
             console.log(body);
 
+
             const response = await fetch("http://localhost:8080/auth/signup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),
             });
-            console.log("Email sent:", email);
 
+            // Verifică răspunsul serverului
             if (!response.ok) {
                 const error = await response.json();
                 alert(error.message || "Failed to sign up");
             } else {
-                alert("Sign up successful!");
-                navigate('/');
+                notifySuccess1();
+                // Redirecționează utilizatorul după 2 secunde
+                setTimeout(() => {
+                    navigate('/');
+                }, 3000);
             }
         } catch (error) {
             console.error("Error during sign up:", error);
-            alert("An error occurred. Please try again.");
+            notifyError1();
         }
     };
+
+
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 mt-10">
@@ -274,6 +313,7 @@ export default function SignUpPage() {
                 <p className="mt-4 text-center">
                     Already have an account? <Link to="/login" className="text-indigo-600">Log in</Link>
                 </p>
+                <ToastContainer />
             </div>
         </div>
     );
