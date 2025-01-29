@@ -3,15 +3,20 @@ import { useParams, useNavigate } from 'react-router-dom';
 import CVTemplate from '../components/CVTemplate';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function CVEdit() {
-    const { cvId } = useParams(); // Preluăm ID-ul CV-ului din URL
-    const { user } = useAuth(); // Obținem utilizatorul din contextul de autentificare
+    const { cvId } = useParams();
+    const { user } = useAuth();
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({});
     const [image, setImage] = useState(null);
-    const [cvType, setCvType] = useState(""); // Stocăm tipul de CV
+    const [cvType, setCvType] = useState("");
+
+    const notifySuccess1 = () => toast.success("The CV has been saved successfully!");
+    const notifyError1 = () => toast.error("An error occurred while saving the CV.");
 
     const cvFields = {
         it: [
@@ -144,12 +149,16 @@ export default function CVEdit() {
                     'Content-Type': 'application/json'
                 }
             });
-            alert('CV-ul a fost actualizat cu succes');
+            notifySuccess1();
+
             setImage(response.data.imagePath); // Actualizează imaginea cu calea din răspuns
-            navigate('/profile');
+            // Redirecționează utilizatorul după 2 secunde
+            setTimeout(() => {
+                navigate('/profile');  // Redirecționează la pagina de start
+            }, 3000);  // 2000ms = 2 secunde
         } catch (error) {
             console.error("Error updating cv:", error);
-            alert('A apărut o eroare la actualizarea CV-ului.');
+            notifyError1();
         }
     };
 
@@ -223,6 +232,8 @@ export default function CVEdit() {
             >
                 Save CV
             </button>
+
+            <ToastContainer />
         </div>
     );
 }

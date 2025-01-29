@@ -9,6 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
 
+
 const Profile = () => {
     const { user } = useAuth();
     console.log("User:", user);
@@ -19,13 +20,22 @@ const Profile = () => {
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [cvToDelete, setCvToDelete] = useState(null); // Stochează CV-ul care urmează să fie șters
+    const [cvToDownload, setCvToDownload] = useState(null); // Manage the CV to download
+    const [isDownloading, setIsDownloading] = useState(false); // Manage visibility when downloading
 
-    const notifySuccess = () => toast.success("CV a fost șters cu succes!");
-    const notifyError = () => toast.error("A apărut o eroare la ștergerea CV-ului.");
+
+    const notifySuccess = () => toast.success("The CV has been deleted successfully!");
+    const notifyError = () => toast.error("An error occurred while deleting the CV.");
+
+    const notifySuccess1 = () => toast.success("The CV has been uploaded successfully!");
+    const notifyError1 = () => toast.error("An error occurred while uploading the CV.");
+
+    const notifySuccess2 = () => toast.success("The profile has been updated successfully.");
+    const notifyError2 = () => toast.error("An error occurred while updating the profile.");
 
     useEffect(() => {
         if (!user) {
-            return; // Dacă nu există utilizator, nu face nicio cerere pentru profil
+            return;
         }
 
 
@@ -33,7 +43,7 @@ const Profile = () => {
 
         const fetchProfile = async () => {
             try {
-                console.log("User role:", user.role);  // Verifică ce rol are utilizatorul
+                console.log("User role:", user.role);
                 // Verificăm rolul utilizatorului pentru a alege endpoint-ul corect
                 const endpoint = user.role === 'student'
                     ? `http://localhost:8080/api/students/${user.id}`
@@ -87,11 +97,11 @@ const Profile = () => {
         try {
             const response = await axios.post('http://localhost:8080/api/cv/upload', cvToUpload);
             if (response.status === 200) {
-                alert('CV-ul a fost încărcat cu succes!');
+
             }
         } catch (error) {
             console.error("Error uploading CV:", error);
-            alert('A apărut o eroare la încărcarea CV-ului.');
+            notifyError1();
         }
     };
 
@@ -131,10 +141,10 @@ const Profile = () => {
 
             setProfile(response.data);
             setIsEditing(false);
-            alert('Profilul a fost actualizat cu succes');
+            notifySuccess2();
         } catch (error) {
             console.error("Error updating profile:", error);
-            alert('A apărut o eroare la actualizarea profilului.');
+            notifyError2();
         }
     };
 
@@ -158,34 +168,37 @@ const Profile = () => {
         html2pdf().set(options).from(element).save();
     };
 
-
     const handleDeleteCV = (cvId) => {
-        setCvToDelete(cvId); // Salvează CV-ul care urmează să fie șters
-        setIsModalOpen(true); // Deschide modalul
+        console.log("CV to delete:", cvId); // Log the specific CV ID you are deleting
+        setCvToDelete(cvId); // Save the selected CV ID to delete
+        setIsModalOpen(true); // Open the modal for that specific CV
     };
 
-    const confirmDelete = async () => {
+
+    const confirmDelete = async (cvId) => {
         try {
-            const response = await axios.delete(`http://localhost:8080/api/cv/${cvToDelete}`);
+            const response = await axios.delete(`http://localhost:8080/api/cv/${cvId}`);
             if (response.status === 200 || response.status === 204) {
-                setCvList(cvList.filter(cv => cv.id !== cvToDelete));  // Actualizează lista de CV-uri
-                notifySuccess();
+                setCvList(cvList.filter(cv => cv.id !== cvId)); // Remove the deleted CV from the list
+                notifySuccess(); // Show success toast
             } else {
                 throw new Error('Failed to delete CV');
             }
         } catch (error) {
             console.error("Error deleting CV:", error);
-            notifyError();
+            notifyError(); // Show error toast
         } finally {
-            setIsModalOpen(false); // Închide modalul
-            setCvToDelete(null); // Resetează starea cvToDelete
+            setIsModalOpen(false); // Close the modal
+            setCvToDelete(null); // Reset the CV to delete
         }
     };
 
+
     const cancelDelete = () => {
-        setIsModalOpen(false); // Închide modalul fără a face nimic
-        setCvToDelete(null); // Resetează starea cvToDelete
+        setIsModalOpen(false); // Close the modal without deleting
+        setCvToDelete(null); // Reset the CV to delete
     };
+
 
     if (!user) {
         return <div>Please log in to view your profile.</div>;
@@ -341,7 +354,7 @@ const Profile = () => {
                         className="bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:bg-blue-800 transition-all duration-300 transform hover:scale-105 focus:ring-2 focus:ring-blue-300"
                         onClick={handleUploadRedirect3}
                     >
-                        View All CVs
+                        View Your Uploaded CVs
                     </button>
 
                     <div className="cv-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6">
@@ -353,7 +366,7 @@ const Profile = () => {
                             cvList.map((cv) => (
                                 <div key={cv.id}
                                      className="cv-card p-6 border rounded-lg shadow-md bg-white hover:shadow-xl transition-all">
-                                    <div id={`cv-preview-${cv.id}`} className="cv-preview">
+                                    <div id={`cv-preview-${cv.id}`} className="cv-preview transform scale-90">
                                         <CVTemplate formData={cv} image={cv.imagePath} cvType={cv.cvType}/>
                                     </div>
 
@@ -378,14 +391,19 @@ const Profile = () => {
                                             Delete
                                         </button>
 
-                                        {/* Modalul de confirmare */}
                                         <ConfirmDeleteModal
-                                            isOpen={isModalOpen}
+                                            isOpen={isModalOpen} // Modal will only open if a CV is selected for deletion
                                             onClose={cancelDelete}
                                             onConfirm={confirmDelete}
+                                            cvId={cv.id} // Pass the CV ID to the modal
                                         />
+
+
                                         <button
-                                            onClick={() => handleUploadCV(cv.id)}
+                                            onClick={() => {
+                                                notifySuccess1();  // Show success toast
+                                                handleUploadCV(cv.id);  // Upload CV
+                                            }}
                                             className="bg-indigo-700 text-white py-2 px-4 rounded-lg w-full shadow-md hover:bg-indigo-800 transition-all mt-2"
                                         >
                                             Upload CV
@@ -399,7 +417,7 @@ const Profile = () => {
 
                 </div>
             )}
-            <ToastContainer />
+            <ToastContainer/>
 
             {/* Only display CV section for students */}
             {user.role === 'employer' && (
@@ -408,7 +426,7 @@ const Profile = () => {
                         className="bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:bg-blue-800 transition-all duration-300 transform hover:scale-105 focus:ring-2 focus:ring-blue-300"
                         onClick={handleUploadRedirect2}
                     >
-                        View All CVs
+                        View All The Uploaded CVs By Students
                     </button>
                 </div>
             )}
