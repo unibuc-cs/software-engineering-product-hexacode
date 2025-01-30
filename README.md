@@ -13,6 +13,7 @@ JobSnap is a web-based platform designed to help students build professional pro
 ## 7. [CI/CD Workflow and Work Environments](#cicd-workflow-and-work-environments)
 ## 8. [Testing & Quality Assurance](#quality-assurance-qa)
 ## 9. [Application Execution](#application-execution)
+## 10.[Security Analysis for JobSnap](#security-analysis-for-jobsnap)
 
 
 ---
@@ -37,8 +38,8 @@ JobSnap is a web-based platform designed to help students build professional pro
 
 ### For Employers
 
- - [x] **Search and View CVs**: Search for candidates based on job role, skills, and other criteria. View CVs that match your desired candidate profile.
-
+ - [ ] **Search**: Search for candidates based on job role, skills, and other criteria. 
+ - [x] **View CVs**: View CVs that match your desired candidate profile.
 ---
 
 ## Requirements
@@ -59,7 +60,7 @@ JobSnap is a web-based platform designed to help students build professional pro
 
 ### Employer Stories:
 
- - [x] "As an employer, I want to search for students with specific skills so that I can find suitable candidates."
+ - [ ] "As an employer, I want to search for students with specific skills so that I can find suitable candidates."
  - [x] "As an employer, I want to view CVs tailored to job roles so that I can quickly assess candidates’ qualifications."
 
 ---
@@ -89,7 +90,51 @@ The backlog will include tasks derived from user stories and prioritized for dev
 4. **Availability**: 99.9% uptime with monitoring, backups, and redundancy.  
 5. **Usability**: ReactJS, user testing, and interactive guides.  
 6. **Portability**: Responsive design and cross-device testing.  
-7. **Maintainability**: Standardized code, documentation, and automated testing.  
+7. **Maintainability**: Standardized code, documentation, and automated testing.
+
+
+## **Improvements Compared to the Initial Deliverable**
+
+### **Initial Proposed Features**
+- Student profile creation and editing.
+- Generating job-role-specific CVs.
+- Selecting from multiple CV templates.
+- Employers viewing uploaded CVs.
+- Searching for candidates based on skills (initially not implemented).
+
+### **Additional Implemented Features**
+1. **Managing Multiple CVs per Student**  
+   - Students can create multiple CVs using different templates and **choose which CVs to upload** for employers.  
+   - This allows better customization for different job applications.  
+
+2. **Enhanced Employer Access to CVs**  
+   - Employers can not only view CVs but also **filter CVs by category** (e.g., IT CVs, Medical Care CVs).  
+   - This improvement streamlines the hiring process by enabling better filtering based on job roles.  
+
+3. **Optimized CV Generation Interface**  
+   - The user experience for CV generation has been improved by providing **job-role-based field suggestions**, which was initially only planned.  
+
+4. **Better Information Accessibility for Employers**  
+   - Employers can now **filter CVs** based on categories, reducing the time required to find the right candidate.
+     
+## **Future Work**
+1. **Candidate Search for Employers**  
+   - Implementing a **search feature** that allows employers to filter candidates based on skills, experience, and job roles.  
+   - This will help recruiters find the most relevant profiles faster.  
+
+2. **Job Recommendations for Students**  
+   - Introducing **AI-driven job recommendations** based on a student's profile, skills, and job preferences.  
+   - This will help students discover suitable job opportunities more efficiently.  
+
+
+
+### **Impact on Users**
+- **Students**: More control over their CVs and the ability to create multiple versions for different opportunities.  
+- **Employers**: Increased efficiency in the selection process through structured access to relevant candidates.  
+
+### **Conclusion**
+The **JobSnap** platform has exceeded its initial objectives, offering a more flexible and efficient solution for both students and employers in managing and selecting CVs.
+
 
 ---
 
@@ -263,7 +308,39 @@ Our development workflow relies on three local environments:
 
 ---
 
+# **Security Analysis for JobSnap**
 
+## **Key Security Risks Identified**
+1. **User Credential Security**  
+   - **Risk**: Passwords stored in plain text could be exposed in case of a data breach.  
+   - **Solution**: Implemented **bcrypt hashing** for password storage, ensuring strong encryption and resistance to brute-force attacks.  
+
+2. **Data Privacy and Uniqueness**  
+   - **Risk**: Duplicate or invalid email addresses and phone numbers could lead to unauthorized access or account duplication.  
+   - **Solution**: Ensured **email addresses and phone numbers are unique**, preventing duplicate registrations and enforcing better identity management.  
+
+3. **SQL Injection Attacks**  
+   - **Risk**: Malicious users could inject SQL queries into input fields, potentially modifying or extracting sensitive database information.  
+   - **Solution**: Implemented **prepared statements and parameterized queries**, making SQL injection attacks ineffective.  
+
+## **Additional Security Considerations for Future Work**
+1. **Multi-Factor Authentication (MFA)**  
+   - Adding an extra layer of security by requiring **a secondary verification step** (e.g., email/SMS OTP) for login.  
+
+2. **Rate Limiting & CAPTCHA**  
+   - Implementing **rate limiting** on login and registration attempts to prevent brute-force attacks.  
+   - Adding **CAPTCHA verification** to avoid bot-based account creation and login attempts.  
+
+3. **Role-Based Access Control (RBAC)**  
+   - Ensuring strict **access control** so that students and employers have appropriate permissions and cannot access restricted functionalities.  
+
+4. **Secure API Endpoints**  
+   - Implementing **authentication tokens (JWT or OAuth)** for API requests.  
+   - Enforcing **HTTPS** to secure data transmission.  
+
+## **Conclusion**
+The current security implementation in **JobSnap** effectively protects against common risks such as password breaches, duplicate accounts, and SQL injection. Future enhancements like **MFA, CAPTCHA, and RBAC** will further improve the security posture of the platform.
+---
 
 ## Application Execution
 
