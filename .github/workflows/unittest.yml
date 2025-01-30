@@ -1,0 +1,56 @@
+name: Unit Testing Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # Backend Unit Testing
+  backend-tests:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Java 15
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '15'
+
+      # Install backend dependencies
+      - name: Install backend dependencies
+        run: mvn install
+
+      # Run backend unit tests
+      - name: Run backend unit tests
+        run: mvn test -Dtest=com.example.jobsnap.unit.*
+
+  # Frontend Unit Testing
+  frontend-tests:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Node.js 20.18.1
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.18.1'
+
+      # Install frontend dependencies
+      - name: Install frontend dependencies
+        working-directory: ./frontend
+        run: npm install
+
+      # Run frontend unit tests
+      - name: Run frontend tests
+        working-directory: ./frontend
+        run: npm test
