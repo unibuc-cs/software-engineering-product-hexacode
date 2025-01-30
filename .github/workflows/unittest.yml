@@ -36,6 +36,6 @@ jobs:
       - name: Install dependencies
         run: mvn install
 
-      # Step 5: Run only unit tests
+      # Step 5: Run only unit test
       - name: Run backend unit tests
         run: mvn test -Dtest=com.example.jobsnap.unit.* -Dspring.test.database.replace=NONE
