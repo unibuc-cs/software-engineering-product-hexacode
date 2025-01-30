@@ -38,4 +38,5 @@ jobs:
 
       # Step 5: Run unit tests
       - name: Run backend unit tests
-        run: mvn test -Dtest=com.example.jobsnap.unit.*
+        run: mvn test -DtestSourceDirectory=src/test/java/com/example/jobsnap/unit
+
