@@ -3,7 +3,10 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import React from 'react';
-import { useAuth } from '../context/AuthContext'; // Importăm contextul de autentificare
+import { useAuth } from '../context/AuthContext';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 export default function LoginPage() {
     const { login } = useAuth(); // Obținem funcția de login din context
@@ -12,6 +15,8 @@ export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+
+    const notifyError1 = () => toast.error("An error occurred. Please try again.");
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -32,7 +37,7 @@ export default function LoginPage() {
                 // Redirect to profile page or dashboard
                 window.location.href="/";
             } else {
-                alert("Login failed");
+                notifyError1();
             }
         } catch (error) {
             console.error("Error during login:", error);
@@ -87,6 +92,8 @@ export default function LoginPage() {
                 <p className="mt-4 text-center">
                     Don't have an account? <Link to="/signup" className="text-indigo-600">Sign up</Link>
                 </p>
+
+                <ToastContainer />
             </div>
         </div>
     );

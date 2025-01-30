@@ -158,6 +158,8 @@ button:focus {
 
 }
 
+
+
 /* Lista de CV-uri folosind un grid cu 1 coloană pe ecrane mici, 2 pe ecrane medii și 3 pe ecrane mari */
 .cv-list {
     display: grid;
@@ -171,21 +173,40 @@ button:focus {
 /* Cardurile de CV */
 .cv-card {
     background-color: #fff;
-    padding: 15px; /* Mărim padding-ul pentru a face cardul mai generos */
+    padding: 20px; /* Mărim padding-ul pentru a face cardul mai generos */
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: 1px solid #ddd;
     text-align: center;
     width: 100%; /* Cardurile vor ocupa toată lățimea disponibilă */
-    max-width: 300px; /* Limităm lățimea cardului */
+    max-width: 500px; /* Limităm lățimea cardului */
+    /*max-height: 500px; */
     margin: 0 auto; /* Centrează cardurile pe axa orizontală */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     margin-bottom: 20px;
+}
+.cv-preview{
+
 }
 
 .cv-card:hover {
     transform: translateY(-8px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.cv-header {
+    margin-bottom: 20px;
+}
+
+.cv-section h3 {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.cv-section p {
+    margin-bottom: 12px;
+    font-size: 1rem;
+    color: #555;
 }
 
 /* Butoanele din fiecare card de CV */

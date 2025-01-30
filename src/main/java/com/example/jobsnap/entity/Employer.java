@@ -28,8 +28,12 @@ public class Employer extends User {
     }
 
     // Default constructor
-    public Employer() {
+    public Employer(User user, String phoneNumber) {
         super();
+    }
+
+    public Employer() {
+
     }
 
     // Getters and Setters

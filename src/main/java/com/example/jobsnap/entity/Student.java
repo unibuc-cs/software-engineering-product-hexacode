@@ -29,8 +29,12 @@ public class Student extends User {
     }
 
     // Default constructor
-    public Student() {
+    public Student(User user, String phoneNumber) {
         super();
+    }
+
+    public Student() {
+
     }
 
     // Getters and Setters

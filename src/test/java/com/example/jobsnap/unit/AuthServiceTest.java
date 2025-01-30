@@ -119,7 +119,7 @@ class AuthServiceTest {
         user.setPassword(passwordEncoder.encode(password));
 
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
-        when(studentRepository.findById(1L)).thenReturn(Optional.of(new Student()));
+        when(studentRepository.findById(1L)).thenReturn(Optional.of(new Student(user, phoneNumber)));
 
         // Act
         AuthService.LoginResponse response = authService.login(email, password);
@@ -144,7 +144,7 @@ class AuthServiceTest {
         user.setPassword(passwordEncoder.encode(password));
 
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
-        when(employerRepository.findById(1L)).thenReturn(Optional.of(new Employer()));
+        when(employerRepository.findById(1L)).thenReturn(Optional.of(new Employer(user, phoneNumber)));
 
         // Act
         AuthService.LoginResponse response = authService.login(email, password);
