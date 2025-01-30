@@ -36,7 +36,7 @@ jobs:
       - name: Install dependencies
         run: mvn install
 
-      # Step 5: Run unit tests
+      # Step 5: Run only unit tests
       - name: Run backend unit tests
-        run: mvn test -DtestSourceDirectory=src/test/java/com/example/jobsnap/unit
+        run: mvn test -Dtest=com.example.jobsnap.unit.* -DexcludedGroups=integration
 
