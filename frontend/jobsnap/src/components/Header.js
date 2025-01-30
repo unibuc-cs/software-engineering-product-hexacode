@@ -19,8 +19,8 @@ export default function Header() {
     const { user, logout } = useAuth(); // Accesăm datele utilizatorului și funcția de logout din context
     const navigate = useNavigate();
     const handleLogout = () => {
-        logout(); // Call the logout function
-        navigate('/home'); // Redirect to the home page after logging out
+        logout();
+        navigate('/home');
     };
     return (
         <header className="absolute inset-x-0 top-0 z-50">

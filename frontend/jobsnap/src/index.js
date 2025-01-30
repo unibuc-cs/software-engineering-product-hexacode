@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { AuthProvider } from './context/AuthContext'; // Importă AuthProvider
+import { AuthProvider } from './context/AuthContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-        <AuthProvider> {/* Adaugă AuthProvider pentru a împacheta aplicația */}
+        <AuthProvider>
             <App />
         </AuthProvider>
     </React.StrictMode>

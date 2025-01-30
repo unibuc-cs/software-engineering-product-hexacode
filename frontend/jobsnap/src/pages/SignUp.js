@@ -18,9 +18,9 @@ export default function SignUpPage() {
     const notifyError1 = () => toast.error("An error occurred. Please try again.");
 
     const notifyEmail = () => toast.error("The email is already in use.");
-    const notifyPhoneStudent = () => toast.error("The phone number is already used by a student.");
+    const notifyPhoneStudent = () => toast.error("The phone number is already used.");
 
-    const notifyPhoneEmployer = () => toast.error("The phone number is already used by an employer.");
+    const notifyPhoneEmployer = () => toast.error("The phone number is already used.");
 
 
     const [universityName, setUniversityName] = useState('');
@@ -88,7 +88,7 @@ export default function SignUpPage() {
                 body: JSON.stringify(body),
             });
 
-            // Verifică răspunsul serverului
+
             if (!response.ok) {
                 const error = await response.json();
                 alert(error.message || "Failed to sign up");

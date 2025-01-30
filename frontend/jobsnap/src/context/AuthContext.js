@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
             }
 
             const data = await response.json();
-            console.log('Server response:', data); // Verifică ce răspuns primești
+            console.log('Server response:', data);
             setUser(data); // Salvează utilizatorul în starea contextului
             localStorage.setItem("user", JSON.stringify(data)); // Salvează utilizatorul în localStorage
         } catch (error) {

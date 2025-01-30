@@ -19,11 +19,11 @@ public class StudentController {
     private StudentService studentService;
 
     @Autowired
-    private StudentRepository studentRepository;  // Repository pentru Student
+    private StudentRepository studentRepository;
     @Autowired
-    private UserRepository userRepository;  // Repository pentru User, pentru a verifica ID-ul utilizatorului
+    private UserRepository userRepository;
 
-    // Get all students
+
     @GetMapping
     public List<Student> getAllStudents() {
         return studentService.getAllStudents();
@@ -34,9 +34,9 @@ public class StudentController {
     public ResponseEntity<Student> getStudentProfile(@PathVariable Long id) {
         Optional<Student> student = studentRepository.findById(id);
         if (student.isPresent()) {
-            return ResponseEntity.ok(student.get());  // Returnează profilul studentului
+            return ResponseEntity.ok(student.get());
         } else {
-            return ResponseEntity.notFound().build();  // Returnează 404 dacă studentul nu este găsit
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -46,13 +46,13 @@ public class StudentController {
         return studentService.saveStudent(student);
     }
 
-    // Update student profile
+
     @PutMapping("/update/{id}")
     public ResponseEntity<Student> updateStudentProfile(@PathVariable Long id, @RequestBody Student updatedStudent) {
         Optional<Student> studentOptional = studentRepository.findById(id);
         if (studentOptional.isPresent()) {
             Student student = studentOptional.get();
-            // Actualizează informațiile studentului
+
             student.setFirstName(updatedStudent.getFirstName());
             student.setLastName(updatedStudent.getLastName());
             student.setUniversityName(updatedStudent.getUniversityName());
@@ -60,13 +60,13 @@ public class StudentController {
             student.setPhone(updatedStudent.getPhone());
             student.setBio(updatedStudent.getBio());
 
-            return ResponseEntity.ok(studentRepository.save(student));  // Salvează și returnează studentul actualizat
+            return ResponseEntity.ok(studentRepository.save(student));
         } else {
-            return ResponseEntity.notFound().build();  // Returnează 404 dacă nu găsește studentul
+            return ResponseEntity.notFound().build();
         }
     }
 
-    // Delete student by ID
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
         if (studentService.getStudentById(id).isPresent()) {

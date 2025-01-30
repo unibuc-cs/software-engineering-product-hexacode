@@ -34,10 +34,10 @@ public class AuthService {
     @Autowired
     private EmployerRepository employerRepository;
 
-    // Cream un PasswordEncoder (de exemplu, BCrypt)
+
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    // Secret key for JWT signing (should be stored securely in production)
+
     private final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     /**
@@ -66,11 +66,11 @@ public class AuthService {
         if ("student".equalsIgnoreCase(role)) {
             // Create and save a new Student entity with hashed password
             Student student = new Student(email, hashedPassword, universityName, universityEmail, phone, firstName, lastName, bio);
-            studentRepository.save(student);  // Save in the 'student' table
+            studentRepository.save(student);
         } else if ("employer".equalsIgnoreCase(role)) {
             // Create and save a new Employer entity with hashed password
             Employer employer = new Employer(email, hashedPassword, companyName, companyEmail, companyPhone, firstName, lastName, bio);
-            employerRepository.save(employer);  // Save in the 'employer' table
+            employerRepository.save(employer);
         } else {
             throw new RuntimeException("Invalid role");
         }
