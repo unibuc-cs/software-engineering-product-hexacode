@@ -145,7 +145,7 @@ All backend and frontend tests were conducted manually. These tests included:
 ### a) Unit Testing
 - **Goal**: Verify the correctness of individual functions in the backend.
 - **Tools**: JUnit 5, Mockito, JWT (Jwts)
-- 
+ 
 ![Screenshot 2025-01-30 152727](https://github.com/user-attachments/assets/e6f7adab-e80d-4396-b035-097fa380ae78)
 
 ### b) Integration Testing
