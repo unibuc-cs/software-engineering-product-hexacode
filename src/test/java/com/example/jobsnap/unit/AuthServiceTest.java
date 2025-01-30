@@ -1,4 +1,4 @@
-package com.example.jobsnap;
+package com.example.jobsnap.unit;
 
 import com.example.jobsnap.entity.Student;
 import com.example.jobsnap.entity.Employer;
@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 import javax.crypto.SecretKey;
@@ -114,7 +115,8 @@ class AuthServiceTest {
         User user = new User();
         user.setId(1);
         user.setEmail(email);
-        user.setPassword(password);
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        user.setPassword(passwordEncoder.encode(password));
 
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
         when(studentRepository.findById(1L)).thenReturn(Optional.of(new Student()));
@@ -138,7 +140,8 @@ class AuthServiceTest {
         User user = new User();
         user.setId(1);
         user.setEmail(email);
-        user.setPassword(password);
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        user.setPassword(passwordEncoder.encode(password));
 
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
         when(employerRepository.findById(1L)).thenReturn(Optional.of(new Employer()));

@@ -1,4 +1,4 @@
-package com.example.jobsnap;
+package com.example.jobsnap.System;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;

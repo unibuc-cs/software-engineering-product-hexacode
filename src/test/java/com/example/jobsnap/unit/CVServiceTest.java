@@ -1,4 +1,4 @@
-package com.example.jobsnap;
+package com.example.jobsnap.unit;
 
 
 import com.example.jobsnap.entity.CV;

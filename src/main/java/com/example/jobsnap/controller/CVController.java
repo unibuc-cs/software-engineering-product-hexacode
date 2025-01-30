@@ -21,6 +21,7 @@ public class CVController {
 
     // Endpoint pentru a crea un CV nou
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<CV> createCV(@RequestBody CV cv) {
         System.out.println("Received CV: " + cv);
         CV createdCV = cvService.saveCV(cv); // Save the CV based on the provided data
