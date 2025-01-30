@@ -9,7 +9,6 @@ on:
       - main
 
 jobs:
-  # Backend Unit Tests
   backend-tests:
     runs-on: ubuntu-latest
     steps:
@@ -17,22 +16,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up Java 15 with a specified distribution
+      # Set up Java (use version 17 as required for Spring Boot)
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
           java-version: '17'
-          distribution: 'temurin' # Use Temurin distribution
+          distribution: 'temurin'
 
-      # Install backend dependencies
-      - name: Install backend dependencies
-        run: mvn install
+      # Cache Maven dependencies
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven
 
-      # Run backend unit tests
-      - name: Run backend unit tests
-        run: mvn test -Dtest=com.example.jobsnap.unit.*
+      # Install dependencies and run tests
+      - name: Run Maven tests
+        run: mvn test -Dtest=com.example.jobsnap.unit.* -Dspring.test.database.replace=NONE
 
-  # Frontend Unit Tests
   frontend-tests:
     runs-on: ubuntu-latest
     steps:
@@ -40,11 +43,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up Node.js 20.18.1
+      # Set up Node.js (adjust to match your version)
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20.18.1'
+          node-version: '20'
+
+      # Cache Node modules
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node
 
       # Install frontend dependencies
       - name: Install frontend dependencies
