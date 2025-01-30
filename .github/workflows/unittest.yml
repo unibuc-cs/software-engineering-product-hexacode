@@ -1,4 +1,4 @@
-name: Unit Testing Pipeline
+name: Backend Unit Testing Pipeline
 
 on:
   push:
@@ -12,18 +12,18 @@ jobs:
   backend-tests:
     runs-on: ubuntu-latest
     steps:
-      # Checkout the repository
+      # Step 1: Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up Java (use version 17 as required for Spring Boot)
+      # Step 2: Set up Java
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # Cache Maven dependencies
+      # Step 3: Cache Maven dependencies
       - name: Cache Maven dependencies
         uses: actions/cache@v3
         with:
@@ -32,38 +32,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven
 
-      # Install dependencies and run tests
-      - name: Run Maven tests
-        run: mvn test -Dtest=com.example.jobsnap.unit.* -Dspring.test.database.replace=NONE
+      # Step 4: Install backend dependencies
+      - name: Install dependencies
+        run: mvn install
 
-  frontend-tests:
-    runs-on: ubuntu-latest
-    steps:
-      # Checkout the repository
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      # Set up Node.js (adjust to match your version)
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-
-      # Cache Node modules
-      - name: Cache Node modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node
-
-      # Install frontend dependencies
-      - name: Install frontend dependencies
-        working-directory: ./frontend
-        run: npm install
-
-      # Run frontend unit tests
-      - name: Run frontend tests
-        working-directory: ./frontend
-        run: npm test
+      # Step 5: Run unit tests
+      - name: Run backend unit tests
+        run: mvn test -Dtest=com.example.jobsnap.unit.*
