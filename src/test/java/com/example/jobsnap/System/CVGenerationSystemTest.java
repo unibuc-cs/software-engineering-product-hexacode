@@ -1,4 +1,4 @@
-package com.example.jobsnap;
+package com.example.jobsnap.System;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -63,11 +63,11 @@ public class CVGenerationSystemTest {
 //        assertEquals("CV-ul a fost generat cu succes!", successMessage.getText());
     }
 
-//    @AfterEach
-//    public void tearDown() {
-//        // Închide browserul
-//        if (driver != null) {
-//            driver.quit();
-//        }
-//    }
+    @AfterEach
+    public void tearDown() {
+        // Închide browserul
+        if (driver != null) {
+            driver.quit();
+        }
+    }
 }

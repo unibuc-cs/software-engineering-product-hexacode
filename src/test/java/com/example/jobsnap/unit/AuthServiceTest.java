@@ -1,4 +1,4 @@
-package com.example.jobsnap;
+package com.example.jobsnap.unit;
 
 import com.example.jobsnap.entity.Student;
 import com.example.jobsnap.entity.Employer;
@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 import javax.crypto.SecretKey;
@@ -111,13 +112,22 @@ class AuthServiceTest {
         // Arrange
         String email = "student@test.com";
         String password = "password";
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
         User user = new User();
         user.setId(1);
         user.setEmail(email);
-        user.setPassword(password);
+        user.setPassword(passwordEncoder.encode(password));
 
-        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
-        when(studentRepository.findById(1L)).thenReturn(Optional.of(new Student(user, phoneNumber)));
+        Student student = new Student(); // Creează un Student gol
+        student.setId(1); // Setează ID-ul din clasa User
+        student.setEmail(email); // Setează email-ul din clasa User
+        student.setPassword(user.getPassword()); // Setează parola criptată
+        student.setPhone("1234567890"); // Adaugă atribute specifice Student
+        student.setUniversityName("Test University");
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(student)); // Returnează Student direct
+        when(studentRepository.findById(1L)).thenReturn(Optional.of(student)); // Mock corect
 
         // Act
         AuthService.LoginResponse response = authService.login(email, password);
@@ -130,18 +140,29 @@ class AuthServiceTest {
         verify(studentRepository, times(1)).findById(1L);
     }
 
+
+
     @Test
     void testLogin_Success_Employer() {
         // Arrange
         String email = "employer@test.com";
         String password = "password";
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
         User user = new User();
         user.setId(1);
         user.setEmail(email);
-        user.setPassword(password);
+        user.setPassword(passwordEncoder.encode(password));
 
-        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
-        when(employerRepository.findById(1L)).thenReturn(Optional.of(new Employer(user, phoneNumber)));
+        Employer employer = new Employer(); // Creează un Employer gol
+        employer.setId(1); // Setează ID-ul din clasa User
+        employer.setEmail(email); // Setează email-ul din clasa User
+        employer.setPassword(user.getPassword()); // Setează parola criptată
+        employer.setCompanyName("Test Company"); // Adaugă atribute specifice Employer
+        employer.setCompanyPhone("0987654321");
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(employer)); // Returnează Employer direct
+        when(employerRepository.findById(1L)).thenReturn(Optional.of(employer)); // Mock corect
 
         // Act
         AuthService.LoginResponse response = authService.login(email, password);
@@ -153,6 +174,7 @@ class AuthServiceTest {
         verify(userRepository, times(1)).findByEmail(email);
         verify(employerRepository, times(1)).findById(1L);
     }
+
 
     @Test
     void testLogin_InvalidCredentials() {

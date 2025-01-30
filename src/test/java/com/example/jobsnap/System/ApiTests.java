@@ -1,4 +1,4 @@
-package com.example.jobsnap;
+package com.example.jobsnap.System;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
