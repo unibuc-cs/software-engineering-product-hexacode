@@ -1,7 +1,21 @@
 
 # software-engineering-product-hexacode
 # JobSnap
+
 JobSnap is a web-based platform designed to help students build professional profiles and generate dynamic CVs tailored to specific job roles. By allowing students to customize CV templates for targeted job types, the platform ensures that students present the most relevant information to potential employers, streamlining the recruitment process for both parties.
+
+## 1. [Product Vision](#product-vision)
+## 2. [Key Features](#key-features)
+## 3. [Requirements](#requirements)
+## 4. [User Stories](#user-stories)
+## 5. [Backlog](#backlog)
+## 6. [Architectural Description](#architectural-description)
+## 7. [CI/CD Workflow and Work Environments](#cicd-workflow-and-work-environments)
+## 8. [Testing & Quality Assurance](#quality-assurance-qa)
+## 9. [Application Execution](#application-execution)
+## 11. [Environment Configurations Summary](#environment-configurations-summary)
+
+
 ## Product Vision
 **FOR**: Students who want to create professional profiles and tailor CVs for specific job roles.  
 **WHO**: Face challenges with creating relevant, job-specific CVs and finding job opportunities that match their skills.  
@@ -9,6 +23,7 @@ JobSnap is a web-based platform designed to help students build professional pro
 **THAT**: Provides tailored CV templates, job role-based field suggestions, and employer access to profiles.  
 **UNLIKE**: Generalized CV builders or simple resume generators.  
 **THIS PRODUCT**: Offers dynamic CV customization based on job roles, a range of professional templates, and a streamlined connection between students and employers.  
+
 ## Key Features
 ### For Students
 
@@ -82,6 +97,100 @@ All backend and frontend tests were conducted manually. These tests included:
 - Testing the integration between frontend and backend for key workflows (e.g., signup, login, profile management).
 
 ---
+
+# Quality Assurance (QA)
+
+## 1. **Testing Objectives**
+- Validate the main functionalities of the application (profile creation, CV generation, employer search, and viewing CVs).
+- Ensure compliance with non-functional requirements: performance, security, and reliability.
+- Identify and fix defects.
+
+---
+
+## 2. **Tested Artifacts and Levels of Testing**
+
+### Artifacts:
+- **Frontend**: User interface.
+- **Backend**: Services and APIs.
+- **Database**: Integrity and performance of queries.
+- **Integration**: Communication between frontend and backend components.
+
+### Levels:
+- Unit testing.
+- Integration testing.
+- System testing.
+- Security testing.
+
+---
+
+## 3. **Testing Process**
+
+### Testing Stages in the SDLC:
+1. **Unit Testing**: During the development of individual components.
+2. **Integration Testing**: After implementing frontend-backend interactions.
+3. **System Testing**: On the complete application version, in a staging environment.
+4. **Security Testing**: In the final phase, to identify critical vulnerabilities.
+
+---
+
+## 4. **Testing Methods**
+
+### a) Unit Testing
+- **Goal**: Verify the correctness of individual functions in the backend.
+- **Tools**: JUnit 5, Mockito, JWT (Jwts)
+- 
+![Screenshot 2025-01-30 152727](https://github.com/user-attachments/assets/e6f7adab-e80d-4396-b035-097fa380ae78)
+
+### b) Integration Testing
+- **Goal**: Validate interaction between frontend and backend.
+- **Tools**: manual testing
+
+### c) System Testing
+- **Goal**: Simulate the complete application flow.
+- **Tools**: JUnit5, Selenium WebDriver, WebDriverWait
+
+![Screenshot 2025-01-30 152858](https://github.com/user-attachments/assets/eae381d7-43e3-49db-9898-8e44b834217a)
+
+### d) Security Testing
+- **Goal**: Identify and address critical vulnerabilities.
+- **Tools**: manual testing
+
+### e) Performance Testing
+- **Goal**: Measure API response time
+- **Tools**: k6
+
+![WhatsApp Image 2025-01-30 at 14 44 13_8bcb59ce](https://github.com/user-attachments/assets/f69a95a6-8c84-4e02-bbda-4af33d99ca72)
+
+---
+
+## 5. **Testing Results**
+
+| **Functionality**         | **Test Type**     | **Expected Result**           | **Actual Result**            | **Status**  | **Remarks**                |
+|---------------------------|-------------------|--------------------------------|-----------------------------|-------------|-----------------------------|
+| Profile creation          | Unit| Profile successfully created  | Profile successfully created| Passed      | -    
+| Sign Up          | Unit| Signed up successfully  | Signed up successfully | Passed      | -        
+| Log in          | Unit| Logged in successfully  | Logged in successfully | Passed      | -                          |
+| CV generation             | System              | CV generated correctly         | CV generated correctly       | Passed      | -                           |
+| Frontend API connection   | Integration       | API responds with 200 OK       | 200 OK response              | Passed      | -                           |                         |
+|SQL Injection attack   |Security    |Input blocked    |Input blocked  |Passed| -
+| Performance (10 users)    | Performance       | Application responds in <1s    | Application responds in 900ms| Passed      | -                           |
+
+---
+
+## 6. **Conclusions and Recommendations**
+
+### Observations:
+- All critical functionalities were successfully tested.
+- No major defects were identified.
+- Performance and security meet the requirements.
+
+### Recommendations:
+- Implement automated end-to-end (E2E) tests to reduce manual testing time.
+- Continuously monitor security in the production environment.
+
+---
+
+
 
 ## Application Execution
 
