@@ -9,7 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 
 export default function LoginPage() {
-    const { login } = useAuth(); // Obținem funcția de login din context
+    const { login } = useAuth();
     const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
@@ -29,7 +29,7 @@ export default function LoginPage() {
             const data = await response.json();
 
             if (response.ok) {
-                // Save the user data, including the role, to localStorage
+
                 console.log('DATA:');
                 console.log(JSON.stringify(data));
                 localStorage.setItem('user', JSON.stringify(data));

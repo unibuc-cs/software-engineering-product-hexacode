@@ -9,7 +9,7 @@ public class CVTemplate implements Cloneable {
     @Id
     private Long id;
 
-    // Constructori, getters și setters
+
 
     @Override
     public Object clone() throws CloneNotSupportedException {

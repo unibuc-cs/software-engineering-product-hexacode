@@ -53,16 +53,16 @@
 }
 
 .cv-template {
-    overflow-wrap: break-word; /* Permite întreruperea cuvintelor pe linia următoare */
-    word-wrap: break-word; /* Asigură-te că se întrerupe pe cuvinte mari */
-    word-break: break-word; /* Întrerupe cuvintele prea lungi */
-    max-width: 100%; /* Asigură-te că containerul se ajustează la lățimea disponibilă */
-    font-size: 0.9rem; /* Reduce fontul pentru a economisi spațiu */
-    padding: 10px; /* Reducere padding pentru carduri mai mici */
-    margin: 10px 0; /* Margine mai mică între carduri */
-    max-height: 500px; /* Maximizează înălțimea pentru a preveni cardurile prea mari */
-    overflow-y: auto; /* Adaugă scroll dacă conținutul depășește înălțimea */
-    box-sizing: border-box; /* Asigură-te că padding-ul și marginile sunt incluse în dimensiunile elementului */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
+    font-size: 0.9rem;
+    padding: 10px;
+    margin: 10px 0;
+    max-height: 500px;
+    overflow-y: auto;
+    box-sizing: border-box;
 }
 
 
@@ -139,7 +139,6 @@ button:focus {
 
 }
 
-/* Save button */
 .save-button {
     background-color: #4CAF50; /* Green */
     color: white;
@@ -147,7 +146,7 @@ button:focus {
 }
 
 .save-button:hover {
-    background-color: #45a049; /* Darker green when hovered */
+    background-color: #45a049;
 }
 
 /* Cancel button */
@@ -160,34 +159,31 @@ button:focus {
 
 
 
-/* Lista de CV-uri folosind un grid cu 1 coloană pe ecrane mici, 2 pe ecrane medii și 3 pe ecrane mari */
 .cv-list {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 3 coloane pe ecranele mari */
     gap: 30px; /* Spațiu între cardurile de CV */
     margin-top: 20px;
     padding: 0 20px;
-    justify-items: center; /* Centrează cardurile pe orizontală */
+    justify-items: center;
 }
 
 /* Cardurile de CV */
 .cv-card {
     background-color: #fff;
-    padding: 20px; /* Mărim padding-ul pentru a face cardul mai generos */
+    padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: 1px solid #ddd;
     text-align: center;
-    width: 100%; /* Cardurile vor ocupa toată lățimea disponibilă */
-    max-width: 500px; /* Limităm lățimea cardului */
+    width: 100%;
+    max-width: 500px;
     /*max-height: 500px; */
-    margin: 0 auto; /* Centrează cardurile pe axa orizontală */
+    margin: 0 auto;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     margin-bottom: 20px;
 }
-.cv-preview{
 
-}
 
 .cv-card:hover {
     transform: translateY(-8px);
@@ -212,13 +208,13 @@ button:focus {
 /* Butoanele din fiecare card de CV */
 .cv-actions {
     display: flex;
-    flex-wrap: wrap; /* Permite butoanelor să se mute pe rânduri în cazul în care nu se potrivesc pe un singur rând */
-    justify-content: center; /* Centrează butoanele pe orizontală */
-    gap: 10px; /* Spațiu între butoane */
-    width: 100%; /* Asigură-te că butoanele ocupă întreaga lățime disponibilă */
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
 }
 
-/* Stilizarea butoanelor din carduri */
+
 .cv-actions button {
     background-color: #4CAF50;
     color: white;
@@ -227,38 +223,38 @@ button:focus {
     border-radius: 5px;
     cursor: pointer;
     font-size: 0.9rem;
-    width: 100%; /* Asigură-te că butoanele nu ies din card */
-    max-width: 120px; /* Limităm lățimea maximă a butoanelor pentru a se potrivi în mod corespunzător */
-    box-sizing: border-box; /* Asigură-te că padding-ul nu face ca butoanele să iasă din container */
+    width: 100%;
+    max-width: 120px;
+    box-sizing: border-box;
 }
 
 
-/* Stilizare la hover pentru butoane */
+
 .cv-actions button:hover {
     opacity: 0.8;
 }
 
-/* Media Queries pentru responsive design - 1 coloană pe ecranele mici */
+
 @media (max-width: 768px) {
     .cv-list {
-        grid-template-columns: 1fr; /* 1 coloană pe ecranele mici */
+        grid-template-columns: 1fr;
     }
 
     .cv-card {
-        max-width: 100%; /* Permite cardurilor să ocupe toată lățimea */
+        max-width: 100%;
     }
     .cv-actions button {
-        width: 100%; /* Pe ecranele mici, butoanele vor ocupa întreaga lățime */
+        width: 100%;
     }
 }
 
-/* Media Queries pentru responsive design - 3 coloane pe ecranele mari */
+
 @media (min-width: 1024px) {
     .cv-list {
-        grid-template-columns: repeat(3, 1fr); /* 3 coloane pe ecranele mari */
+        grid-template-columns: repeat(3, 1fr);
     }
 
     .cv-actions button {
-        width: 48%; /* Pe ecranele mari, butoanele vor ocupa doar 48% din lățimea cardului */
+        width: 48%;
     }
 }

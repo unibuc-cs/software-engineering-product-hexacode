@@ -24,13 +24,12 @@ public class CVController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<CV> createCV(@RequestBody CV cv) {
         System.out.println("Received CV: " + cv);
-        CV createdCV = cvService.saveCV(cv); // Save the CV based on the provided data
-        return ResponseEntity.status(201).body(createdCV); // Return the created CV
+        CV createdCV = cvService.saveCV(cv);
+        return ResponseEntity.status(201).body(createdCV);
     }
 
 
 
-    // Endpoint pentru a obține un CV pe baza ID-ului
     @GetMapping("/{cvId}")
     public ResponseEntity<CV> getCVById(@PathVariable Long cvId) {
         System.out.println("Received GET request for CV with ID: " + cvId);
@@ -42,7 +41,6 @@ public class CVController {
         return ResponseEntity.ok(cv); // Returnează CV-ul găsit
     }
 
-    // Endpoint pentru a obține toate CV-urile unui utilizator
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<CV>> getCVsByUserId(@PathVariable Long userId) {
         List<CV> cvs = cvService.getCVsByUserId(userId);
@@ -53,24 +51,9 @@ public class CVController {
     }
 
 
-//    @GetMapping("/allcvs")
-//    public ResponseEntity<List<CV>> getAllCVs() {
-//        try {
-//            List<CV> allCVs = cvService.getAllCVs(); // Apelează serviciul pentru a obține toate CV-urile
-//            if (allCVs.isEmpty()) {
-//                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null); // Dacă nu sunt CV-uri
-//            }
-//            return ResponseEntity.ok(allCVs); // Returnează lista de CV-uri
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // Dacă apare o eroare
-//        }
-//    }
-
-
-    // Endpoint pentru a obține CV-urile uploadate de un utilizator
     @GetMapping("/uploaded/{userId}")
     public ResponseEntity<List<CV>> getUploadedCVsByUserId(@PathVariable Long userId) {
-        List<CV> uploadedCVs = cvService.getUploadedCVsByUserId(userId); // Folosește un serviciu pentru a obține doar CV-urile uploadate
+        List<CV> uploadedCVs = cvService.getUploadedCVsByUserId(userId);
         if (uploadedCVs.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -91,16 +74,11 @@ public class CVController {
 
 
 
-
-
-
-
-
     // Endpoint pentru a descărca CV-ul ca fișier (PDF sau alt format)
     @GetMapping("/download/{cvId}")
     public ResponseEntity<byte[]> downloadCV(@PathVariable Long cvId) {
         CV cv = cvService.findById(cvId);
-        // Logică pentru generarea și returnarea fișierului PDF
+
         return null;
     }
 
@@ -228,7 +206,7 @@ public class CVController {
             System.out.println("CvType: " + cvType);
             List<CV> allCVs;
 
-            // If cvType is provided, filter by cvType
+
             if (cvType != null && !cvType.isEmpty()) {
                 allCVs = cvService.getCVsByType(cvType);
                 System.out.println("CvType: " + cvType);
@@ -237,11 +215,11 @@ public class CVController {
             }
 
             if (allCVs.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null); // If no CVs found
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
             }
             return ResponseEntity.ok(allCVs); // Return the list of CVs
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // Handle error
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 

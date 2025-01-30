@@ -45,7 +45,7 @@ public class AuthController {
         }
     }
 
-    // DTO pentru cererea de login
+
     public static class LoginRequest {
         private String email;
         private String password;
@@ -82,7 +82,7 @@ public class AuthController {
         return "User registered successfully!";
     }
 
-    // DTO for sign-up request
+
     public static class SignUpRequest {
         private String email;
         private String password;
@@ -97,7 +97,7 @@ public class AuthController {
         private String companyPhone;
         private String bio;
 
-        // Getters and setters for all fields
+
         public String getEmail() { return email; }
         public void setEmail(String email) { this.email = email; }
 

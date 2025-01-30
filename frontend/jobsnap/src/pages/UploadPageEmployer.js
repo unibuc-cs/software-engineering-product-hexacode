@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import CVTemplate from "../components/CVTemplate";
 
 const UploadCVStudent = () => {
     const { user } = useAuth();
     const [cvList, setCvList] = useState([]);
     const [allCvs, setAllCvs] = useState([]);
     const [cvType, setCvType] = useState('');
+    const [selectedCV, setSelectedCV] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [cvsPerPage] = useState(6); // Number of CVs per page
     const navigate = useNavigate();
@@ -50,21 +52,26 @@ const UploadCVStudent = () => {
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    // Navigate to the full CV details page
-    const handleViewFullCV = (cvId) => {
-        navigate(`/cv-detail/${cvId}`);
+
+    const handleViewFullCV = (cv) => {
+        setSelectedCV(cv);
+        console.log("Selected cv",selectedCV);
+    };
+
+    const handleCloseCV = () => {
+        setSelectedCV(null);
     };
 
     const totalPages = Math.ceil(cvList.length / cvsPerPage);
 
-// Handle previous page
+
     const handlePrevPage = () => {
         if (currentPage > 1) {
             setCurrentPage(currentPage - 1);
         }
     };
 
-// Handle next page
+
     const handleNextPage = () => {
         if (currentPage < totalPages) {
             setCurrentPage(currentPage + 1);
@@ -74,6 +81,24 @@ const UploadCVStudent = () => {
     return (
         <div className="cv-view-container mt-20 px-4">
             <h1 className="text-4xl font-semibold text-center text-blue-700 mb-10">All Student CVs</h1>
+
+            {/* Modal for full CV preview */}
+            {selectedCV && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white p-6 rounded-lg w-11/12 max-w-5xl shadow-2xl relative overflow-y-auto" style={{ height: "90vh" }}>
+                        <button
+                            onClick={handleCloseCV}
+                            className="absolute top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-red-600"
+                        >
+                            Close
+                        </button>
+                        <div className="cv-preview-container overflow-y-auto max-h-[80vh]">
+                            <CVTemplate formData={selectedCV} image={selectedCV.imagePath} cvType={selectedCV.cvType} />
+                        </div>
+                    </div>
+                </div>
+            )}
+
 
             {/* CV Type Filter Dropdown */}
             <div className="mb-6 text-center">
@@ -118,7 +143,7 @@ const UploadCVStudent = () => {
                             <div className="mt-4">
                                 <button
                                     className="bg-blue-700 text-white p-2 rounded-md w-full mb-2"
-                                    onClick={() => handleViewFullCV(cv.id)}
+                                    onClick={() => handleViewFullCV(cv)}
                                 >
                                     View Full CV
                                 </button>

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/profile")
-@CrossOrigin(origins = "http://localhost:3000") // Permite conexiuni din frontend
+@CrossOrigin(origins = "http://localhost:3000")
 public class ProfileController {
 
     @Autowired
@@ -17,20 +17,20 @@ public class ProfileController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Profile> getProfile(@PathVariable int id) {
-        Profile profile = profileService.getProfileById(id);  // Using user_id
+        Profile profile = profileService.getProfileById(id);
         if (profile == null) {
-            return ResponseEntity.notFound().build();  // Return 404 if profile not found
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(profile);  // Return 200 OK with the profile data
+        return ResponseEntity.ok(profile);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Profile> updateProfile(@PathVariable int id, @RequestBody Profile updatedProfile) {
         try {
             Profile profile = profileService.updateProfile(id, updatedProfile);
-            return ResponseEntity.ok(profile);  // Return updated profile
+            return ResponseEntity.ok(profile);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);  // Handle errors
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 

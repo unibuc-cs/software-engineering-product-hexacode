@@ -28,14 +28,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Activează CORS
-                .csrf(csrf -> csrf.disable())  // Dezactivăm CSRF (opțional)
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/auth/login", "/auth/signup").permitAll()  // Permitem accesul neautentificat la login și signup
                         .requestMatchers("/api/**").permitAll() // Permitem accesul pentru toate endpoint-urile API
                         .anyRequest().authenticated()  // Restul endpoint-urilor necesită autentificare
                 );
 
-        return http.build();  // Returnăm configurarea finală
+        return http.build();
     }
 
     // Configurăm sursa CORS

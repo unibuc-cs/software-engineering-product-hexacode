@@ -10,7 +10,7 @@ const UploadCVStudent = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 6; // Number of CVs per page
 
-    // Fetch CVs only when the user is authenticated
+
     useEffect(() => {
         if (!user) return;
 
@@ -24,17 +24,19 @@ const UploadCVStudent = () => {
                 setCvList(data);  // Actualizezi lista de CV-uri uploadate
             } catch (error) {
                 console.error("Error fetching uploaded CVs:", error);
-                alert("Nu s-au putut încărca CV-urile uploadate.");
+
             }
         };
 
         fetchUploadedCVs();
-    }, [user]);  // Asigură-te că lista se reîncarcă dacă utilizatorul se schimbă
+    }, [user]);
 
 
-    // Handle viewing a CV (Modal)
+
     const handleViewCV = (cv) => {
         setSelectedCV(cv);
+        console.log("Selected cv",selectedCV);
+
     };
 
     const handleCloseCV = () => {
@@ -59,27 +61,9 @@ const UploadCVStudent = () => {
         }
     };
 
-    // Handle uploading the CV
-    const handleUploadCV = async (cvId) => {
-        const cvToUpload = cvList.find(cv => cv.id === cvId);
-        if (!cvToUpload) {
-            alert("CV-ul nu a fost găsit.");
-            return;
-        }
 
-        try {
-            const response = await axios.post('http://localhost:8080/api/cv/upload', cvToUpload);
-            if (response.status === 200) {
-                alert('CV-ul a fost încărcat cu succes!');
-                // Actualizează lista de CV-uri din pagina de upload
-            }
-        } catch (error) {
-            console.error("Error uploading CV:", error);
-            alert('A apărut o eroare la încărcarea CV-ului.');
-        }
-    };
 
-    // Handle deleting a CV from the page (but keeping it in the profile)
+
     const handleDeleteCV = (cvId) => {
         setCvList(cvList.filter(cv => cv.id !== cvId)); // Remove the CV from the list displayed on the page
     };
@@ -143,7 +127,7 @@ const UploadCVStudent = () => {
                                     View CV
                                 </button>
                                 <button
-                                    onClick={() => handleDeleteCV(cv.id)} // Call delete function
+                                    onClick={() => handleDeleteCV(cv.id)}
                                     className="bg-red-700 text-white py-2 px-4 rounded-lg w-full shadow-md hover:bg-red-800 transition-all"
                                 >
                                     Delete CV

@@ -51,11 +51,11 @@ public class CVService {
     }
 
     public List<CV> getCVsByType(String cvType) {
-        return cvRepository.findByCvTypeIgnoreCase(cvType); // Make sure the repository supports this query
+        return cvRepository.findByCvTypeIgnoreCase(cvType);
     }
 
 
     public List<CV> getUploadedCVsByUserId(Long userId) {
-        return cvRepository.findByUserIdAndIsUploadedTrue(userId);  // Căutăm CV-urile care sunt uploadate
+        return cvRepository.findByUserIdAndIsUploadedTrue(userId);
     }
 }

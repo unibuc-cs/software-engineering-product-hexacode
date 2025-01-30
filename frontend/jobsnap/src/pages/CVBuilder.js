@@ -6,17 +6,17 @@ import html2pdf from 'html2pdf.js';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Importă stilurile pentru toast
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function CVBuilder() {
-    const { cvType } = useParams();  // Preluăm tipul de CV din ruta curentă
-    const { user } = useAuth(); // Obținem user-ul din contextul de autentificare
-    const navigate = useNavigate(); // Folosim useNavigate pentru redirecționare după salvare
+    const { cvType } = useParams();
+    const { user } = useAuth();
+    const navigate = useNavigate();
 
-    const notifySuccess = () => toast.success("CV a fost adăugat cu succes!");
-    const notifyError = () => toast.error("A apărut o eroare la adăugarea CV-ului.");
-    // console.log("CV Type:", cvType);  // Verifică în consola browser-ului dacă preiei corect tipul de CV
+    const notifySuccess = () => toast.success("The CV has been saved successfully!");
+    const notifyError = () => toast.error("An error occurred while saving the CV.");
+    // console.log("CV Type:", cvType);
 
 
     const cvFields = {
@@ -97,7 +97,7 @@ export default function CVBuilder() {
     const [formData, setFormData] = useState({});
     const [image, setImage] = useState(null);
 
-    // Setăm câmpurile în funcție de tipul de CV selectat
+
     useEffect(() => {
         console.log('CV Type:', cvType);
         if (cvFields[cvType]) {
@@ -110,10 +110,10 @@ export default function CVBuilder() {
             console.log('Invalid cvType:', cvType);
         }
 
-        // Încarcă datele salvate la profil
+
         axios.get('http://localhost:8080/api/cv-templates')
             .then(response => {
-                setFormData(response.data); // Salvează datele în starea componentelor
+                setFormData(response.data);
             })
             .catch(error => {
                 console.error('Error loading CV data:', error);
@@ -136,35 +136,6 @@ export default function CVBuilder() {
         }
     };
 
-    // const handleSaveCV = () => {
-    //     const cvData = { ...formData, userId: user.id }; // Adăugăm userId
-    //     console.log(cvData)
-    //     // Verifică dacă există o imagine
-    //     if (image) {
-    //         cvData.image = image; // Adăugăm imaginea
-    //     }
-    //
-    //     fetch('http://localhost:8080/api/cv-templates', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify(cvData),
-    //     })
-    //         .then(response => {
-    //             if (!response.ok) {
-    //                 throw new Error('Error saving CV');
-    //             }
-    //             return response.json();
-    //         })
-    //         .then(data => {
-    //             console.log('CV saved:', data);
-    //             navigate('/profile'); // Redirecționează utilizatorul după salvare
-    //         })
-    //         .catch(error => {
-    //             console.error('Error:', error);
-    //         });
-    // };
 
     const handleSaveCV = async () => {
         const cvData = {
@@ -213,15 +184,13 @@ export default function CVBuilder() {
             // Redirecționează utilizatorul după 2 secunde
             setTimeout(() => {
                 navigate('/start');  // Redirecționează la pagina de start
-            }, 3000);  // 2000ms = 2 secunde
+            }, 3000);
         } catch (error) {
             console.error("Error adding cv:", error);
-            // Afișează notificare de eroare
+
             notifyError();
         }
     };
-
-
 
 
     const handleDownloadPDF = () => {
@@ -232,14 +201,17 @@ export default function CVBuilder() {
             html2canvas: { scale: 3 },
         };
 
+
         html2pdf().set(options).from(element).save();
     };
 
+
     return (
-        <div className="min-h-screen py-20 bg-gradient-to-r from-blue-100 to-blue-300 flex flex-col items-center justify-center">
+        <div
+            className="min-h-screen py-20 bg-gradient-to-r from-blue-100 to-blue-300 flex flex-col items-center justify-center">
             <h1 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">
                 Start Building Your {cvType ? cvType.charAt(0).toUpperCase() + cvType.slice(1) : 'CV'} CV
-                <ToastContainer />
+                <ToastContainer/>
             </h1>
 
             <div className="flex flex-col lg:flex-row gap-8 w-full max-w-7xl px-4">
@@ -285,8 +257,8 @@ export default function CVBuilder() {
                 </form>
 
                 {/* Preview Section */}
-                <div id="cv-preview" className="bg-white shadow-lg rounded-lg p-6 w-full lg:w-1/2">
-                    <CVTemplate formData={formData} image={image} cvType={cvType} />
+                <div id="cv-preview" className="cv-preview transform scale-90">
+                    <CVTemplate formData={formData} image={image} cvType={cvType}/>
                 </div>
             </div>
 
@@ -296,6 +268,13 @@ export default function CVBuilder() {
                 className="mt-8 bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700"
             >
                 Save CV
+            </button>
+
+            <button
+                onClick={handleDownloadPDF}
+                className="mt-8 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
+            >
+                Download CV as PDF
             </button>
 
 

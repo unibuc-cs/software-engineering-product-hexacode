@@ -19,9 +19,9 @@ public class EmployerController {
     private EmployerService employerService;
 
     @Autowired
-    private EmployerRepository employerRepository;  // Repository pentru Employer
+    private EmployerRepository employerRepository;
     @Autowired
-    private UserRepository userRepository;  // Repository pentru User, pentru a verifica ID-ul utilizatorului
+    private UserRepository userRepository;
 
     // Get all employers
     @GetMapping
@@ -34,23 +34,21 @@ public class EmployerController {
     public ResponseEntity<Employer> getEmployerProfile(@PathVariable Long id) {
         Optional<Employer> employer = employerRepository.findById(id);
         if (employer.isPresent()) {
-            return ResponseEntity.ok(employer.get());  // Returnează profilul angajatorului
+            return ResponseEntity.ok(employer.get());
         } else {
-            return ResponseEntity.notFound().build();  // Returnează 404 dacă angajatorul nu este găsit
+            return ResponseEntity.notFound().build();
         }
     }
 
-    // Create a new employer
     @PostMapping
     public Employer createEmployer(@RequestBody Employer employer) {
-        System.out.println("Email primit în backend: " + employer.getEmail());  // Verifică dacă email-ul este corect primit
+        System.out.println("Email primit în backend: " + employer.getEmail());
         if (employer.getEmail() == null || employer.getEmail().isEmpty()) {
             throw new RuntimeException("Email is required");
         }
         return employerService.saveEmployer(employer);
     }
 
-    // Update employer profile by ID
     @PutMapping("/update/{id}")
     public ResponseEntity<Employer> updateEmployerProfile(@PathVariable Long id, @RequestBody Employer updatedEmployer) {
         Optional<Employer> employerOptional = employerRepository.findById(id);
@@ -64,11 +62,11 @@ public class EmployerController {
             employer.setBio(updatedEmployer.getBio());
             return ResponseEntity.ok(employerRepository.save(employer));
         } else {
-            return ResponseEntity.notFound().build();  // Returnează 404 dacă nu găsește angajatorul
+            return ResponseEntity.notFound().build();
         }
     }
 
-    // Delete employer by ID
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEmployer(@PathVariable Long id) {
         if (employerService.getEmployerById(id).isPresent()) {

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import CVTemplate from "../components/CVTemplate";
 
 const CVDetailPage = () => {
-    const { cvId } = useParams();  // Get cvId from URL
+    const { cvId } = useParams();  // Obținem cvId din URL
     const [cv, setCv] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchCVDetails = async () => {
@@ -26,9 +28,12 @@ const CVDetailPage = () => {
         return <div>Loading...</div>;
     }
 
-    // Function to check if the field has valid content (not "N/A" or empty)
-    const hasValidContent = (field) => {
-        return field && field !== 'N/A';
+    const handleViewCV = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCloseCV = () => {
+        setIsModalOpen(false);
     };
 
     return (
@@ -44,54 +49,90 @@ const CVDetailPage = () => {
                 )}
             </div>
 
-            {/* Conditionally render fields based on content */}
-            {hasValidContent(cv.email) && (
-                <div className="contact-info mb-8">
-                    <h3 className="text-xl font-semibold text-blue-700 mb-4">Contact Information</h3>
-                    <p><strong>Email:</strong> {cv.email}</p>
-                    <p><strong>Phone:</strong> {cv.phone}</p>
-                </div>
-            )}
+            {/* Detalii CV */}
+            <div className="cv-details">
+                <h3 className="text-xl font-semibold text-blue-700 mb-4">Contact Information</h3>
+                <p><strong>Email:</strong> {cv.email}</p>
+                <p><strong>Phone:</strong> {cv.phone}</p>
 
-            {hasValidContent(cv.education) && (
-                <div className="education mb-8">
-                    <h3 className="text-xl font-semibold text-blue-700 mb-4">Education</h3>
-                    <p>{cv.education}</p>
-                </div>
-            )}
+                <h3 className="text-xl font-semibold text-blue-700 mb-4">Education</h3>
+                <p>{cv.education}</p>
 
-            {hasValidContent(cv.experience) && (
-                <div className="experience mb-8">
-                    <h3 className="text-xl font-semibold text-blue-700 mb-4">Professional Experience</h3>
-                    <p>{cv.experience}</p>
-                </div>
-            )}
+                <h3 className="text-xl font-semibold text-blue-700 mb-4">Experience</h3>
+                <p>{cv.experience}</p>
 
-            {hasValidContent(cv.skills) && (
-                <div className="skills mb-8">
-                    <h3 className="text-xl font-semibold text-blue-700 mb-4">Skills</h3>
-                    <p>{cv.skills}</p>
-                </div>
-            )}
+                <h3 className="text-xl font-semibold text-blue-700 mb-4">Skills</h3>
+                <p>{cv.skills}</p>
 
-            {hasValidContent(cv.technologies) && (
-                <div className="technologies mb-8">
-                    <h3 className="text-xl font-semibold text-blue-700 mb-4">Technologies</h3>
-                    <p>{cv.technologies}</p>
-                </div>
-            )}
+                {cv.cvType === 'it' && (
+                    <>
+                        <h3 className="text-xl font-semibold text-blue-700 mb-4">Technologies</h3>
+                        <p>{cv.technologies}</p>
+                    </>
+                )}
 
-            {hasValidContent(cv.certifications) && (
-                <div className="certifications mb-8">
-                    <h3 className="text-xl font-semibold text-blue-700 mb-4">Certifications</h3>
-                    <p>{cv.certifications}</p>
-                </div>
-            )}
+                {cv.cvType === 'business' && (
+                    <>
+                        <h3 className="text-xl font-semibold text-blue-700 mb-4">Business Skills</h3>
+                        <p>{cv.skills}</p>
+                    </>
+                )}
 
-            {hasValidContent(cv.projects) && (
-                <div className="projects mb-8">
-                    <h3 className="text-xl font-semibold text-blue-700 mb-4">Projects</h3>
-                    <p>{cv.projects}</p>
+                {cv.cvType === 'marketing' && (
+                    <>
+                        <h3 className="text-xl font-semibold text-blue-700 mb-4">Marketing Skills</h3>
+                        <p>{cv.skills}</p>
+                    </>
+                )}
+
+                {cv.cvType === 'graphicdesign' && (
+                    <>
+                        <h3 className="text-xl font-semibold text-blue-700 mb-4">Design Skills</h3>
+                        <p>{cv.skills}</p>
+                    </>
+                )}
+
+                {cv.cvType === 'healthcare' && (
+                    <>
+                        <h3 className="text-xl font-semibold text-blue-700 mb-4">Healthcare Skills</h3>
+                        <p>{cv.skills}</p>
+                    </>
+                )}
+
+                {cv.cvType === 'education' && (
+                    <>
+                        <h3 className="text-xl font-semibold text-blue-700 mb-4">Degree</h3>
+                        <p>{cv.degree}</p>
+                    </>
+                )}
+
+                {/* Render Projects and Certifications for any CV type */}
+                <h3 className="text-xl font-semibold text-blue-700 mb-4">Projects</h3>
+                <p>{cv.projects}</p>
+
+                <h3 className="text-xl font-semibold text-blue-700 mb-4">Certifications</h3>
+                <p>{cv.certifications}</p>
+            </div>
+
+            {/* Show CV Template in Modal */}
+            <button
+                onClick={handleViewCV}
+                className="mt-8 bg-blue-700 text-white py-2 px-4 rounded-lg hover:bg-blue-800"
+            >
+                View CV Template
+            </button>
+
+            {isModalOpen && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white p-6 rounded-lg w-11/12 max-w-5xl shadow-2xl relative overflow-y-auto" style={{ height: "90vh" }}>
+                        <button
+                            onClick={handleCloseCV}
+                            className="absolute top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-red-600"
+                        >
+                            Close
+                        </button>
+                        <CVTemplate formData={cv} image={cv.imagePath} cvType={cv.cvType} />
+                    </div>
                 </div>
             )}
         </div>

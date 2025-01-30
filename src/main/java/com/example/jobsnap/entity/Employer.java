@@ -18,7 +18,7 @@ public class Employer extends User {
     private String bio;
     // Constructor
     public Employer(String email, String password, String companyName, String companyEmail, String companyPhone, String firstName, String lastName, String bio) {
-        super(email, password);  // Calls the constructor of the User class
+        super(email, password);
         this.companyEmail = companyEmail;
         this.companyName = companyName;
         this.companyPhone = companyPhone;

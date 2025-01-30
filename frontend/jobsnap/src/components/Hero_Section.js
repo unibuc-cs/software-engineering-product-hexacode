@@ -1,7 +1,7 @@
 'use client'
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom'; // Importăm Link pentru navigare
-import { AuthContext } from '../context/AuthContext'; // Importă contextul care conține informațiile despre utilizator
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 export default function HeroSection() {
     const { user } = useContext(AuthContext); // Obținem utilizatorul din context
@@ -32,7 +32,7 @@ export default function HeroSection() {
                         {/* Afișează butonul doar dacă rolul utilizatorului este "student" */}
                         {user && user.role === 'student' && (
                             <Link
-                                to="/start" // Navighează către pagina "/start"
+                                to="/start"
                                 className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
                                 Get started
