@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  # Backend Unit Testing
+  # Backend Unit Tests
   backend-tests:
     runs-on: ubuntu-latest
     steps:
@@ -17,11 +17,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up Java 15
+      # Set up Java 15 with a specified distribution
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
           java-version: '15'
+          distribution: 'temurin' # Use Temurin distribution
 
       # Install backend dependencies
       - name: Install backend dependencies
@@ -31,7 +32,7 @@ jobs:
       - name: Run backend unit tests
         run: mvn test -Dtest=com.example.jobsnap.unit.*
 
-  # Frontend Unit Testing
+  # Frontend Unit Tests
   frontend-tests:
     runs-on: ubuntu-latest
     steps:
