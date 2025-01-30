@@ -15,6 +15,7 @@ JobSnap is a web-based platform designed to help students build professional pro
 ## 9. [Application Execution](#application-execution)
 ## 11. [Environment Configurations Summary](#environment-configurations-summary)
 
+---
 
 ## Product Vision
 **FOR**: Students who want to create professional profiles and tailor CVs for specific job roles.  
@@ -23,6 +24,8 @@ JobSnap is a web-based platform designed to help students build professional pro
 **THAT**: Provides tailored CV templates, job role-based field suggestions, and employer access to profiles.  
 **UNLIKE**: Generalized CV builders or simple resume generators.  
 **THIS PRODUCT**: Offers dynamic CV customization based on job roles, a range of professional templates, and a streamlined connection between students and employers.  
+
+---
 
 ## Key Features
 ### For Students
@@ -36,12 +39,16 @@ JobSnap is a web-based platform designed to help students build professional pro
 
  - [x] **Search and View CVs**: Search for candidates based on job role, skills, and other criteria. View CVs that match your desired candidate profile.
 
+---
+
 ## Requirements
 
  - [x] **R1**: The application must support secure user registration and login for both students and employers
  - [x] **R2**: Students must be able to create, edit, and delete profile information.
  - [x] **R3**: Students must be able to generate a CV tailored to specific job roles.
  - [x] **R4**: Employers must be able to view generated CVs and search for candidates based on job role and skills.
+
+---
 
 ## User Stories
 ### Student Stories:
@@ -55,8 +62,12 @@ JobSnap is a web-based platform designed to help students build professional pro
  - [x] "As an employer, I want to search for students with specific skills so that I can find suitable candidates."
  - [x] "As an employer, I want to view CVs tailored to job roles so that I can quickly assess candidates’ qualifications."
 
+---
+
 ## Backlog
 The backlog will include tasks derived from user stories and prioritized for development. Each story should be broken down into smaller tasks for implementation and ordered based on relevance and dependencies. Our progress is tracked on [Trello](https://trello.com/b/yYTxEn3y/jobsnap).
+
+---
 
 # Architectural Description
 
@@ -80,6 +91,7 @@ The backlog will include tasks derived from user stories and prioritized for dev
 6. **Portability**: Responsive design and cross-device testing.  
 7. **Maintainability**: Standardized code, documentation, and automated testing.  
 
+---
 
 # CI/CD Workflow and Work Environments
 
@@ -105,7 +117,6 @@ All backend and frontend tests were conducted manually. These tests included:
 - Ensure compliance with non-functional requirements: performance, security, and reliability.
 - Identify and fix defects.
 
----
 
 ## 2. **Tested Artifacts and Levels of Testing**
 
@@ -121,8 +132,6 @@ All backend and frontend tests were conducted manually. These tests included:
 - System testing.
 - Security testing.
 
----
-
 ## 3. **Testing Process**
 
 ### Testing Stages in the SDLC:
@@ -130,8 +139,6 @@ All backend and frontend tests were conducted manually. These tests included:
 2. **Integration Testing**: After implementing frontend-backend interactions.
 3. **System Testing**: On the complete application version, in a staging environment.
 4. **Security Testing**: In the final phase, to identify critical vulnerabilities.
-
----
 
 ## 4. **Testing Methods**
 
@@ -161,8 +168,6 @@ All backend and frontend tests were conducted manually. These tests included:
 
 ![WhatsApp Image 2025-01-30 at 14 44 13_8bcb59ce](https://github.com/user-attachments/assets/f69a95a6-8c84-4e02-bbda-4af33d99ca72)
 
----
-
 ## 5. **Testing Results**
 
 | **Functionality**         | **Test Type**     | **Expected Result**           | **Actual Result**            | **Status**  | **Remarks**                |
@@ -174,8 +179,6 @@ All backend and frontend tests were conducted manually. These tests included:
 | Frontend API connection   | Integration       | API responds with 200 OK       | 200 OK response              | Passed      | -                           |                         |
 |SQL Injection attack   |Security    |Input blocked    |Input blocked  |Passed| -
 | Performance (10 users)    | Performance       | Application responds in <1s    | Application responds in 900ms| Passed      | -                           |
-
----
 
 ## 6. **Conclusions and Recommendations**
 
@@ -204,6 +207,7 @@ All backend and frontend tests were conducted manually. These tests included:
   ```bash
   npm start
 
+---
 
 # Work Environments
 
@@ -233,7 +237,7 @@ All backend and frontend tests were conducted manually. These tests included:
   - Minor optimizations for performance.
   - Final manual testing before running the application.
 
-
+---
 
 ## Environment Configurations Summary
 
