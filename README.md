@@ -10,7 +10,7 @@ JobSnap is a web-based platform designed to help students build professional pro
 ## 4. [User Stories](#user-stories)
 ## 5. [Backlog](#backlog)
 ## 6. [Architectural Description](#architectural-description)
-## 7. [CI/CD Workflow and Work Environments](#cicd-workflow-and-work-environments)
+## 7. [CI/CD Workflow and Work Environments](#ci/cd-workflow-and-work-environments)
 ## 8. [Testing & Quality Assurance](#quality-assurance-qa)
 ## 9. [Application Execution](#application-execution)
 
