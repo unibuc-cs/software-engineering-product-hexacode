@@ -13,7 +13,7 @@ JobSnap is a web-based platform designed to help students build professional pro
 ## 7. [CI/CD Workflow and Work Environments](#cicd-workflow-and-work-environments)
 ## 8. [Testing & Quality Assurance](#quality-assurance-qa)
 ## 9. [Application Execution](#application-execution)
-## 11. [Environment Configurations Summary](#environment-configurations-summary)
+
 
 ---
 
@@ -93,22 +93,91 @@ The backlog will include tasks derived from user stories and prioritized for dev
 
 ---
 
-# CI/CD Workflow and Work Environments
+# **CI/CD Workflow and Environment Descriptions**
 
-We used GitHub to maintain an organized workflow, which helped us detect and resolve bugs and conflicts early. Each team member worked on their own branch. After completing their tasks, they created merge requests to integrate changes into the main branch. This structured approach ensured smooth collaboration and maintained code quality.
-## Manual Testing
+## **CI/CD Overview**
+We implemented a CI/CD pipeline using **GitHub Actions** to automate testing and ensure code quality across all environments. The pipeline is triggered on every commit or pull request, running unit tests to validate core functionalities.
 
-All backend and frontend tests were conducted manually. These tests included:
-
-### Backend:
-- Testing business logic through specific scenarios using predefined input data.
-- Validating interactions with the Oracle database.
-
-### Frontend:
-- Verifying the user interface to ensure functionality is correct and intuitive.
-- Testing the integration between frontend and backend for key workflows (e.g., signup, login, profile management).
+The pipeline focuses on automating **backend unit tests** and verifying that changes do not break existing functionality. Since the database, backend, and frontend are all hosted locally, the CI/CD pipeline ensures a consistent development process.
 
 ---
+
+## **Environment Descriptions**
+Our development workflow relies on three local environments:
+
+### **DEV (Development)**
+- **Purpose**: 
+  - Initial development and debugging of features.
+- **Setup**:
+  - Backend runs locally using Spring Boot (`mvn spring-boot:run`).
+  - Frontend runs locally using React (`npm start`).
+  - Oracle database configured locally with mock data.
+- **Key Features**:
+  - Debugging enabled for rapid issue identification.
+  - Detailed logging for backend workflows.
+  - CI/CD pipeline runs **unit tests** to validate changes during development.
+
+### **STAGING (Final Testing)**
+- **Purpose**:
+  - Simulate a production-like environment for final validation.
+- **Setup**:
+  - Backend and frontend continue to run locally.
+  - Oracle database populated with semi-real data for testing.
+- **Key Features**:
+  - Manual and automated testing, including integration validation.
+  - CI/CD pipeline executes **unit tests** for final validation.
+
+### **PRODUCTION**
+- **Purpose**:
+  - Serve the final application to end-users.
+- **Setup**:
+  - Backend, frontend, and Oracle database all run locally on the production machine.
+  - Database contains real data for actual use cases.
+- **Key Features**:
+  - Final manual testing is performed before deployment.
+  - CI/CD pipeline validates deployment.
+
+---
+
+## **Environment Differences**
+
+| **Aspect**       | **DEV**                  | **STAGING**                | **PRODUCTION**            |
+|-------------------|--------------------------|----------------------------|---------------------------|
+| **Purpose**       | Development and debugging| Final validation            | End-user environment       |
+| **Database**      | Oracle local (mock)      | Oracle semi-real            | Oracle real               |
+| **Backend**       | Local                    | Local                       | Local                     |
+| **Frontend**      | Local                    | Local                       | Local                     |
+| **Debugging**     | Enabled                  | Enabled                     | Disabled                  |
+| **Logging**       | Detailed                 | Standard                    | Optimized                 |
+| **Testing**       | Manual & unit tests      | Manual & unit tests         | Manual & unit tests       |
+ | **CI/CD Pipelines** | Unit tests              | Unit tests                | Deployment validation |
+
+---
+
+## **Specific Configurations**
+
+### **DEV Environment**
+- **Backend**:
+  - Runs locally using Spring Boot with `mvn spring-boot:run`.
+  - Mock Oracle database configured in `application.properties` for testing.
+  - Unit tests are executed to validate new features.
+- **Frontend**:
+  - Local React app started with `npm start`.
+  - Connected to the local backend for API interactions.
+
+### **STAGING Environment**
+- **Backend**:
+  - Runs locally with a semi-real Oracle database.
+- **Frontend**:
+  - Runs locally and is tested with the staging backend.
+
+### **PRODUCTION Environment**
+- **Backend**:
+  - Runs locally with the Oracle database containing real data.
+  - Optimized for stability and performance.
+- **Frontend**:
+  - Tested and validated manually with the production backend.
+
 
 # Quality Assurance (QA)
 
@@ -194,7 +263,6 @@ All backend and frontend tests were conducted manually. These tests included:
 ---
 
 
-
 ## Application Execution
 
 ### Backend:
@@ -208,45 +276,3 @@ All backend and frontend tests were conducted manually. These tests included:
   npm start
 
 ---
-
-# Work Environments
-
-## DEV (Development)
-- **Purpose:** Initial development and testing of functionalities.
-- **Setup:**
-  - Backend and frontend run locally.
-  - Oracle database configured locally with mock data.
-- **Characteristics:**
-  - Debugging enabled for rapid issue identification.
-  - Detailed logging in the backend for tracking workflows.
-
-## STAGING (Final Testing)
-- **Purpose:** Simulating a production-like environment.
-- **Setup:**
-  - Backend and frontend continue to run locally, with testing using data closer to real-world scenarios.
-  - Oracle database populated with semi-real data.
-- **Characteristics:**
-  - Complete manual testing to verify main functionalities and integration.
-
-## PRODUCTION
-- **Purpose:** Running the application for end-users (locally).
-- **Setup:**
-  - Application run locally by the team; not hosted on a public server.
-  - Oracle database contains real data required for application functionality.
-- **Characteristics:**
-  - Minor optimizations for performance.
-  - Final manual testing before running the application.
-
----
-
-## Environment Configurations Summary
-
-| **Environment** | **Purpose**           | **Database**        | **Backend**             | **Frontend**          | **Testing**                |
-|------------------|-----------------------|---------------------|-------------------------|-----------------------|----------------------------|
-| **Dev**          | Initial development   | Oracle local (mock) | Local (debug enabled)   | Local                | Manual & automated testing |
-| **Staging**      | Production simulation | Oracle semi-real    | Local                   | Local                | Manual & automated testing    |
-| **Production**   | Final user environment| Oracle real         | Local                   | Local                | Manual & automated testing    |
-
----
-
-
