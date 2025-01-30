@@ -38,5 +38,4 @@ jobs:
 
       # Step 5: Run only unit tests
       - name: Run backend unit tests
-        run: mvn test -Dtest=com.example.jobsnap.unit.* -DexcludedGroups=integration
-
+        run: mvn test -Dtest=com.example.jobsnap.unit.* -Dspring.test.database.replace=NONE
