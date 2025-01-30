@@ -339,7 +339,7 @@ Our development workflow relies on three local environments:
    - Enforcing **HTTPS** to secure data transmission.  
 
 ## **Conclusion**
-The current security implementation in **JobSnap** effectively protects against common risks such as password breaches, duplicate accounts, and SQL injection. Future enhancements like **MFA, CAPTCHA, and RBAC** will further improve the security posture of the platform.
+- The current security implementation in **JobSnap** effectively protects against common risks such as password breaches, duplicate accounts, and SQL injection. Future enhancements like **MFA, CAPTCHA, and RBAC** will further improve the security posture of the platform.
 ---
 
 ## Application Execution
