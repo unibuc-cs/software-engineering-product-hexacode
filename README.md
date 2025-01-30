@@ -1,5 +1,3 @@
-
-# software-engineering-product-hexacode
 # JobSnap
 
 JobSnap is a web-based platform designed to help students build professional profiles and generate dynamic CVs tailored to specific job roles. By allowing students to customize CV templates for targeted job types, the platform ensures that students present the most relevant information to potential employers, streamlining the recruitment process for both parties.
@@ -12,13 +10,14 @@ JobSnap is a web-based platform designed to help students build professional pro
 ## 6. [Architectural Description](#architectural-description)
 ## 7. [CI/CD Workflow and Work Environments](#cicd-workflow-and-work-environments)
 ## 8. [Testing & Quality Assurance](#quality-assurance-qa)
-## 9. [Application Execution](#application-execution)
-## 10.[Security Analysis for JobSnap](#security-analysis-for-jobsnap)
+## 9. [Security Analysis for JobSnap](#security-analysis-for-jobsnap)
+## 10. [Application Execution](#application-execution)
+
 
 
 ---
 
-## Product Vision
+# Product Vision
 **FOR**: Students who want to create professional profiles and tailor CVs for specific job roles.  
 **WHO**: Face challenges with creating relevant, job-specific CVs and finding job opportunities that match their skills.  
 **THE JobSnap system**: A web-based platform for building profiles and generating customized CVs.  
@@ -28,7 +27,7 @@ JobSnap is a web-based platform designed to help students build professional pro
 
 ---
 
-## Key Features
+# Key Features
 ### For Students
 
  - [x] **User Profiles**: Create and edit profiles, including academic background, projects, skills, and experience.
@@ -42,7 +41,7 @@ JobSnap is a web-based platform designed to help students build professional pro
  - [x] **View CVs**: View CVs that match your desired candidate profile.
 ---
 
-## Requirements
+# Requirements
 
  - [x] **R1**: The application must support secure user registration and login for both students and employers
  - [x] **R2**: Students must be able to create, edit, and delete profile information.
@@ -51,7 +50,7 @@ JobSnap is a web-based platform designed to help students build professional pro
 
 ---
 
-## User Stories
+# User Stories
 ### Student Stories:
 
  - [x] "As a student, I want to create a profile so that I can store my academic and professional information."
@@ -65,7 +64,7 @@ JobSnap is a web-based platform designed to help students build professional pro
 
 ---
 
-## Backlog
+# Backlog
 The backlog will include tasks derived from user stories and prioritized for development. Each story should be broken down into smaller tasks for implementation and ordered based on relevance and dependencies. Our progress is tracked on [Trello](https://trello.com/b/yYTxEn3y/jobsnap).
 
 ---
@@ -145,8 +144,6 @@ We implemented a CI/CD pipeline using **GitHub Actions** to automate testing and
 
 The pipeline focuses on automating **backend unit tests** and verifying that changes do not break existing functionality. Since the database, backend, and frontend are all hosted locally, the CI/CD pipeline ensures a consistent development process.
 
----
-
 ## **Environment Descriptions**
 Our development workflow relies on three local environments:
 
@@ -182,8 +179,6 @@ Our development workflow relies on three local environments:
   - Final manual testing is performed before deployment.
   - CI/CD pipeline validates deployment.
 
----
-
 ## **Environment Differences**
 
 | **Aspect**       | **DEV**                  | **STAGING**                | **PRODUCTION**            |
@@ -197,7 +192,6 @@ Our development workflow relies on three local environments:
 | **Testing**       | Manual & unit tests      | Manual & unit tests         | Manual & unit tests       |
  | **CI/CD Pipelines** | Unit tests              | Unit tests                | Deployment validation |
 
----
 
 ## **Specific Configurations**
 
@@ -342,7 +336,7 @@ Our development workflow relies on three local environments:
 - The current security implementation in **JobSnap** effectively protects against common risks such as password breaches, duplicate accounts, and SQL injection. Future enhancements like **MFA, CAPTCHA, and RBAC** will further improve the security posture of the platform.
 ---
 
-## Application Execution
+# Application Execution
 
 ### Backend:
 - Implemented in Java using the Spring Boot framework.
