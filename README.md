@@ -1,23 +1,25 @@
-# JobSnap
+# JobSnap 💼🤝🏽
 
 JobSnap is a web-based platform designed to help students build professional profiles and generate dynamic CVs tailored to specific job roles. By allowing students to customize CV templates for targeted job types, the platform ensures that students present the most relevant information to potential employers, streamlining the recruitment process for both parties.
 
-## 1. [Product Vision](#product-vision)
-## 2. [Key Features](#key-features)
-## 3. [Requirements](#requirements)
-## 4. [User Stories](#user-stories)
-## 5. [Backlog](#backlog)
-## 6. [Architectural Description](#architectural-description)
-## 7. [CI/CD Workflow and Work Environments](#cicd-workflow-and-work-environments)
-## 8. [Testing & Quality Assurance](#quality-assurance-qa)
-## 9. [Security Analysis for JobSnap](#security-analysis-for-jobsnap)
-## 10. [Application Execution](#application-execution)
+## 🎬 [Demo](https://youtu.be/4DwvQ8vYrmI) 🎬
 
-
+---
+## Summary 📌
+### 1. [Product Vision](#product-vision-)
+### 2. [Key Features](#key-features)
+### 3. [Requirements](#requirements)
+### 4. [User Stories](#user-stories)
+### 5. [Backlog](#backlog)
+### 6. [Architectural Description](#architectural-description)
+### 7. [CI/CD Workflow and Work Environments](#cicd-workflow-and-work-environments)
+### 8. [Testing & Quality Assurance](#quality-assurance-qa)
+### 9. [Security Analysis for JobSnap](#security-analysis-for-jobsnap)
+### 10. [Application Execution](#application-execution)
 
 ---
 
-# Product Vision
+# Product Vision 🔎
 **FOR**: Students who want to create professional profiles and tailor CVs for specific job roles.  
 **WHO**: Face challenges with creating relevant, job-specific CVs and finding job opportunities that match their skills.  
 **THE JobSnap system**: A web-based platform for building profiles and generating customized CVs.  
@@ -27,7 +29,7 @@ JobSnap is a web-based platform designed to help students build professional pro
 
 ---
 
-# Key Features
+# Key Features 🔑
 ### For Students
 
  - [x] **User Profiles**: Create and edit profiles, including academic background, projects, skills, and experience.
@@ -68,7 +70,6 @@ JobSnap is a web-based platform designed to help students build professional pro
 The backlog will include tasks derived from user stories and prioritized for development. Each story should be broken down into smaller tasks for implementation and ordered based on relevance and dependencies. Our progress is tracked on [Trello](https://trello.com/b/yYTxEn3y/jobsnap).
 
 ---
-## [Demo](https://youtu.be/4DwvQ8vYrmI)
 
 # Architectural Description
 
