@@ -343,15 +343,5 @@ Our development workflow relies on three local environments:
 
 # Application Execution 📲
 
-### Backend:
-- Implemented in Java using the Spring Boot framework.
-- Configured to connect to a local Oracle Database instance via a configuration file (`application.properties`).
-
-### Frontend:
-- Implemented in React.
-- Run locally using the command:
-  ```bash
-  npm start
----
 
 
