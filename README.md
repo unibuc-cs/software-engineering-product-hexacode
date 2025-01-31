@@ -352,7 +352,6 @@ Our development workflow relies on three local environments:
 - Run locally using the command:
   ```bash
   npm start
-
 ---
 
 
