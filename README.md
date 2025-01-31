@@ -68,7 +68,7 @@ JobSnap is a web-based platform designed to help students build professional pro
 The backlog will include tasks derived from user stories and prioritized for development. Each story should be broken down into smaller tasks for implementation and ordered based on relevance and dependencies. Our progress is tracked on [Trello](https://trello.com/b/yYTxEn3y/jobsnap).
 
 ---
-[##Demo](https://youtu.be/4DwvQ8vYrmI)
+## [Demo](https://youtu.be/4DwvQ8vYrmI)
 
 # Architectural Description
 
